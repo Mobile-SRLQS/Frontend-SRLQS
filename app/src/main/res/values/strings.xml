@@ -17,6 +17,22 @@
     <string name="welcome_text">Welcome! Please select your role to proceed using the app</string>
     <string name="fill_details_below">Fill in the details below to create one</string>
     <string name="register_name_field">Name</string>
+    <string name="email_label">Email</string>
+    <string name="register_name_hint">Enter your full name</string>
+    <string name="register_email_hint">Enter your email address</string>
+    <string name="dob_label">Date of Birth</string>
+    <string name="register_dob_hint">Choose your date of birth</string>
+    <string name="calendar_icon_description">Calendar</string>
+    <string name="university_label">University</string>
+    <string name="register_university_hint">Enter your university name</string>
+    <string name="batch_label">Batch of</string>
+    <string name="register_batch_hint">Choose the year you joined university</string>
+    <string name="dropdown_icon_description">dropdown batch</string>
+    <string name="degree_label">Degree</string>
+    <string name="register_degree_hint">Choose the degree you are pursuing</string>
+    <string name="password_label">Password</string>
+    <string name="register_password_hint">Enter your password</string>
+    <string name="register_password_confirm_hint">Enter your password again</string>
 
     // Register Activity
 </resources>

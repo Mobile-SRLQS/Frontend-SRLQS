@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -34,180 +33,263 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_register_title" />
 
+    <TextView
+        android:id="@+id/tv_name_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/register_name_field"
+        app:layout_constraintTop_toBottomOf="@id/tv_register_subtitle"
+        app:layout_constraintStart_toStartOf="@id/input_name_layout" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_name_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/register_name_field"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="@color/dark_green"
-        app:layout_constraintTop_toBottomOf="@id/tv_register_subtitle"
+        app:layout_constraintTop_toBottomOf="@id/tv_name_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.85"
-        android:layout_marginTop="16dp">
+        app:layout_constraintWidth_percent="0.85">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:inputType="text" />
+            android:inputType="text"
+            android:hint="@string/register_name_hint"/>
     </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tv_email_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/email_label"
+        app:layout_constraintTop_toBottomOf="@id/input_name_layout"
+        app:layout_constraintStart_toStartOf="@id/input_email_layout" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_email_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Email"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="@color/dark_green"
-        app:layout_constraintTop_toBottomOf="@id/input_name_layout"
+        app:layout_constraintTop_toBottomOf="@id/tv_email_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.85"
-        android:layout_marginTop="16dp">
+        app:layout_constraintWidth_percent="0.85">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter your email address"
             android:padding="10dp"
-            android:inputType="textEmailAddress" />
+            android:inputType="text"
+            android:hint="@string/register_email_hint"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Date of Birth Input Field -->
+    <TextView
+        android:id="@+id/tv_dob_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dob_label"
+        app:layout_constraintTop_toBottomOf="@id/input_email_layout"
+        app:layout_constraintStart_toStartOf="@id/input_dob_layout" />
+
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_date_of_birth_layout"
+        android:id="@+id/input_dob_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Date of Birth"
-        app:endIconMode="custom"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="@color/dark_green"
-        app:layout_constraintTop_toBottomOf="@id/input_email_layout"
+        app:layout_constraintTop_toBottomOf="@id/tv_dob_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.85"
-        android:layout_marginTop="16dp">
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/ic_calendar"
+        app:endIconContentDescription="@string/calendar_icon_description">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/input_date_of_birth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="date"
-            android:hint="Choose your date of birth" />
-    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/input_dob"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:inputType="date"
+        android:hint="@string/register_dob_hint"
+        android:focusable="false"
+        android:clickable="true"
+        android:cursorVisible="false"/>
+</com.google.android.material.textfield.TextInputLayout>
 
-    <!-- University Input Field -->
+    <TextView
+        android:id="@+id/tv_university_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/university_label"
+        app:layout_constraintTop_toBottomOf="@id/input_dob_layout"
+        app:layout_constraintStart_toStartOf="@id/input_university_layout" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_university_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="University"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="@color/dark_green"
-        app:layout_constraintTop_toBottomOf="@id/input_date_of_birth_layout"
+        app:layout_constraintTop_toBottomOf="@id/tv_university_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.85"
-        android:layout_marginTop="16dp">
+        app:layout_constraintWidth_percent="0.85">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_university"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter your university's name"
-            android:inputType="text" />
+            android:padding="10dp"
+            android:inputType="text"
+            android:hint="@string/register_university_hint"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Batch Input Field -->
-    <Spinner
-        android:id="@+id/spinner_batch"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/tv_batch_label"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/batch_label"
         app:layout_constraintTop_toBottomOf="@id/input_university_layout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.85"
-        android:layout_marginTop="16dp" />
+        app:layout_constraintStart_toStartOf="@id/input_batch_layout" />
 
-    <!-- Degree Input Field -->
-    <Spinner
-        android:id="@+id/spinner_degree"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_batch_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/spinner_batch"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="@color/dark_green"
+        app:endIconMode="dropdown_menu"
+        app:endIconContentDescription="@string/dropdown_icon_description"
+        app:layout_constraintTop_toBottomOf="@id/tv_batch_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.85"
-        android:layout_marginTop="16dp" />
+        app:layout_constraintWidth_percent="0.85">
 
-    <!-- Password Input Field -->
+    <AutoCompleteTextView
+        android:id="@+id/input_batch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:hint="@string/register_batch_hint"
+        android:inputType="none" />
+</com.google.android.material.textfield.TextInputLayout>
+
+
+    <TextView
+        android:id="@+id/tv_degree_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/degree_label"
+        app:layout_constraintTop_toBottomOf="@id/input_batch_layout"
+        app:layout_constraintStart_toStartOf="@id/input_degree_layout" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_degree_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="@color/dark_green"
+        app:endIconMode="dropdown_menu"
+        app:endIconContentDescription="@string/dropdown_icon_description"
+        app:layout_constraintTop_toBottomOf="@id/tv_degree_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.85">
+
+        <AutoCompleteTextView
+            android:id="@+id/input_degree"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:hint="@string/register_degree_hint"
+            android:inputType="none" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tv_password_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/password_label"
+        app:layout_constraintTop_toBottomOf="@id/input_degree_layout"
+        app:layout_constraintStart_toStartOf="@id/input_password_layout" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_password_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Password"
-        app:endIconMode="password_toggle"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="@color/dark_green"
-        app:layout_constraintTop_toBottomOf="@id/spinner_degree"
+        app:endIconMode="password_toggle"
+        app:layout_constraintTop_toBottomOf="@id/tv_password_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.85"
-        android:layout_marginTop="16dp">
+        app:layout_constraintWidth_percent="0.85">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="10dp"
             android:inputType="textPassword"
-            android:hint="Enter your password" />
+            android:hint="@string/register_password_hint"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Confirm Password Input Field -->
+    <TextView
+        android:id="@+id/tv_password_confirm_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/password_label"
+        app:layout_constraintTop_toBottomOf="@id/input_password_layout"
+        app:layout_constraintStart_toStartOf="@id/input_password_confirm_layout" />
+
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_confirm_password_layout"
+        android:id="@+id/input_password_confirm_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Confirm Password"
-        app:endIconMode="password_toggle"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="@color/dark_green"
-        app:layout_constraintTop_toBottomOf="@id/input_password_layout"
+        app:endIconMode="password_toggle"
+        app:layout_constraintTop_toBottomOf="@id/tv_password_confirm_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.85"
-        android:layout_marginTop="16dp">
+        app:layout_constraintWidth_percent="0.85">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/input_confirm_password"
+            android:id="@+id/input_password_confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="10dp"
             android:inputType="textPassword"
-            android:hint="Re-enter your password" />
+            android:hint="@string/register_password_confirm_hint"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Register Button -->
     <Button
         android:id="@+id/btn_register"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="@string/register_button_text"
         android:textColor="@android:color/white"
-        android:backgroundTint="@color/green"
-        app:layout_constraintTop_toBottomOf="@+id/input_confirm_password_layout"
-        app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="@color/light_green"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.85"
-        android:layout_marginTop="24dp" />
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_password_confirm_layout"
+        app:layout_constraintWidth_percent="0.85" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
