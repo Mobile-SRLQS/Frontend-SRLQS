@@ -2,4 +2,12 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="green">#009688</color>
+    <color name="dark_green">#0F3C4C</color>
+    <color name="dark_dark_green">#09252E</color>
+    <color name="light_dark_green">#748E97</color>
+    <color name="dark_light_green">#10735F</color>
+    <color name="light_green">#1ABC9C</color>
+    <color name="light_light_green">#7AD8C6</color>
+    <string name="register_an_account">Register an account</string>
 </resources>

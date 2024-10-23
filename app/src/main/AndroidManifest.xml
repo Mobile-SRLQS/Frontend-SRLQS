@@ -13,7 +13,13 @@
         android:theme="@style/Theme.Srolqs"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.authentication.register.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.authentication.login.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.welcome.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

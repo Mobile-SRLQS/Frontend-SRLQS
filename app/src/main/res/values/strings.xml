@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">srolqs</string>
+
+    // Login Activity
+    <string name="srlqs_logo">SROL-QS</string>
+    <string name="title_login">Selamat Datang di Self Regulated Online Learning Questionnaire System!</string>
+    <string name="subtitle_login">Masuk kembali ke akunmu</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Password</string>
+    <string name="button_login">Log In</string>
+    <string name="login_question">Belum memiliki akun?</string>
+    <string name="register_button_text">Daftar</string>
+
+    // Welcome Activity
+    <string name="welcome_student">Student</string>
+    <string name="welcome_teacher">Teacher/Lecturer</string>
+    <string name="welcome_text">Welcome! Please select your role to proceed using the app</string>
+    <string name="fill_details_below">Fill in the details below to create one</string>
+    <string name="register_name_field">Name</string>
+
+    // Register Activity
 </resources>
