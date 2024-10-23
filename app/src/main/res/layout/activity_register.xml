@@ -82,7 +82,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.85">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.dl2lab.srolqs.ui.customview.EmailField
             android:id="@+id/input_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -239,7 +239,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.85">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.dl2lab.srolqs.ui.customview.PasswordField
             android:id="@+id/input_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

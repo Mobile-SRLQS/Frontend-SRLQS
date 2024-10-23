@@ -7,10 +7,15 @@ import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
+import java.util.regex.Pattern
 
 class PasswordField @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : AppCompatEditText(context, attrs) {
+
+    // Regular expressions for checking the presence of a number and an uppercase letter
+    private val numberPattern = Pattern.compile("[0-9]")
+    private val upperCasePattern = Pattern.compile("[A-Z]")
 
     init {
         addTextChangedListener(object : TextWatcher {
@@ -18,9 +23,22 @@ class PasswordField @JvmOverloads constructor(
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.toString().length < 8) {
+                val password = s.toString()
+
+                // Check for password length
+                if (password.length < 8) {
                     setError("Password tidak boleh kurang dari 8 karakter", null)
-                } else {
+                }
+                // Check for at least one number
+                else if (!numberPattern.matcher(password).find()) {
+                    setError("Password harus mengandung setidaknya 1 angka dan 1 huruf kapital", null)
+                }
+                // Check for at least one uppercase letter
+                else if (!upperCasePattern.matcher(password).find()) {
+                    setError("Password harus mengandung setidaknya 1 angka dan 1 huruf kapital", null)
+                }
+                // Clear error if all conditions are satisfied
+                else {
                     error = null
                 }
             }
