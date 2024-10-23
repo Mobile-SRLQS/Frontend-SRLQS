@@ -1,7 +1,11 @@
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.authentication.register.RegisterActivity"
@@ -31,15 +35,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.169"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_register_title" />
+        app:layout_constraintTop_toBottomOf="@id/tv_register_title" />
 
     <TextView
         android:id="@+id/tv_name_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/register_name_field"
-        app:layout_constraintTop_toBottomOf="@id/tv_register_subtitle"
-        app:layout_constraintStart_toStartOf="@id/input_name_layout" />
+        app:layout_constraintStart_toStartOf="@id/input_name_layout"
+        app:layout_constraintTop_toBottomOf="@id/tv_register_subtitle" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_name_layout"
@@ -48,9 +52,9 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="@color/dark_green"
-        app:layout_constraintTop_toBottomOf="@id/tv_name_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_name_label"
         app:layout_constraintWidth_percent="0.85">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -59,7 +63,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:inputType="text"
-            android:hint="@string/register_name_hint"/>
+            android:hint="@string/register_name_hint" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -67,8 +71,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/email_label"
-        app:layout_constraintTop_toBottomOf="@id/input_name_layout"
-        app:layout_constraintStart_toStartOf="@id/input_email_layout" />
+        app:layout_constraintStart_toStartOf="@id/input_email_layout"
+        app:layout_constraintTop_toBottomOf="@id/input_name_layout" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_email_layout"
@@ -77,9 +81,9 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="@color/dark_green"
-        app:layout_constraintTop_toBottomOf="@id/tv_email_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_email_label"
         app:layout_constraintWidth_percent="0.85">
 
         <com.dl2lab.srolqs.ui.customview.EmailField
@@ -88,7 +92,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:inputType="text"
-            android:hint="@string/register_email_hint"/>
+            android:hint="@string/register_email_hint" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -96,8 +100,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dob_label"
-        app:layout_constraintTop_toBottomOf="@id/input_email_layout"
-        app:layout_constraintStart_toStartOf="@id/input_dob_layout" />
+        app:layout_constraintStart_toStartOf="@id/input_dob_layout"
+        app:layout_constraintTop_toBottomOf="@id/input_email_layout" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_dob_layout"
@@ -106,33 +110,33 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="@color/dark_green"
-        app:layout_constraintTop_toBottomOf="@id/tv_dob_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_dob_label"
         app:layout_constraintWidth_percent="0.85"
         app:endIconMode="custom"
         app:endIconDrawable="@drawable/ic_calendar"
         app:endIconContentDescription="@string/calendar_icon_description">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/input_dob"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:inputType="date"
-        android:hint="@string/register_dob_hint"
-        android:focusable="false"
-        android:clickable="true"
-        android:cursorVisible="false"/>
-</com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_dob"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:inputType="date"
+            android:hint="@string/register_dob_hint"
+            android:focusable="false"
+            android:clickable="true"
+            android:cursorVisible="false" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/tv_university_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/university_label"
-        app:layout_constraintTop_toBottomOf="@id/input_dob_layout"
-        app:layout_constraintStart_toStartOf="@id/input_university_layout" />
+        app:layout_constraintStart_toStartOf="@id/input_university_layout"
+        app:layout_constraintTop_toBottomOf="@id/input_dob_layout" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_university_layout"
@@ -141,9 +145,9 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="@color/dark_green"
-        app:layout_constraintTop_toBottomOf="@id/tv_university_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_university_label"
         app:layout_constraintWidth_percent="0.85">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -152,7 +156,36 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:inputType="text"
-            android:hint="@string/register_university_hint"/>
+            android:hint="@string/register_university_hint" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tv_npm_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/register_npm_field"
+        app:layout_constraintStart_toStartOf="@id/input_npm_layout"
+        app:layout_constraintTop_toBottomOf="@id/input_university_layout" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_npm_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="@color/dark_green"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_npm_label"
+        app:layout_constraintWidth_percent="0.85">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_npm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:inputType="text"
+            android:hint="@string/register_npm_hint" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -160,8 +193,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/batch_label"
-        app:layout_constraintTop_toBottomOf="@id/input_university_layout"
-        app:layout_constraintStart_toStartOf="@id/input_batch_layout" />
+        app:layout_constraintStart_toStartOf="@id/input_batch_layout"
+        app:layout_constraintTop_toBottomOf="@id/input_npm_layout" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_batch_layout"
@@ -172,28 +205,27 @@
         app:boxStrokeColor="@color/dark_green"
         app:endIconMode="dropdown_menu"
         app:endIconContentDescription="@string/dropdown_icon_description"
-        app:layout_constraintTop_toBottomOf="@id/tv_batch_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_batch_label"
         app:layout_constraintWidth_percent="0.85">
 
-    <AutoCompleteTextView
-        android:id="@+id/input_batch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:hint="@string/register_batch_hint"
-        android:inputType="none" />
-</com.google.android.material.textfield.TextInputLayout>
-
+        <AutoCompleteTextView
+            android:id="@+id/input_batch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:hint="@string/register_batch_hint"
+            android:inputType="none" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/tv_degree_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/degree_label"
-        app:layout_constraintTop_toBottomOf="@id/input_batch_layout"
-        app:layout_constraintStart_toStartOf="@id/input_degree_layout" />
+        app:layout_constraintStart_toStartOf="@id/input_degree_layout"
+        app:layout_constraintTop_toBottomOf="@id/input_batch_layout" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_degree_layout"
@@ -204,9 +236,9 @@
         app:boxStrokeColor="@color/dark_green"
         app:endIconMode="dropdown_menu"
         app:endIconContentDescription="@string/dropdown_icon_description"
-        app:layout_constraintTop_toBottomOf="@id/tv_degree_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_degree_label"
         app:layout_constraintWidth_percent="0.85">
 
         <AutoCompleteTextView
@@ -223,8 +255,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/password_label"
-        app:layout_constraintTop_toBottomOf="@id/input_degree_layout"
-        app:layout_constraintStart_toStartOf="@id/input_password_layout" />
+        app:layout_constraintStart_toStartOf="@id/input_password_layout"
+        app:layout_constraintTop_toBottomOf="@id/input_degree_layout" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_password_layout"
@@ -234,9 +266,9 @@
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="@color/dark_green"
         app:endIconMode="password_toggle"
-        app:layout_constraintTop_toBottomOf="@id/tv_password_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_password_label"
         app:layout_constraintWidth_percent="0.85">
 
         <com.dl2lab.srolqs.ui.customview.PasswordField
@@ -245,7 +277,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:inputType="textPassword"
-            android:hint="@string/register_password_hint"/>
+            android:hint="@string/register_password_hint" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -253,8 +285,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/password_label"
-        app:layout_constraintTop_toBottomOf="@id/input_password_layout"
-        app:layout_constraintStart_toStartOf="@id/input_password_confirm_layout" />
+        app:layout_constraintStart_toStartOf="@id/input_password_confirm_layout"
+        app:layout_constraintTop_toBottomOf="@id/input_password_layout" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_password_confirm_layout"
@@ -264,9 +296,9 @@
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="@color/dark_green"
         app:endIconMode="password_toggle"
-        app:layout_constraintTop_toBottomOf="@id/tv_password_confirm_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_password_confirm_label"
         app:layout_constraintWidth_percent="0.85">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -275,7 +307,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:inputType="textPassword"
-            android:hint="@string/register_password_confirm_hint"/>
+            android:hint="@string/register_password_confirm_hint" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -286,10 +318,10 @@
         android:text="@string/register_button_text"
         android:textColor="@android:color/white"
         android:backgroundTint="@color/light_green"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_password_confirm_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/input_password_confirm_layout"
         app:layout_constraintWidth_percent="0.85" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

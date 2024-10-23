@@ -33,6 +33,8 @@
     <string name="password_label">Password</string>
     <string name="register_password_hint">Enter your password</string>
     <string name="register_password_confirm_hint">Enter your password again</string>
+    <string name="register_npm_hint">Enter your student identity number (NIM/NPM)</string>
+    <string name="register_npm_field">Student Identity Number</string>
 
     // Register Activity
 </resources>
