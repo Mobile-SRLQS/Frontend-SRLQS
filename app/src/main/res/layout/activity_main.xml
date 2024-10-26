@@ -8,6 +8,18 @@
     tools:layout_editor_absoluteY="563dp"
     tools:context=".ui.welcome.MainActivity">
 
+    <Button
+        android:id="@+id/button_kuesioner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/white"
+        android:text="@string/welcome_teacher"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.8" />
+
     <TextView
         android:id="@+id/welcome_description"
         android:layout_width="0dp"

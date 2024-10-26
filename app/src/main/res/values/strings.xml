@@ -15,6 +15,8 @@
     <string name="welcome_student">Student</string>
     <string name="welcome_teacher">Teacher/Lecturer</string>
     <string name="welcome_text">Welcome! Please select your role to proceed using the app</string>
+
+    // Register Activity
     <string name="fill_details_below">Fill in the details below to create one</string>
     <string name="register_name_field">Name</string>
     <string name="email_label">Email</string>
@@ -36,5 +38,32 @@
     <string name="register_npm_hint">Enter your student identity number (NIM/NPM)</string>
     <string name="register_npm_field">Student Identity Number</string>
 
-    // Register Activity
+    // Goal setting Activity
+    <string name="goal_setting_indicator">1 of 6</string>
+    <string name="goal_setting_title">Goal Settings</string>
+    <string name="info_icon">Info icon</string>
+    <string name="goal_setting_q1">Saya membuat target untuk pengerjaan tugas-tugas saya dalam perkuliahan online.</string>
+    <string name="tidak_setuju_str">Sangat Tidak Setuju</string>
+    <string name="str_1">1</string>
+    <string name="str_2_scale">2</string>
+    <string name="str_3_scale">3</string>
+    <string name="str_4_scale">4</string>
+    <string name="str_5_scale">5</string>
+    <string name="str_6_scale">6</string>
+    <string name="sangat_setuju_str">Sangat Setuju</string>
+    <string name="goal_setting_progress_indicator">4 out of 24 questions</string>
+    <string name="str_next_button">Next</string>
+    <string name="goal_setting_q2">2. Saya menetapkan tujuan jangka pendek (harian atau mingguan) yang ingin saya capai dalam perkuliahan online.</string>
+    <string name="goal_setting_q3">3.Saya menetapkan standar yang tinggi untuk pembelajaran saya di perkuliahan online.</string>
+    <string name="goal_setting_q4">4.Saya menetapkan tujuan jangka panjang (bulanan atau semester) yang ingin saya capai dalam perkuliahan online.</string>
+
+    // Environment Structuring
+    <string name="environment_structuring_indicator">2 of 6</string>
+    <string name="environment_structuring_title">Environment Structuring</string>
+    <string name="environment_structuring_q5">5. Saya dapat memilih lokasi belajar yang tepat dalam perkuliahan online untuk menghindari terlalu banyak gangguan.</string>
+    <string name="environment_structuring_q6">6. Saya menutup semua tab atau window yang tidak terkait dengan materi perkuliahan saat sedang mengikuti pembelajaran dalam perkuliahan online.</string>
+    <string name="environment_structuring_q7">7. Saya tahu di mana saya bisa belajar paling efektif untuk perkuliahan online</string>
+    <string name="environment_structuring_q8">8. Saya memilih waktu belajar yang memiliki paling sedikit gangguan dalam perkuliahan online.</string>
+    <string name="environment_structuring_progress_indicator">8 out of 24 questions</string>
+    <string name="str_prev_button">Previous</string>
 </resources>

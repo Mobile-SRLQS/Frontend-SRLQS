@@ -1,0 +1,226 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Page Indicator -->
+        <TextView
+            android:id="@+id/pageIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/goal_setting_indicator"
+            android:textColor="#2F4F4F"
+            android:textSize="16sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Title with Info Icon -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/goal_setting_title"
+                android:textColor="#2F4F4F"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <!-- Information Icon -->
+            <ImageView
+                android:id="@+id/infoIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_info"
+                android:contentDescription="@string/info_icon"
+                android:clickable="true"
+                android:focusable="true" />
+        </LinearLayout>
+
+        <!-- Question 1 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/goal_setting_q1"
+            android:textSize="16sp"
+            android:textColor="#2F4F4F"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tidak_setuju_str"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!-- Radio Buttons 1-6 for Question 1 -->
+            <RadioButton android:id="@+id/radio1_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_1" />
+            <RadioButton android:id="@+id/radio1_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_2_scale" />
+            <RadioButton android:id="@+id/radio1_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_3_scale" />
+            <RadioButton android:id="@+id/radio1_4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_4_scale" />
+            <RadioButton android:id="@+id/radio1_5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_5_scale" />
+            <RadioButton android:id="@+id/radio1_6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_6_scale" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sangat_setuju_str"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Question 2 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/goal_setting_q2"
+            android:textSize="16sp"
+            android:textColor="#2F4F4F"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tidak_setuju_str"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!-- Radio Buttons 1-6 for Question 2 -->
+            <RadioButton android:id="@+id/radio2_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_1" />
+            <RadioButton android:id="@+id/radio2_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_2_scale" />
+            <RadioButton android:id="@+id/radio2_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_3_scale" />
+            <RadioButton android:id="@+id/radio2_4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_4_scale" />
+            <RadioButton android:id="@+id/radio2_5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_5_scale" />
+            <RadioButton android:id="@+id/radio2_6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_6_scale" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sangat_setuju_str"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Repeat the above structure for Question 3 and Question 4 -->
+
+        <!-- Question 3 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/goal_setting_q3"
+            android:textSize="16sp"
+            android:textColor="#2F4F4F"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tidak_setuju_str"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <RadioButton android:id="@+id/radio3_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_1" />
+            <RadioButton android:id="@+id/radio3_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_2_scale" />
+            <RadioButton android:id="@+id/radio3_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_3_scale" />
+            <RadioButton android:id="@+id/radio3_4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_4_scale" />
+            <RadioButton android:id="@+id/radio3_5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_5_scale" />
+            <RadioButton android:id="@+id/radio3_6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_6_scale" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sangat_setuju_str"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Question 4 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/goal_setting_q4"
+            android:textSize="16sp"
+            android:textColor="#2F4F4F"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tidak_setuju_str"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <RadioButton android:id="@+id/radio4_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_1" />
+            <RadioButton android:id="@+id/radio4_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_2_scale" />
+            <RadioButton android:id="@+id/radio4_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_3_scale" />
+            <RadioButton android:id="@+id/radio4_4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_4_scale" />
+            <RadioButton android:id="@+id/radio4_5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_5_scale" />
+            <RadioButton android:id="@+id/radio4_6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/str_6_scale" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sangat_setuju_str"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Progress Indicator -->
+        <TextView
+            android:id="@+id/progressIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/goal_setting_progress_indicator"
+            android:textSize="16sp"
+            android:textColor="#2F4F4F"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center_horizontal" />
+
+        <!-- Next Button -->
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_next_button"
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="#4CAF50"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+</ScrollView>
