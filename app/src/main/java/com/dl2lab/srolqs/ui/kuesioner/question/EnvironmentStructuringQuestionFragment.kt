@@ -5,32 +5,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioGroup
 import androidx.fragment.app.commit
+import androidx.lifecycle.ViewModelProvider
 import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.databinding.FragmentEnvironmentStructuringQuestionBinding
-import com.dl2lab.srolqs.databinding.FragmentGoalSettingQuestionBinding
+import com.dl2lab.srolqs.ui.kuesioner.viewmodel.QuestionnaireViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [EnvirontmentStructuringQuestionFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class EnvironmentStructuringQuestionFragment : Fragment() {
+class EnvironmentStructuringQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment() {
     private lateinit var binding: FragmentEnvironmentStructuringQuestionBinding
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var viewModel: QuestionnaireViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentEnvironmentStructuringQuestionBinding.inflate(layoutInflater)
+        viewModel = ViewModelProvider(requireActivity()).get(QuestionnaireViewModel::class.java)
         return binding.root
     }
 
@@ -38,40 +30,111 @@ class EnvironmentStructuringQuestionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupAction()
+        setupRadioGroups()
+        restoreAnswers()
     }
 
     private fun setupAction() {
         binding.nextButton.setOnClickListener {
+            viewModel.logAnswers() // Log answers before navigating
             parentFragmentManager.commit {
                 addToBackStack(null)
-                replace(R.id.questionnaire_container, TaskStrategyQuestionFragment(), TaskStrategyQuestionFragment::class.java.simpleName)
+                replace(R.id.questionnaire_container, TaskStrategyQuestionFragment(viewModel), TaskStrategyQuestionFragment::class.java.simpleName)
             }
         }
         binding.prevButton.setOnClickListener {
+            viewModel.logAnswers()
             parentFragmentManager.commit {
             addToBackStack(null)
-            replace(R.id.questionnaire_container, GoalSettingQuestionFragment(), GoalSettingQuestionFragment::class.java.simpleName)
+            replace(R.id.questionnaire_container, GoalSettingQuestionFragment(viewModel), GoalSettingQuestionFragment::class.java.simpleName)
         } }
 
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment EnvirontmentStructuringQuestionFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            EnvironmentStructuringQuestionFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    private fun setupRadioGroups() {
+        binding.radioGroup5.setOnCheckedChangeListener { _, checkedId ->
+            val answer = when (checkedId) {
+                R.id.radio5_1 -> 1
+                R.id.radio5_2 -> 2
+                R.id.radio5_3 -> 3
+                R.id.radio5_4 -> 4
+                R.id.radio5_5 -> 5
+                R.id.radio5_6 -> 6
+                else -> 0
             }
+            viewModel.setAnswer("5", answer)
+        }
+
+        binding.radioGroup6.setOnCheckedChangeListener { _, checkedId ->
+            val answer = when (checkedId) {
+                R.id.radio6_1 -> 1
+                R.id.radio6_2 -> 2
+                R.id.radio6_3 -> 3
+                R.id.radio6_4 -> 4
+                R.id.radio6_5 -> 5
+                R.id.radio6_6 -> 6
+                else -> 0
+            }
+            viewModel.setAnswer("6", answer)
+        }
+
+        binding.radioGroup7.setOnCheckedChangeListener { _, checkedId ->
+            val answer = when (checkedId) {
+                R.id.radio7_1 -> 1
+                R.id.radio7_2 -> 2
+                R.id.radio7_3 -> 3
+                R.id.radio7_4 -> 4
+                R.id.radio7_5 -> 5
+                R.id.radio7_6 -> 6
+                else -> 0
+            }
+            viewModel.setAnswer("7", answer)
+        }
+
+        binding.radioGroup8.setOnCheckedChangeListener { _, checkedId ->
+            val answer = when (checkedId) {
+                R.id.radio8_1 -> 1
+                R.id.radio8_2 -> 2
+                R.id.radio8_3 -> 3
+                R.id.radio8_4 -> 4
+                R.id.radio8_5 -> 5
+                R.id.radio8_6 -> 6
+                else -> 0
+            }
+            viewModel.setAnswer("8", answer)
+        }
+        viewModel.logAnswers()
+    }
+
+    private fun restoreAnswers() {
+        viewModel.getAnswers().value?.let { answers ->
+            answers["5"]?.let { setRadioButtonChecked(binding.radioGroup5, it) }
+            answers["6"]?.let { setRadioButtonChecked(binding.radioGroup6, it) }
+            answers["7"]?.let { setRadioButtonChecked(binding.radioGroup7, it) }
+            answers["8"]?.let { setRadioButtonChecked(binding.radioGroup8, it) }
+        }
+    }
+
+    private fun setRadioButtonChecked(radioGroup: RadioGroup, answer: Int) {
+        val radioButtonId = when (answer) {
+            1 -> radioGroup.getChildAt(0).id
+            2 -> radioGroup.getChildAt(1).id
+            3 -> radioGroup.getChildAt(2).id
+            4 -> radioGroup.getChildAt(3).id
+            5 -> radioGroup.getChildAt(4).id
+            6 -> radioGroup.getChildAt(5).id
+            else -> View.NO_ID
+        }
+        if (radioButtonId != View.NO_ID) {
+            radioGroup.check(radioButtonId)
+        }
+    }
+
+    companion object {
+        fun newInstance(viewModel: QuestionnaireViewModel) = EnvironmentStructuringQuestionFragment(
+            viewModel
+        ).apply {
+            this.viewModel = viewModel
+        }
     }
 }

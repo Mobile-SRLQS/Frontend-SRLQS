@@ -5,32 +5,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioGroup
 import androidx.fragment.app.commit
+import androidx.lifecycle.ViewModelProvider
 import com.dl2lab.srolqs.R
-import com.dl2lab.srolqs.databinding.FragmentTaskStrategyQuestionBinding
 import com.dl2lab.srolqs.databinding.FragmentTimeManagementQuestionBinding
+import com.dl2lab.srolqs.ui.kuesioner.viewmodel.QuestionnaireViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [TimeManagementQuestionFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class TimeManagementQuestionFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class TimeManagementQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment() {
     private lateinit var binding: FragmentTimeManagementQuestionBinding
+    private lateinit var viewModel: QuestionnaireViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentTimeManagementQuestionBinding.inflate(layoutInflater)
+        viewModel = ViewModelProvider(requireActivity()).get(QuestionnaireViewModel::class.java)
         return binding.root
     }
 
@@ -38,39 +30,111 @@ class TimeManagementQuestionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupAction()
+        setupRadioGroups()
+        restoreAnswers()
     }
 
     private fun setupAction() {
         binding.nextButton.setOnClickListener {
+            viewModel.logAnswers()
             parentFragmentManager.commit {
                 addToBackStack(null)
-                replace(R.id.questionnaire_container, HelpSeekingQuestionFragment(), HelpSeekingQuestionFragment::class.java.simpleName)
+                replace(R.id.questionnaire_container, HelpSeekingQuestionFragment(viewModel), HelpSeekingQuestionFragment::class.java.simpleName)
             }
         }
         binding.prevButton.setOnClickListener {
+            viewModel.logAnswers()
             parentFragmentManager.commit {
                 addToBackStack(null)
-                replace(R.id.questionnaire_container, TaskStrategyQuestionFragment(), TaskStrategyQuestionFragment::class.java.simpleName)
+                replace(R.id.questionnaire_container, TaskStrategyQuestionFragment(viewModel), TaskStrategyQuestionFragment::class.java.simpleName)
             } }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment TimeManagementQuestionFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            TimeManagementQuestionFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    private fun setupRadioGroups() {
+        binding.radioGroup13.setOnCheckedChangeListener { _, checkedId ->
+            val answer = when (checkedId) {
+                R.id.radio13_1 -> 1
+                R.id.radio13_2 -> 2
+                R.id.radio13_3 -> 3
+                R.id.radio13_4 -> 4
+                R.id.radio13_5 -> 5
+                R.id.radio13_6 -> 6
+                else -> 0
             }
+            viewModel.setAnswer("13", answer)
+        }
+
+        binding.radioGroup14.setOnCheckedChangeListener { _, checkedId ->
+            val answer = when (checkedId) {
+                R.id.radio14_1 -> 1
+                R.id.radio14_2 -> 2
+                R.id.radio14_3 -> 3
+                R.id.radio14_4 -> 4
+                R.id.radio14_5 -> 5
+                R.id.radio14_6 -> 6
+                else -> 0
+            }
+            viewModel.setAnswer("14", answer)
+        }
+
+        binding.radioGroup15.setOnCheckedChangeListener { _, checkedId ->
+            val answer = when (checkedId) {
+                R.id.radio15_1 -> 1
+                R.id.radio15_2 -> 2
+                R.id.radio15_3 -> 3
+                R.id.radio15_4 -> 4
+                R.id.radio15_5 -> 5
+                R.id.radio15_6 -> 6
+                else -> 0
+            }
+            viewModel.setAnswer("15", answer)
+        }
+
+        binding.radioGroup16.setOnCheckedChangeListener { _, checkedId ->
+            val answer = when (checkedId) {
+                R.id.radio16_1 -> 1
+                R.id.radio16_2 -> 2
+                R.id.radio16_3 -> 3
+                R.id.radio16_4 -> 4
+                R.id.radio16_5 -> 5
+                R.id.radio16_6 -> 6
+                else -> 0
+            }
+            viewModel.setAnswer("16", answer)
+        }
+        viewModel.logAnswers()
+    }
+
+    private fun restoreAnswers() {
+        viewModel.getAnswers().value?.let { answers ->
+            answers["13"]?.let { setRadioButtonChecked(binding.radioGroup13, it) }
+            answers["14"]?.let { setRadioButtonChecked(binding.radioGroup14, it) }
+            answers["15"]?.let { setRadioButtonChecked(binding.radioGroup15, it) }
+            answers["16"]?.let { setRadioButtonChecked(binding.radioGroup16, it) }
+        }
+    }
+
+    private fun setRadioButtonChecked(radioGroup: RadioGroup, answer: Int) {
+        val radioButtonId = when (answer) {
+            1 -> radioGroup.getChildAt(0).id
+            2 -> radioGroup.getChildAt(1).id
+            3 -> radioGroup.getChildAt(2).id
+            4 -> radioGroup.getChildAt(3).id
+            5 -> radioGroup.getChildAt(4).id
+            6 -> radioGroup.getChildAt(5).id
+            else -> View.NO_ID
+        }
+        if (radioButtonId != View.NO_ID) {
+            radioGroup.check(radioButtonId)
+        }
+    }
+
+
+    companion object {
+        fun newInstance(viewModel: QuestionnaireViewModel) =TimeManagementQuestionFragment(
+            viewModel
+        ).apply {
+            this.viewModel = viewModel
+        }
     }
 }
