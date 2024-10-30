@@ -3,13 +3,14 @@ package com.dl2lab.srolqs.ui.authentication.register
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.dl2lab.srolqs.databinding.ActivityRegisterBinding
 import com.dl2lab.srolqs.ui.authentication.viewmodel.RegisterViewModel
-import com.dl2lab.srolqs.ui.authentication.viewmodel.RegisterViewModelFactory
+import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -17,20 +18,23 @@ import java.util.Locale
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
+    private lateinit var role: String
 
     // Set up RegisterViewModel
     private val registerViewModel: RegisterViewModel by viewModels {
-        RegisterViewModelFactory.getInstance(applicationContext)
+        ViewModelFactory.getInstance(applicationContext)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        role = intent.getStringExtra("role") ?: "Student"
 
-        // Observe the registration result
         observeViewModel()
-
+        if(role == "Instructor"){
+            hideInput()
+        }
         // Set up the DatePickerDialog for Date of Birth input
         binding.inputDob.setOnClickListener { showDatePicker() }
         binding.inputDobLayout.setEndIconOnClickListener { showDatePicker() }
@@ -41,6 +45,17 @@ class RegisterActivity : AppCompatActivity() {
 
         // Handle Register button click
         binding.btnRegister.setOnClickListener { validateAndSubmitForm() }
+    }
+
+    private fun hideInput(){
+        binding.tvBatchLabel.visibility = View.GONE
+        binding.inputBatchLayout.visibility = View.GONE
+        binding.inputBatch.visibility = View.GONE
+        binding.tvNpmLabel.visibility = View.GONE
+        binding.inputNpm.visibility = View.GONE
+        binding.tvDegreeLabel.visibility = View.GONE
+        binding.inputDegreeLayout.visibility = View.GONE
+        binding.inputDegree.visibility = View.GONE
     }
 
     private fun observeViewModel() {
@@ -113,10 +128,18 @@ class RegisterActivity : AppCompatActivity() {
         val password = binding.inputPassword.text.toString()
         val confirmPassword = binding.inputPasswordConfirm.text.toString()
 
-        if (name.isEmpty() || email.isEmpty() || dob.isEmpty() || university.isEmpty() || batch.isEmpty() || degree.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || identityNumber.isEmpty()) {
-            Toast.makeText(this, "Please fill all fields!", Toast.LENGTH_SHORT).show()
-            return
+        if (role == "Student") {
+            if (name.isEmpty() || email.isEmpty() || dob.isEmpty() || university.isEmpty() || batch.isEmpty() || degree.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || identityNumber.isEmpty()) {
+                Toast.makeText(this, "Please fill all fields!", Toast.LENGTH_SHORT).show()
+                return
+            }
+        } else {
+            if (name.isEmpty() || email.isEmpty() || dob.isEmpty() || university.isEmpty()  || password.isEmpty() || confirmPassword.isEmpty() ) {
+                Toast.makeText(this, "Please fill all fields!", Toast.LENGTH_SHORT).show()
+                return
+            }
         }
+
 
         if (password != confirmPassword) {
             Toast.makeText(this, "Passwords do not match!", Toast.LENGTH_SHORT).show()
@@ -127,19 +150,31 @@ class RegisterActivity : AppCompatActivity() {
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val birthDate = dateFormat.parse(dob).let { dateFormat.format(it) }
 
-            // Trigger the registration process
-            registerViewModel.register(
-                nama = name,
-                birthDate = birthDate,
-                email = email,
-                password = password,
-                confirmedPassword = confirmPassword,
-                identityNumber = identityNumber,
-                batch = batch,
-                institution = university,
-                degree = degree,
-                role = "Student" // Set the role as needed
-            )
+            if(role == "Student")
+                registerViewModel.register(
+                    nama = name,
+                    birthDate = birthDate,
+                    email = email,
+                    password = password,
+                    confirmedPassword = confirmPassword,
+                    identityNumber = identityNumber,
+                    batch = batch,
+                    institution = university,
+                    degree = degree,
+                    role = role
+                )
+            else {
+                registerViewModel.register(
+                    nama = name,
+                    birthDate = birthDate,
+                    email = email,
+                    password = password,
+                    confirmedPassword = confirmPassword,
+                    institution = university,
+                    role = role
+                )
+            }
+
 
         } catch (e: Exception) {
             Log.e("RegisterActivity", "Date parsing error: ${e.message}")

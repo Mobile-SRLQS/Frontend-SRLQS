@@ -88,6 +88,9 @@ dependencies {
 
     //glide
     implementation(libs.glide)
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.legacy.support.v4)
 
     //testing
     testImplementation(libs.junit)

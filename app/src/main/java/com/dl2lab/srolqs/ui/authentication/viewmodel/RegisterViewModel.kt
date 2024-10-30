@@ -56,6 +56,36 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
         })
     }
 
+    fun register(
+        nama: String,
+        birthDate: String,
+        email: String,
+        password: String,
+        confirmedPassword: String,
+        institution: String,
+        role: String) {
+        _isLoading.value = true
+        val registerRequest = RegisterRequest(nama= nama, birthDate=birthDate, email=email, password = password, confirmedPassword = confirmedPassword,  institution = institution,  role = role)
+        val client = ApiConfig.getApiService().register(registerRequest)
+        client.enqueue(object : Callback<RegisterResponse> {
+            override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
+                _isLoading.value = false
+                if (response.isSuccessful) {
+                    _registerUser.value = response.body()
+                } else {
+                    _errorMessageRegister.value = "Register failed: ${response.message()}"
+                    Log.e(TAG, "onFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                _isLoading.value = false
+                _errorMessageRegister.value = "Register failed: ${t.message}"
+                Log.e(TAG, "onFailure: ${t.message.toString()}")
+            }
+        })
+    }
+
     companion object {
         private const val TAG = "RegisterViewModel"
     }
