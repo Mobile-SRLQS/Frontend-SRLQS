@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         binding.buttonStudent.setOnClickListener{ navToLoginPage() }
         binding.buttonTeacher.setOnClickListener{ navToLoginPage() }
-        binding.buttonKuesioner.setOnClickListener{navToKuesionerPage()}
+//        binding.buttonKuesioner.setOnClickListener{navToKuesionerPage()}
         setContentView(binding.root)
     }
     private fun navToLoginPage() {
