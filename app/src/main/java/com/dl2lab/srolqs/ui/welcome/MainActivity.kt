@@ -10,7 +10,7 @@ import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.databinding.ActivityMainBinding
 import com.dl2lab.srolqs.ui.authentication.login.LoginActivity
 import com.dl2lab.srolqs.ui.authentication.register.RegisterActivity
-import com.dl2lab.srolqs.ui.kuesioner.question.GoalSettingQuestionActivity
+import com.dl2lab.srolqs.ui.kuesioner.question.QuestionnaireQuestionActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
     private fun navToKuesionerPage() {
-        val intent = Intent(this, GoalSettingQuestionActivity::class.java)
+        val intent = Intent(this, QuestionnaireQuestionActivity::class.java)
         startActivity(intent)
     }
 }

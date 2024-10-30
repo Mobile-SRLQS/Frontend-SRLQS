@@ -66,4 +66,43 @@
     <string name="environment_structuring_q8">8. Saya memilih waktu belajar yang memiliki paling sedikit gangguan dalam perkuliahan online.</string>
     <string name="environment_structuring_progress_indicator">8 out of 24 questions</string>
     <string name="str_prev_button">Previous</string>
+
+    // Task Strategies
+    <string name="task_strategies_indicator">3 of 6</string>
+    <string name="task_strategies_title">Task Strategies</string>
+    <string name="task_strategies_q9">9. Saya tidak memiliki strategi khusus untuk menyelesaikan tugas-tugas dalam perkuliahan online.</string>
+    <string name="task_strategies_q10">10. Saya membuat strategi pengerjaan tugas-tugas dalam perkuliahan online.</string>
+    <string name="task_strategies_q11">11. Saya mempersiapkan pertanyaan yang akan saya ajukan sebelum bergabung di forum diskusi atau chat room.</string>
+    <string name="task_strategies_q12">12.Saya mengerjakan hal-hal tambahan dalam perkuliahan online selain yang ditugaskan kepada saya untuk menguasai materi perkuliahan.</string>
+    <string name="task_strategies_progress_indicator">12 out of 24 questions</string>
+
+    // Time Management
+    <string name="time_management_indicator">4 of 6</string>
+    <string name="time_management_title">Time Management</string>
+    <string name="time_management_q13">13. Saya menetapkan jadwal yang sama setiap hari atau setiap minggu untuk belajar dalam perkuliahan online.</string>
+    <string name="time_management_q14">14. Saya mengalokasikan waktu belajar tambahan untuk perkuliahan online karena saya tahu dalam belajar online diperlukan pengaturan waktu yang baik.</string>
+    <string name="time_management_q15">15. Tidak ada waktu khusus yang saya alokasikan untuk belajar dalam perkuliahan online.</string>
+    <string name="time_management_q16">16. Saya menentukan jumlah jam belajar yang akan saya alokasikan setiap minggunya untuk perkuliahan online.</string>
+    <string name="time_management_progress_indicator">16 out of 24 questions</string>
+
+    // Help Seeking
+    <string name="help_seeking_indicator">5 of 6</string>
+    <string name="help_seeking_title">Help Seeking</string>
+    <string name="help_seeking_q17">17. Saya tahu harus bertanya kepada siapa jika menemukan kesulitan saat belajar dalam perkuliahan online.</string>
+    <string name="help_seeking_q18">18. Saya bertanya pada orang lain yang pernah mengikuti perkuliahan secara online mengenai cara belajar yang efektif dalam perkuliahan online.</string>
+    <string name="help_seeking_q19">19. Saya menghubungi teman sekelas dalam perkuliahan online ketika menghadapi kesulitan dalam belajar</string>
+    <string name="help_seeking_q20">20. Saya berbagi masalah dalam perkuliahan online dengan teman-teman sekelas sehingga kita tahu apa masalah yang dialami bersama dan bagaimana memecahkan masalah tersebut.</string>
+    <string name="help_seeking_progress_indicator">20 out of 24 questions</string>
+
+    // Self Evaluation
+    <string name="self_evaluation_indicator">6 of 6</string>
+    <string name="self_evaluation_title">Self-Evaluation</string>
+    <string name="self_evaluation_q21">21. Saya mengevaluasi sejauh mana pemahaman saya mengenai materi pembelajaran dalam perkuliahan online yang saya ikuti.</string>
+    <string name="self_evaluation_q22">22. Saya berkomunikasi dengan teman sekelas saya untuk mencari tahu apakah yang saya pahami berbeda dengan yang mereka pahami.</string>
+    <string name="self_evaluation_q23">23. Saya melakukan evaluasi apakah strategi pembelajaran yang saya gunakan mampu mencapai target yang sudah saya tetapkan di awal perkuliahan online.</string>
+    <string name="self_evaluation_q24">24. Di tengah semester, saya merefleksikan kembali apakah strategi pembelajaran yang saya gunakan dalam perkuliahan online sudah tepat.</string>
+    <string name="self_evaluation_progress_indicator">24 out of 24 questions</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="str_submit_button">Submit</string>
 </resources>
