@@ -41,7 +41,7 @@ class SelfEvaluationQuestionFragment : Fragment() {
     }
 
     private fun setupAction() {
-        binding.nextButton.setOnClickListener {
+        binding.submitButton.setOnClickListener {
             parentFragmentManager.commit {
                 addToBackStack(null)
                 replace(R.id.questionnaire_container, SelfEvaluationQuestionFragment(), SelfEvaluationQuestionFragment::class.java.simpleName)

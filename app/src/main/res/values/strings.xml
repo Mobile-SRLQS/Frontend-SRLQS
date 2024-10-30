@@ -110,6 +110,5 @@
     <string name="self_evaluation_q24">24. Di tengah semester, saya merefleksikan kembali apakah strategi pembelajaran yang saya gunakan dalam perkuliahan online sudah tepat.</string>
     <string name="self_evaluation_progress_indicator">24 out of 24 questions</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="str_submit_button">Submit</string>
 </resources>
