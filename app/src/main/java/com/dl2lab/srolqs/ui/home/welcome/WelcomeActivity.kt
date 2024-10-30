@@ -11,16 +11,23 @@ import com.dl2lab.srolqs.databinding.ActivityMainBinding
 import com.dl2lab.srolqs.databinding.ActivityWelcomeBinding
 import com.dl2lab.srolqs.ui.authentication.login.LoginActivity
 import com.dl2lab.srolqs.ui.authentication.register.RegisterActivity
+import com.dl2lab.srolqs.ui.kuesioner.question.QuestionnaireQuestionActivity
 
 class WelcomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWelcomeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
+        binding.buttonNav.setOnClickListener { navToKuesionerPage() }
         binding.buttonStudent.setOnClickListener { navToLoginPage("Student") }
         binding.buttonTeacher.setOnClickListener { navToLoginPage("Instructor") }
         setContentView(binding.root)
     }
+
+    private fun navToKuesionerPage() {
+        val intent = Intent(this, QuestionnaireQuestionActivity::class.java)
+        startActivity(intent)    }
+
     private fun navToLoginPage(role: String) {
         val intent = Intent(this, LoginActivity::class.java)
         intent.putExtra("role", role)
