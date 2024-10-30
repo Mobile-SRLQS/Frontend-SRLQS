@@ -9,7 +9,7 @@
     <string name="login_password_hint">Password</string>
     <string name="button_login">Log In</string>
     <string name="login_question">Belum memiliki akun?</string>
-    <string name="register_button_text">Daftar</string>
+    <string name="register_button_text">Register</string>
 
     // Welcome Activity
     <string name="welcome_student">Student</string>
@@ -37,6 +37,13 @@
     <string name="register_password_confirm_hint">Enter your password again</string>
     <string name="register_npm_hint">Enter your student identity number (NIM/NPM)</string>
     <string name="register_npm_field">Student Identity Number</string>
+    <string name="title_home">Home</string>
+    <string name="title_scan_qr">Scan QR</string>
+    <string name="title_profile">Profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="register_here"><u>Register Here</u></string>
+    <string name="password_confirm_label">Password Confirmation</string>
 
     // Goal setting Activity
     <string name="goal_setting_indicator">1 of 6</string>

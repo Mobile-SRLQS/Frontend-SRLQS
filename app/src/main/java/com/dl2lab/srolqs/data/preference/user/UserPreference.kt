@@ -18,19 +18,19 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
     // Function to save user session data
     suspend fun saveSession(user: User) {
         dataStore.edit { preferences ->
-            preferences[ID] = user.id
-            preferences[NAMA] = user.nama
-            preferences[BIRTH_DATE] = user.birthDate
-            preferences[EMAIL] = user.email
+            preferences[ID] = user.id?.toString() ?: ""
+            preferences[NAMA] = user.nama ?: ""
+            preferences[BIRTH_DATE] = user.birthDate ?: ""
+            preferences[EMAIL] = user.email ?: ""
             preferences[PASSWORD] = user.password
-            preferences[IDENTITY_NUMBER] = user.identityNumber
-            preferences[BATCH] = user.batch
-            preferences[INSTITUTION] = user.institution
-            preferences[DEGREE] = user.degree
-            preferences[ROLE] = user.role
-            preferences[RESET_CODE] = user.resetCode
-            preferences[RESET_CODE_EXPIRY] = user.resetCodeExpiry
-            preferences[TOKEN] = user.token
+            preferences[IDENTITY_NUMBER] = user.identityNumber ?: ""
+            preferences[BATCH] = user.batch ?: ""
+            preferences[INSTITUTION] = user.institution ?: ""
+            preferences[DEGREE] = user.degree ?: ""
+            preferences[ROLE] = user.role ?: ""
+            preferences[RESET_CODE] = user.resetCode?.toString() ?: ""
+            preferences[RESET_CODE_EXPIRY] = user.resetCodeExpiry?.toString() ?: ""
+            preferences[TOKEN] = user.token ?: ""
             preferences[IS_LOGIN_KEY] = true
         }
     }
@@ -39,19 +39,20 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
     fun getSession(): Flow<User> {
         return dataStore.data.map { preferences ->
             User(
-                id = preferences[ID] ?: "Not Set",
-                nama = preferences[NAMA] ?: "Not Set",
-                birthDate = preferences[BIRTH_DATE] ?: "Not Set",
-                email = preferences[EMAIL] ?: "Not Set",
-                password = preferences[PASSWORD] ?: "Not Set",
-                identityNumber = preferences[IDENTITY_NUMBER] ?: "Not Set",
-                batch = preferences[BATCH] ?: "Not Set",
-                institution = preferences[INSTITUTION] ?: "Not Set",
-                degree = preferences[DEGREE] ?: "Not Set",
-                role = preferences[ROLE] ?: "Not Set",
-                resetCode = preferences[RESET_CODE] ?: "Not Set",
-                resetCodeExpiry = preferences[RESET_CODE_EXPIRY] ?: "Not Set",
-                token = preferences[TOKEN] ?: "Not Set"
+                id = preferences[ID]?.toIntOrNull(),
+                nama = preferences[NAMA],
+                birthDate = preferences[BIRTH_DATE],
+                email = preferences[EMAIL],
+                password = preferences[PASSWORD] ?: "",
+                identityNumber = preferences[IDENTITY_NUMBER],
+                batch = preferences[BATCH],
+                institution = preferences[INSTITUTION],
+                degree = preferences[DEGREE],
+                role = preferences[ROLE],
+                resetCode = preferences[RESET_CODE],
+                resetCodeExpiry = preferences[RESET_CODE_EXPIRY],
+                token = preferences[TOKEN],
+                isLogin = preferences[IS_LOGIN_KEY] ?: false
             )
         }
     }
@@ -78,9 +79,9 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         private val INSTITUTION = stringPreferencesKey("institution")
         private val DEGREE = stringPreferencesKey("degree")
         private val ROLE = stringPreferencesKey("role")
+        private val TOKEN = stringPreferencesKey("token")
         private val RESET_CODE = stringPreferencesKey("reset_code")
         private val RESET_CODE_EXPIRY = stringPreferencesKey("reset_code_expiry")
-        private val TOKEN = stringPreferencesKey("token")
         private val IS_LOGIN_KEY = booleanPreferencesKey("is_login")
 
         // Singleton instance retrieval
