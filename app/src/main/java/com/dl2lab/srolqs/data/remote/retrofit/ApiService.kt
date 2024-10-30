@@ -1,6 +1,8 @@
 package com.dl2lab.srolqs.data.remote.retrofit
 
 import com.dl2lab.srolqs.data.remote.request.ChangePasswordRequest
+import com.dl2lab.srolqs.data.remote.request.CreateNewPasswordRequest
+import com.dl2lab.srolqs.data.remote.request.ForgotPasswordCodeRequest
 import com.dl2lab.srolqs.data.remote.request.LoginRequest
 import com.dl2lab.srolqs.data.remote.request.RegisterRequest
 import com.dl2lab.srolqs.data.remote.response.BasicResponse
@@ -22,5 +24,14 @@ interface ApiService {
         @Body loginRequest: LoginRequest
     ): Call<LoginResponse>
 
+    @POST("user/request-reset-password")
+    fun sendResetPasswordCode (
+        @Body request: ForgotPasswordCodeRequest
+    ): Call<BasicResponse>
+
+    @POST("user/reset-password")
+    fun createNewPassword (
+        @Body request: CreateNewPasswordRequest
+    ):Call<BasicResponse>
 
 }
