@@ -37,9 +37,10 @@
     <string name="register_password_confirm_hint">Enter your password again</string>
     <string name="register_npm_hint">Enter your student identity number (NIM/NPM)</string>
     <string name="register_npm_field">Student Identity Number</string>
-    <string name="title_home">Home</string>
+    <string name="title_home">Beranda</string>
     <string name="title_scan_qr">Scan QR</string>
-    <string name="title_profile">Profile</string>
+    <string name="title_profile">Profil</string>
+    <string name="title_mata_kuliah">Mata Kuliah</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="register_here"><u>Register Here</u></string>
@@ -111,4 +112,24 @@
     <string name="self_evaluation_progress_indicator">24 out of 24 questions</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="str_submit_button">Submit</string>
+    <string name="tambah_kegiatan">Tambah Kegiatan</string>
+    <string name="kegiatan_name_field">Nama Kegiatan</string>
+    <string name="kegiatan_name_hint">Masukkan nama kegiatan</string>
+    <string name="tanggal_kegiatan_label">Tanggal Tenggat Kegiatan</string>
+    <string name="tanggal_kegiatan_hint">Pilih tanggal batas tenggat kegiatan</string>
+    <string name="tipe_kegiatan_label">Tipe Kegiatan</string>
+    <string name="tipe_kegiatan_hint">Pilih tipe kegiatan ini</string>
+    <string name="tambah_kegiatan_button_text">Tambah Kegiatan</string>
+    <string name="catatan_kegiatan_field">Catatan Kegiatan</string>
+    <string name="catatan_kegiatan_hint">Tulis catatan tambahan mengenai kegiatan ini</string>
+    <string name="catatan_kegiatan_label">Catatan Kegiatan</string>
+    <string name="link_kegiatan_label">Link Kegiatan</string>
+    <string name="link_kegiatan_hint">Masukkan link atau sumber untuk kegiatan ini</string>
+    <string name="edit_kegiatan">Edit Kegiatan</string>
+    <string name="title_kegiatan">Kegiatan</string>
+    <string name="title_nav_kegiatan">Kegiatan</string>
+    <string name="searchbar_hint_kegiatan">Cari Tugas</string>
+    <string name="susun_kegiatan">Susun Kegiatan</string>
+    <string name="no_activities_available">Belum ada kegiatan terdaftar</string>
+    <string name="belum_ada_kegiatan_terdaftar">Belum ada kegiatan terdaftar</string>
 </resources>
