@@ -63,10 +63,14 @@
             app:destination="@id/aboutFragment2" />
     </fragment>
     <fragment
-        android:id="@+id/navigation_scan_qr"
-        android:name="com.dl2lab.srolqs.ui.scanqr.ScanqrFragment"
+        android:id="@+id/navigation_mata_kuliah"
+        android:name="com.dl2lab.srolqs.ui.kelas.KelasFragment"
         app:labelVisibilityMode="labeled"
-        tools:layout="@layout/fragment_scanqr" />
+        tools:layout="@layout/fragment_kelas">
+        <action
+            android:id="@+id/action_navigation_mata_kuliah_to_detailClassFragment"
+            app:destination="@id/detailClassFragment" />
+    </fragment>
     <fragment
         android:id="@+id/faqFragment"
         android:name="com.dl2lab.srolqs.ui.profile.faq.FaqFragment"

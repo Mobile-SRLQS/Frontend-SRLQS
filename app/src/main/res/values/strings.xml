@@ -147,4 +147,7 @@
     <string name="title_link">Link</string>
     <string name="title_aksi">Aksi</string>
     <string name="edit">Edit</string>
+    <string name="daftar_mata_kuliah">Daftar Mata Kuliah</string>
+    <string name="no_class_available">Belum ada mata kuliah terdaftar</string>
+    <string name="str_mata_kuliah_kosong">Belum ada mata kuliah terdaftar</string>
 </resources>

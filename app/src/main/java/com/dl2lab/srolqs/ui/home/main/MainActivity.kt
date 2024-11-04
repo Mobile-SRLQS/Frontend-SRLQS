@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_scan_qr, R.id.navigation_profile, R.id.navigation_kegiatan
+                R.id.navigation_home, R.id.navigation_profile, R.id.navigation_kegiatan
             )
         )
 
@@ -71,6 +71,24 @@ class MainActivity : AppCompatActivity() {
                 when (item.itemId) {
                     R.id.navigation_home -> {
                         if (navController.currentDestination?.id == R.id.navigation_profile) {
+                            navController.popBackStack()
+                        } else {
+                            navController.navigate(R.id.navigation_home)
+                        }
+                        true
+                    }
+
+                    else -> {
+                        NavigationUI.onNavDestinationSelected(item, navController)
+                    }
+                }
+            }
+        } else if (fragmentToOpen == "mata_kuliah") {
+            navController.navigate(R.id.navigation_mata_kuliah)
+            navView.setOnNavigationItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.navigation_home -> {
+                        if (navController.currentDestination?.id == R.id.navigation_mata_kuliah) {
                             navController.popBackStack()
                         } else {
                             navController.navigate(R.id.navigation_home)
