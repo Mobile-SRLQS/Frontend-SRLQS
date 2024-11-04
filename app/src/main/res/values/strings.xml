@@ -37,9 +37,10 @@
     <string name="register_password_confirm_hint">Enter your password again</string>
     <string name="register_npm_hint">Enter your student identity number (NIM/NPM)</string>
     <string name="register_npm_field">Student Identity Number</string>
-    <string name="title_home">Home</string>
+    <string name="title_home">Beranda</string>
     <string name="title_scan_qr">Scan QR</string>
-    <string name="title_profile">Profile</string>
+    <string name="title_profile">Profil</string>
+    <string name="title_mata_kuliah">Mata Kuliah</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="register_here"><u>Register Here</u></string>
@@ -119,4 +120,34 @@
     <string name="course_semester_information">Semester Gasal 2024/2025</string>
     <string name="course_description">Pada mata kuliah ini akan dilakukan pengukuran keterampilan Self-Regulated Learning sebanyak 3 kali, tiap pengukuran memiliki estimasi pengisian selama 5 menit. Pengukuran ini bertujuan untuk mengevaluasi dan meningkatkan keterampilan SRL Anda dalam proses pembelajaran. Berikut adalah jadwal pengukurannya :</string>
     <string name="course_qs_periode">\u2022 Pengukuran Pertama : 1 - 7 September 2024\n\u2022 Pengukuran Kedua : 15 - 22 Oktober 2024\n\u2022 Pengukuran Ketiga : 10 - 17 Desember 2024</string>
+    <string name="tambah_kegiatan">Tambah Kegiatan</string>
+    <string name="kegiatan_name_field">Nama Kegiatan</string>
+    <string name="kegiatan_name_hint">Masukkan nama kegiatan</string>
+    <string name="tanggal_kegiatan_label">Tanggal Tenggat Kegiatan</string>
+    <string name="tanggal_kegiatan_hint">Pilih tanggal batas tenggat kegiatan</string>
+    <string name="tipe_kegiatan_label">Tipe Kegiatan</string>
+    <string name="tipe_kegiatan_hint">Pilih tipe kegiatan ini</string>
+    <string name="tambah_kegiatan_button_text">Tambah Kegiatan</string>
+    <string name="catatan_kegiatan_field">Catatan Kegiatan</string>
+    <string name="catatan_kegiatan_hint">Tulis catatan tambahan mengenai kegiatan ini</string>
+    <string name="catatan_kegiatan_label">Catatan Kegiatan</string>
+    <string name="link_kegiatan_label">Link Kegiatan</string>
+    <string name="link_kegiatan_hint">Masukkan link atau sumber untuk kegiatan ini</string>
+    <string name="edit_kegiatan">Edit Kegiatan</string>
+    <string name="title_kegiatan">Kegiatan</string>
+    <string name="title_nav_kegiatan">Kegiatan</string>
+    <string name="searchbar_hint_kegiatan">Cari Tugas</string>
+    <string name="susun_kegiatan">Susun Kegiatan</string>
+    <string name="no_activities_available">Belum ada kegiatan terdaftar</string>
+    <string name="belum_ada_kegiatan_terdaftar">Belum ada kegiatan terdaftar</string>
+    <string name="delete_kegiatan">Delete Kegiatan</string>
+    <string name="title_tanggal">Tanggal</string>
+    <string name="title_tipe">Tipe</string>
+    <string name="title_catatan">Catatan</string>
+    <string name="title_link">Link</string>
+    <string name="title_aksi">Aksi</string>
+    <string name="edit">Edit</string>
+    <string name="daftar_mata_kuliah">Daftar Mata Kuliah</string>
+    <string name="no_class_available">Belum ada mata kuliah terdaftar</string>
+    <string name="str_mata_kuliah_kosong">Belum ada mata kuliah terdaftar</string>
 </resources>

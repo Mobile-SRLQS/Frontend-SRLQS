@@ -41,18 +41,18 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_scan_qr, R.id.navigation_profile
+                R.id.navigation_home, R.id.navigation_profile, R.id.navigation_kegiatan
             )
         )
 
         navView.setupWithNavController(navController)
         val fragmentToOpen = intent.getStringExtra("fragmentToOpen")
-        if (fragmentToOpen == "scanQR") {
-            navController.navigate(R.id.navigation_scan_qr)
+        if (fragmentToOpen == "kegiatan") {
+            navController.navigate(R.id.navigation_kegiatan)
             navView.setOnNavigationItemSelectedListener { item ->
                 when (item.itemId) {
                     R.id.navigation_home -> {
-                        if (navController.currentDestination?.id == R.id.navigation_scan_qr) {
+                        if (navController.currentDestination?.id == R.id.navigation_kegiatan) {
                             navController.popBackStack()
                         } else {
                             navController.navigate(R.id.navigation_home)
@@ -71,6 +71,24 @@ class MainActivity : AppCompatActivity() {
                 when (item.itemId) {
                     R.id.navigation_home -> {
                         if (navController.currentDestination?.id == R.id.navigation_profile) {
+                            navController.popBackStack()
+                        } else {
+                            navController.navigate(R.id.navigation_home)
+                        }
+                        true
+                    }
+
+                    else -> {
+                        NavigationUI.onNavDestinationSelected(item, navController)
+                    }
+                }
+            }
+        } else if (fragmentToOpen == "mata_kuliah") {
+            navController.navigate(R.id.navigation_mata_kuliah)
+            navView.setOnNavigationItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.navigation_home -> {
+                        if (navController.currentDestination?.id == R.id.navigation_mata_kuliah) {
                             navController.popBackStack()
                         } else {
                             navController.navigate(R.id.navigation_home)

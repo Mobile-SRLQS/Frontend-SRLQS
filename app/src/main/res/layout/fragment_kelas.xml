@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/kelas_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.kelas.KelasFragment">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tv_kelas_title"
+        style="@style/H1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/daftar_mata_kuliah"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- ViewStub for Empty State -->
+    <ViewStub
+        android:id="@+id/viewstub_empty_kelas_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/tv_kelas_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:inflatedId="@+id/empty_kelas_state_layout"
+        android:layout="@layout/layout_empty_kelas_state" />
+
+    <!-- RecyclerView for Class List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_course_list"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@id/viewstub_empty_kelas_state"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:itemCount="5"
+        tools:listitem="@layout/item_class" />
+
+    <!-- Progress Bar for Loading -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/tv_kelas_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
