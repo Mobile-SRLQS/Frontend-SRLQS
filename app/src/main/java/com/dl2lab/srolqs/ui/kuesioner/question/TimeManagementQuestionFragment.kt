@@ -10,6 +10,7 @@ import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.databinding.FragmentTimeManagementQuestionBinding
+import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.kuesioner.viewmodel.QuestionnaireViewModel
 
 class TimeManagementQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment() {
@@ -22,17 +23,24 @@ class TimeManagementQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentTimeManagementQuestionBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(requireActivity()).get(QuestionnaireViewModel::class.java)
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupViewModel()
         setupAction()
         setupRadioGroups()
         restoreAnswers()
     }
+
+    fun setupViewModel() {
+        viewModel = ViewModelProvider(
+            requireActivity(), ViewModelFactory.getInstance(requireContext())
+        ).get(QuestionnaireViewModel::class.java)
+    }
+
+
 
     private fun setupAction() {
         binding.nextButton.setOnClickListener {

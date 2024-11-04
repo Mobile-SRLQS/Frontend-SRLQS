@@ -3,6 +3,7 @@ package com.dl2lab.srolqs.ui.home.main
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -11,8 +12,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.databinding.ActivityMainBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
+import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
 import com.dl2lab.srolqs.ui.home.viewmodel.MainViewModel
 import com.dl2lab.srolqs.ui.home.welcome.WelcomeActivity
+import com.dl2lab.srolqs.utils.JwtUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -29,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        
         setupViewModel()
         checkUserSession()
 
@@ -92,14 +96,33 @@ class MainActivity : AppCompatActivity() {
         ).get(MainViewModel::class.java)
     }
 
-    private fun checkUserSession(){
-        viewModel.getSession().observe(this, { userModel ->
-            if (!userModel.isLogin) {
+    private fun checkUserSession() {
+        viewModel.getSession().observe(this, Observer  { userModel ->
+            if(userModel.token != null) {
+                if (JwtUtils.isTokenExpired(userModel.token)) {
+                    viewModel.logout()
+                    startActivity(Intent(this, WelcomeActivity::class.java))
+                    this.finish()
+                    this.showCustomAlertDialog(
+                        "Session Expired. Please login again!",
+                        "Login",
+                        "",
+                        {},
+                        {},
+                    )
+                }
+            } else{
                 startActivity(Intent(this, WelcomeActivity::class.java))
-                finish()
+                this.finish()
             }
         })
     }
+
+    override fun onStart() {
+        super.onStart()
+        checkUserSession()
+    }
+
     companion object{
         private const val TAG = "MainActivity"
     }

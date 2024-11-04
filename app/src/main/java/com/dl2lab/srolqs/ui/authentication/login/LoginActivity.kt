@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.dl2lab.srolqs.databinding.ActivityLoginBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
+import com.dl2lab.srolqs.ui.authentication.forgotPassword.ForgotPasswordActivity
 import com.dl2lab.srolqs.ui.authentication.register.RegisterActivity
 import com.dl2lab.srolqs.ui.authentication.viewmodel.LoginViewModel
 import com.dl2lab.srolqs.ui.home.main.MainActivity
@@ -25,10 +26,16 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         role = intent.getStringExtra("role") ?: "Student"
 
-        binding.registerButton.setOnClickListener { navToRegisterPage() }
         setContentView(binding.root)
         observeViewModel()
+        binding.registerButton.setOnClickListener { navToRegisterPage() }
         binding.loginButton.setOnClickListener { validateAndSubmitForm() }
+        binding.tvForgotPassword.setOnClickListener { navToForgotPassword(this) }
+    }
+
+    private fun navToForgotPassword(context: Context){
+        val intent = Intent(context, ForgotPasswordActivity::class.java)
+        startActivity(intent)
     }
 
     private fun navToMainActivity(context: Context){

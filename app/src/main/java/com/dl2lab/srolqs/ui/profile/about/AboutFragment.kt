@@ -47,7 +47,7 @@ class AboutFragment : Fragment() {
     }
     private fun checkUserSession() {
         viewModel.getSession().observe(viewLifecycleOwner, Observer { userModel ->
-            if (!userModel.isLogin) {
+            if (!userModel.isLogin!!) {
                 startActivity(Intent(requireActivity(), WelcomeActivity::class.java))
                 requireActivity().finish()
             }

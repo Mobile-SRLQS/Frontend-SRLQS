@@ -6,14 +6,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.dl2lab.srolqs.R
+import com.dl2lab.srolqs.data.remote.response.DataItem
 import com.dl2lab.srolqs.databinding.FragmentHomeBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
+import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
+import com.dl2lab.srolqs.ui.home.adapter.ClassAdapter
+import com.dl2lab.srolqs.ui.home.adapter.OnClassItemClickListener
 import com.dl2lab.srolqs.ui.home.viewmodel.MainViewModel
 import com.dl2lab.srolqs.ui.home.welcome.WelcomeActivity
+import com.dl2lab.srolqs.utils.JwtUtils
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), OnClassItemClickListener {
 
 
     private var _binding: FragmentHomeBinding? = null
@@ -31,6 +40,8 @@ class HomeFragment : Fragment() {
         setupViewModel()
         checkUserSession()
         getUserName()
+        setupJoinClass()
+        getClassList()
 
         return root
     }
@@ -43,10 +54,88 @@ class HomeFragment : Fragment() {
     }
 
     private fun checkUserSession() {
+
         viewModel.getSession().observe(viewLifecycleOwner, Observer { userModel ->
-            if (!userModel.isLogin) {
+            if(userModel.token != null) {
+                if (JwtUtils.isTokenExpired(userModel.token)) {
+                    viewModel.logout()
+                    startActivity(Intent(requireActivity(), WelcomeActivity::class.java))
+                    requireActivity().finish()
+                    requireContext().showCustomAlertDialog(
+                        "Session Expired. Please login again!",
+                        "Login",
+                        "",
+                        {},
+                        {},
+                    )
+                }
+            } else{
                 startActivity(Intent(requireActivity(), WelcomeActivity::class.java))
                 requireActivity().finish()
+            }
+        })
+    }
+
+    fun setupJoinClass(){
+
+
+
+        binding.btnJoinClass.setOnClickListener{
+            val classId= binding.etCourseCode.text.toString()
+            if (classId.isEmpty()) {
+                requireContext().showCustomAlertDialog(
+                    "Tolong masukkan kode kelas terlebih dahulu",
+                    "OK",
+                    "",
+                    {},
+                    {},
+                )
+            } else{
+                viewModel.getClassDetail(classId).observe(viewLifecycleOwner) { response ->
+                    if (response.isSuccessful) {
+                        val body = response.body()
+
+                        if (body != null) {
+                            // Dismiss any showing dialogs
+                            val currentDialog = requireActivity().supportFragmentManager.findFragmentByTag("CustomDialog")
+                            if (currentDialog != null) {
+                                (currentDialog as DialogFragment).dismiss()
+                            }
+                            val action = HomeFragmentDirections.actionNavigationHomeToJoinClassFragment(classId)
+                            findNavController().navigate(action)
+                        }
+                    } else {
+                        requireContext().showCustomAlertDialog(
+                            "Pastikan kode kelas yang anda masukkan benar",
+                            "OK",
+                            "",
+                            {},
+                            {},
+                        )
+                    }
+                }
+
+            }
+        }
+
+
+
+
+    }
+    override fun onItemClick(classItem: DataItem) {
+        val action = HomeFragmentDirections.actionNavigationHomeToDetailClassFragment(classItem)
+        findNavController().navigate(action)
+    }
+
+    fun getClassList() {
+        viewModel.getListClass().observe(viewLifecycleOwner, Observer { response ->
+            if (response.isSuccessful) {
+                val classList = response.body()?.data ?: emptyList()
+                val adapter = ClassAdapter(classList, this)
+                binding.rvCourseList.layoutManager = LinearLayoutManager(requireContext())
+                binding.rvCourseList.adapter = adapter
+            } else {
+
             }
         })
     }

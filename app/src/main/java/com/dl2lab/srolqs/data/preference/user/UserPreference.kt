@@ -18,18 +18,18 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
     // Function to save user session data
     suspend fun saveSession(user: User) {
         dataStore.edit { preferences ->
-            preferences[ID] = user.id?.toString() ?: ""
-            preferences[NAMA] = user.nama ?: ""
-            preferences[BIRTH_DATE] = user.birthDate ?: ""
-            preferences[EMAIL] = user.email ?: ""
+            preferences[ID] = user.id.toString()
+            preferences[NAMA] = user.nama
+            preferences[BIRTH_DATE] = user.birthDate
+            preferences[EMAIL] = user.email
             preferences[PASSWORD] = user.password
-            preferences[IDENTITY_NUMBER] = user.identityNumber ?: ""
-            preferences[BATCH] = user.batch ?: ""
-            preferences[INSTITUTION] = user.institution ?: ""
-            preferences[DEGREE] = user.degree ?: ""
-            preferences[ROLE] = user.role ?: ""
-            preferences[RESET_CODE] = user.resetCode?.toString() ?: ""
-            preferences[RESET_CODE_EXPIRY] = user.resetCodeExpiry?.toString() ?: ""
+            preferences[IDENTITY_NUMBER] = user.identityNumber
+            preferences[BATCH] = user.batch
+            preferences[INSTITUTION] = user.institution
+            preferences[DEGREE] = user.degree
+            preferences[ROLE] = user.role
+            preferences[RESET_CODE] = user.resetCode.toString()
+            preferences[RESET_CODE_EXPIRY] = user.resetCodeExpiry.toString()
             preferences[TOKEN] = user.token ?: ""
             preferences[IS_LOGIN_KEY] = true
         }
@@ -39,19 +39,19 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
     fun getSession(): Flow<User> {
         return dataStore.data.map { preferences ->
             User(
-                id = preferences[ID]?.toIntOrNull(),
-                nama = preferences[NAMA],
-                birthDate = preferences[BIRTH_DATE],
-                email = preferences[EMAIL],
+                id = preferences[ID]?.toInt() ?: 0,
+                nama = preferences[NAMA] ?: "",
+                birthDate = preferences[BIRTH_DATE] ?: "",
+                email = preferences[EMAIL] ?: "",
                 password = preferences[PASSWORD] ?: "",
-                identityNumber = preferences[IDENTITY_NUMBER],
-                batch = preferences[BATCH],
-                institution = preferences[INSTITUTION],
-                degree = preferences[DEGREE],
-                role = preferences[ROLE],
-                resetCode = preferences[RESET_CODE],
-                resetCodeExpiry = preferences[RESET_CODE_EXPIRY],
-                token = preferences[TOKEN],
+                identityNumber = preferences[IDENTITY_NUMBER] ?: ""  ,
+                batch = preferences[BATCH] ?: "",
+                institution = preferences[INSTITUTION] ?: "",
+                degree = preferences[DEGREE] ?: "",
+                role = preferences[ROLE] ?: "",
+                resetCode = preferences[RESET_CODE] ?: "",
+                resetCodeExpiry = preferences[RESET_CODE_EXPIRY] ?: "",
+                token = preferences[TOKEN] ?: "",
                 isLogin = preferences[IS_LOGIN_KEY] ?: false
             )
         }

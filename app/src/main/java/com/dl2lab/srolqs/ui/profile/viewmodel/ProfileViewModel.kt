@@ -9,6 +9,7 @@ import com.dl2lab.srolqs.data.preference.user.User
 import com.dl2lab.srolqs.data.remote.request.ChangePasswordRequest
 import com.dl2lab.srolqs.data.remote.response.BasicResponse
 import com.dl2lab.srolqs.data.remote.retrofit.ApiConfig
+import com.dl2lab.srolqs.data.repository.SecuredRepository
 import com.dl2lab.srolqs.data.repository.UserRepository
 import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -16,7 +17,7 @@ import retrofit2.Response
 
 
 class ProfileViewModel(
-    private val userRepository: UserRepository
+    private val repository: SecuredRepository
 ) : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
@@ -32,7 +33,7 @@ class ProfileViewModel(
     val changePasswordData: LiveData<BasicResponse> = _changePasswordData
 
     fun getSession(): LiveData<User> {
-        return userRepository.getSession().asLiveData().also { userData ->
+        return repository.getSession().asLiveData().also { userData ->
             userData.observeForever { user ->
                 _token.value = user?.token
             }
@@ -40,16 +41,15 @@ class ProfileViewModel(
     }
 
 
-
     fun logout() {
         runBlocking {
-            userRepository.logout()
+            repository.logout()
         }
     }
 
     fun saveSession(userModel: User) {
         runBlocking {
-            userRepository.saveSession(userModel)
+            repository.saveSession(userModel)
         }
     }
 

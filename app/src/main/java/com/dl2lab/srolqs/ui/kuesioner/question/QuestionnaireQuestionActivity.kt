@@ -8,6 +8,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.databinding.ActivityQuestionnaireQuestionBinding
+import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
+import com.dl2lab.srolqs.ui.home.viewmodel.MainViewModel
 import com.dl2lab.srolqs.ui.kuesioner.viewmodel.QuestionnaireViewModel
 
 class QuestionnaireQuestionActivity : AppCompatActivity() {
@@ -17,10 +19,16 @@ class QuestionnaireQuestionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityQuestionnaireQuestionBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this).get(QuestionnaireViewModel::class.java)
+        setupViewModel()
+
         if (savedInstanceState == null) {
             fragmentSetup()
         }
+        val classId = intent.getStringExtra("classId")
+        classId?.let { viewModel.setClassId(it) }
+        val period = intent.getStringExtra("period")
+        period?.let { viewModel.setPeriod(it) }
+        period?.let { viewModel.setPeriod(it) }
 
         setContentView(binding.root)
 
@@ -28,6 +36,13 @@ class QuestionnaireQuestionActivity : AppCompatActivity() {
 
     private fun fragmentSetup() {
         supportFragmentManager.beginTransaction().add(R.id.questionnaire_container, GoalSettingQuestionFragment.newInstance(viewModel)).commit()
+    }
+
+    private fun setupViewModel(){
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelFactory.getInstance(this)
+        ).get(QuestionnaireViewModel::class.java)
     }
 
 }
