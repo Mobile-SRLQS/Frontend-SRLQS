@@ -23,6 +23,24 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navigation_kegiatan"
+        android:name="com.dl2lab.srolqs.ui.kegiatan.KegiatanFragment"
+        app:labelVisibilityMode="labeled"
+        tools:layout="@layout/fragment_kegiatan" />
+        <action
+            android:id="@+id/action_navigation_kegiatan_to_addKegiatanFragment"
+            app:destination="@id/addKegiatanFragment" />
+    <fragment
+        android:id="@+id/addKegiatanFragment"
+        android:name="com.dl2lab.srolqs.ui.kegiatan.tambah.AddKegiatanFragment"
+        app:labelVisibilityMode="labeled"
+        tools:layout="@layout/fragment_add_kegiatan"/>
+        <action
+            android:id="@+id/action_addKegiatanFragment_to_navigation_kegiatan"
+            app:destination="@id/navigation_kegiatan"/>
+
+
+    <fragment
         android:id="@+id/navigation_profile"
         android:name="com.dl2lab.srolqs.ui.profile.ProfileFragment"
         app:labelVisibilityMode="labeled"
