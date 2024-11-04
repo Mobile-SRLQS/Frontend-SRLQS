@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkUserSession() {
-        viewModel.getToken().observe(this, Observer  { userModel ->
+        viewModel.getSession().observe(this, Observer  { userModel ->
             if(userModel.token != null) {
                 if (JwtUtils.isTokenExpired(userModel.token)) {
                     viewModel.logout()

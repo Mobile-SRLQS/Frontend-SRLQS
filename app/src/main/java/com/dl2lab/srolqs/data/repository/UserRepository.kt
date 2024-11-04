@@ -2,7 +2,11 @@ package com.dl2lab.srolqs.data.repository
 
 import com.dl2lab.srolqs.data.preference.user.User
 import com.dl2lab.srolqs.data.preference.user.UserPreference
+import com.dl2lab.srolqs.data.remote.request.JoinClassRequest
+import com.dl2lab.srolqs.data.remote.response.BasicResponse
+import com.dl2lab.srolqs.data.remote.retrofit.ApiServiceSecured
 import kotlinx.coroutines.flow.Flow
+import retrofit2.Call
 
 class UserRepository private constructor(
     private val userPreference: UserPreference

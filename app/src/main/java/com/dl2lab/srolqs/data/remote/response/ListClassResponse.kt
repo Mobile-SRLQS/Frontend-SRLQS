@@ -1,6 +1,8 @@
 package com.dl2lab.srolqs.data.remote.response
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 data class ListClassResponse(
 	val data: List<DataItem?>? = null,
@@ -8,6 +10,7 @@ data class ListClassResponse(
 	val message: String? = null
 )
 
+@Parcelize
 data class DataItem(
 	@SerializedName("kode_matkul")
 	val kodeMatkul: String? = null,
@@ -22,6 +25,13 @@ data class DataItem(
 	@SerializedName("class_name")
 	val className: String? = null,
 	@SerializedName("prodi")
-	val prodi: String? = null
-)
+	val prodi: String? = null,
+	@SerializedName("class_description")
+	val classDescription: String? = null,
+	@SerializedName("class_semester")
+	val classSemester: String? = null,
+	@SerializedName("class_id")
+	val classId: String? = null,
 
+
+) : Parcelable

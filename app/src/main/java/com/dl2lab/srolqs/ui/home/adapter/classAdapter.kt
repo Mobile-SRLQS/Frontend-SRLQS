@@ -6,11 +6,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dl2lab.srolqs.data.remote.response.DataItem
 import com.dl2lab.srolqs.databinding.ItemClassBinding
 
-class ClassAdapter(private val classList: List<DataItem?>) : RecyclerView.Adapter<ClassAdapter.ClassViewHolder>() {
+class ClassAdapter(private val classList: List<DataItem?>, private val itemClickListener: OnClassItemClickListener) : RecyclerView.Adapter<ClassAdapter.ClassViewHolder>() {
 
     inner class ClassViewHolder(private val binding: ItemClassBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(classItem: DataItem) {
             binding.tvClassname.text = classItem.className
+            binding.root.setOnClickListener {
+                itemClickListener.onItemClick(classItem)
+            }
         }
     }
 

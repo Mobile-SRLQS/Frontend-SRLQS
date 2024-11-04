@@ -13,6 +13,7 @@ import com.dl2lab.srolqs.data.remote.request.LoginRequest
 import com.dl2lab.srolqs.data.remote.response.BasicResponse
 import com.dl2lab.srolqs.data.remote.response.LoginResponse
 import com.dl2lab.srolqs.data.remote.retrofit.ApiConfig
+import com.dl2lab.srolqs.data.repository.SecuredRepository
 import com.dl2lab.srolqs.data.repository.UserRepository
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -20,7 +21,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginViewModel(private val repository: UserRepository) : ViewModel() {
+class LoginViewModel(private val repository: UserRepository,  private val securedRepository: SecuredRepository) : ViewModel() {
     private val _loginUser = MutableLiveData<LoginResponse>()
     val loginUser: LiveData<LoginResponse> = _loginUser
 
@@ -39,32 +40,31 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
 
                 _isLoading.value = false
-                if (response.isSuccessful) {
-                    _loginUser.value = response.body()
-                    response.body()?.let { loginResponse ->
-                        viewModelScope.launch {
-                            repository.saveSession(
-                                User(
-                                    id = loginResponse.loginResult.id,
-                                    nama = loginResponse.loginResult.nama,
-                                    birthDate = loginResponse.loginResult.birthDate,
-                                    email = loginResponse.loginResult.email,
-                                    password = password,
-                                    identityNumber = loginResponse.loginResult.identityNumber,
-                                    batch = loginResponse.loginResult.batch,
-                                    institution = loginResponse.loginResult.institution,
-                                    degree = loginResponse.loginResult.degree,
-                                    role = loginResponse.loginResult.role,
-                                    resetCode = loginResponse.loginResult.resetCode,
-                                    resetCodeExpiry = loginResponse.loginResult.resetCodeExpiry,
-                                    token = loginResponse.loginResult.token,
-                                    isLogin = true
-                                )
+                _loginUser.value = response.body()
+                val loginResponse = response.body()?.loginResult
+                if (loginResponse != null) {
+                    viewModelScope.launch {
+                        securedRepository.saveSession(
+                            User(
+                                id = loginResponse.id ?: 0,
+                                nama = loginResponse.nama ?: "",
+                                birthDate = loginResponse.birthDate ?: "",
+                                email = loginResponse.email ?: "",
+                                password = "",
+                                identityNumber = loginResponse.identityNumber ?: "",
+                                batch = loginResponse.batch ?: "",
+                                institution = loginResponse.institution ?: "",
+                                degree = loginResponse.degree ?: "",
+                                role = loginResponse.role ?: "",
+                                resetCode = loginResponse.resetCode ?: "",
+                                resetCodeExpiry = loginResponse.resetCodeExpiry ?: "",
+                                token = loginResponse.token ?: "",
+                                isLogin = true
                             )
-                        }
+                        )
                     }
                 } else {
-                    _errorMessageLogin.value = "Login failed: ${response.message()}"
+                    _errorMessageLogin.value = "Login failed: Invalid response data"
                 }
             }
 

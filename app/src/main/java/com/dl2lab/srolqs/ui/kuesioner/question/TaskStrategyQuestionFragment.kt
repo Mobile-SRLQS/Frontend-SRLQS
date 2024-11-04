@@ -9,7 +9,10 @@ import android.widget.RadioGroup
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import com.dl2lab.srolqs.R
+import com.dl2lab.srolqs.databinding.ActivityQuestionnaireQuestionBinding
+import com.dl2lab.srolqs.databinding.FragmentHelpSeekingQuestionBinding
 import com.dl2lab.srolqs.databinding.FragmentTaskStrategyQuestionBinding
+import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.kuesioner.viewmodel.QuestionnaireViewModel
 
 class TaskStrategyQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment() {
@@ -21,6 +24,8 @@ class TaskStrategyQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentTaskStrategyQuestionBinding.inflate(layoutInflater)
+
+
         viewModel = ViewModelProvider(requireActivity()).get(QuestionnaireViewModel::class.java)
         return binding.root
     }
@@ -28,9 +33,16 @@ class TaskStrategyQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupViewModel()
         setupAction()
         setupRadioGroups()
         restoreAnswers()
+    }
+
+    fun setupViewModel() {
+        viewModel = ViewModelProvider(
+            requireActivity(), ViewModelFactory.getInstance(requireContext())
+        ).get(QuestionnaireViewModel::class.java)
     }
 
     private fun setupAction() {

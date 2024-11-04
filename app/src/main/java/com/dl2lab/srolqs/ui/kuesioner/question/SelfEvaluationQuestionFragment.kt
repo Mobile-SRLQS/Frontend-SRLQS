@@ -12,8 +12,14 @@ import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.databinding.FragmentSelfEvaluationQuestionBinding
+import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
+import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
+import com.dl2lab.srolqs.ui.home.main.MainActivity
+import com.dl2lab.srolqs.ui.home.viewmodel.MainViewModel
 import com.dl2lab.srolqs.ui.home.welcome.WelcomeActivity
 import com.dl2lab.srolqs.ui.kuesioner.viewmodel.QuestionnaireViewModel
+import com.dl2lab.srolqs.utils.ExtractErrorMessage
+import com.dl2lab.srolqs.utils.ExtractErrorMessage.extractErrorMessage
 
 class SelfEvaluationQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment() {
     private lateinit var binding: FragmentSelfEvaluationQuestionBinding
@@ -24,7 +30,7 @@ class SelfEvaluationQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSelfEvaluationQuestionBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(requireActivity()).get(QuestionnaireViewModel::class.java)
+
         return binding.root
     }
 
@@ -32,8 +38,15 @@ class SelfEvaluationQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupAction()
+        setupViewModel()
         setupRadioGroups()
         restoreAnswers()
+    }
+
+    fun setupViewModel() {
+        viewModel = ViewModelProvider(
+            requireActivity(), ViewModelFactory.getInstance(requireContext())
+        ).get(QuestionnaireViewModel::class.java)
     }
 
     private fun setupAction() {
@@ -41,10 +54,21 @@ class SelfEvaluationQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
             viewModel.logAnswers() // Log answers before navigating
             val sortedAnswersArray = viewModel.getAnswersArray()
             Log.d("FinalQuestionnaireFragment", "Sorted Answers Array: ${sortedAnswersArray.contentToString()}")
-            // Close the current activity and start WelcomeActivity
-            val intent = Intent(requireContext(), WelcomeActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish() // This will close the current activity
+            val answer = viewModel.getAnswerList()
+            var period = viewModel.getPeriod().value ?: "1"
+            var classId = viewModel.getClassId().value ?: ""
+            viewModel.submitQuestionnaire(period, classId, answer).observe(viewLifecycleOwner){ response ->
+                if(response.isSuccessful()){
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+
+                } else {
+                    requireContext().showCustomAlertDialog(ExtractErrorMessage.extractErrorMessage(response),"ok", "",{},{})
+
+                }
+            }
+
         }
         binding.prevButton.setOnClickListener {
             viewModel.logAnswers() // Log answers before navigating

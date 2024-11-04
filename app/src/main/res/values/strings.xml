@@ -47,7 +47,7 @@
     <string name="password_confirm_label">Password Confirmation</string>
 
     // Goal setting Activity
-    <string name="goal_setting_indicator">1 of 6</string>
+    <string name="goal_setting_indicator">1 dari 6</string>
     <string name="goal_setting_title">Goal Settings</string>
     <string name="info_icon">Info icon</string>
     <string name="goal_setting_q1">Saya membuat target untuk pengerjaan tugas-tugas saya dalam perkuliahan online.</string>
@@ -59,57 +59,64 @@
     <string name="str_5_scale">5</string>
     <string name="str_6_scale">6</string>
     <string name="sangat_setuju_str">Sangat Setuju</string>
-    <string name="goal_setting_progress_indicator">4 out of 24 questions</string>
-    <string name="str_next_button">Next</string>
+    <string name="goal_setting_progress_indicator">4 dari 24 pertanyaan</string>
+    <string name="str_next_button">Selanjutnya</string>
     <string name="goal_setting_q2">2. Saya menetapkan tujuan jangka pendek (harian atau mingguan) yang ingin saya capai dalam perkuliahan online.</string>
     <string name="goal_setting_q3">3.Saya menetapkan standar yang tinggi untuk pembelajaran saya di perkuliahan online.</string>
     <string name="goal_setting_q4">4.Saya menetapkan tujuan jangka panjang (bulanan atau semester) yang ingin saya capai dalam perkuliahan online.</string>
 
     // Environment Structuring
-    <string name="environment_structuring_indicator">2 of 6</string>
+    <string name="environment_structuring_indicator">2 dari 6</string>
     <string name="environment_structuring_title">Environment Structuring</string>
     <string name="environment_structuring_q5">5. Saya dapat memilih lokasi belajar yang tepat dalam perkuliahan online untuk menghindari terlalu banyak gangguan.</string>
     <string name="environment_structuring_q6">6. Saya menutup semua tab atau window yang tidak terkait dengan materi perkuliahan saat sedang mengikuti pembelajaran dalam perkuliahan online.</string>
     <string name="environment_structuring_q7">7. Saya tahu di mana saya bisa belajar paling efektif untuk perkuliahan online</string>
     <string name="environment_structuring_q8">8. Saya memilih waktu belajar yang memiliki paling sedikit gangguan dalam perkuliahan online.</string>
-    <string name="environment_structuring_progress_indicator">8 out of 24 questions</string>
-    <string name="str_prev_button">Previous</string>
+    <string name="environment_structuring_progress_indicator">8 dari 24 pertanyaaan</string>
+    <string name="str_prev_button">Kembali</string>
 
     // Task Strategies
-    <string name="task_strategies_indicator">3 of 6</string>
+    <string name="task_strategies_indicator">3 dari 6</string>
     <string name="task_strategies_title">Task Strategies</string>
     <string name="task_strategies_q9">9. Saya tidak memiliki strategi khusus untuk menyelesaikan tugas-tugas dalam perkuliahan online.</string>
     <string name="task_strategies_q10">10. Saya membuat strategi pengerjaan tugas-tugas dalam perkuliahan online.</string>
     <string name="task_strategies_q11">11. Saya mempersiapkan pertanyaan yang akan saya ajukan sebelum bergabung di forum diskusi atau chat room.</string>
     <string name="task_strategies_q12">12.Saya mengerjakan hal-hal tambahan dalam perkuliahan online selain yang ditugaskan kepada saya untuk menguasai materi perkuliahan.</string>
-    <string name="task_strategies_progress_indicator">12 out of 24 questions</string>
+    <string name="task_strategies_progress_indicator">12 dari 24 pertanyaan</string>
 
     // Time Management
-    <string name="time_management_indicator">4 of 6</string>
+    <string name="time_management_indicator">4 dari 6</string>
     <string name="time_management_title">Time Management</string>
     <string name="time_management_q13">13. Saya menetapkan jadwal yang sama setiap hari atau setiap minggu untuk belajar dalam perkuliahan online.</string>
     <string name="time_management_q14">14. Saya mengalokasikan waktu belajar tambahan untuk perkuliahan online karena saya tahu dalam belajar online diperlukan pengaturan waktu yang baik.</string>
     <string name="time_management_q15">15. Tidak ada waktu khusus yang saya alokasikan untuk belajar dalam perkuliahan online.</string>
     <string name="time_management_q16">16. Saya menentukan jumlah jam belajar yang akan saya alokasikan setiap minggunya untuk perkuliahan online.</string>
-    <string name="time_management_progress_indicator">16 out of 24 questions</string>
+    <string name="time_management_progress_indicator">16 dari 24 pertanyaan</string>
 
     // Help Seeking
-    <string name="help_seeking_indicator">5 of 6</string>
+    <string name="help_seeking_indicator">5 dari 6</string>
     <string name="help_seeking_title">Help Seeking</string>
     <string name="help_seeking_q17">17. Saya tahu harus bertanya kepada siapa jika menemukan kesulitan saat belajar dalam perkuliahan online.</string>
     <string name="help_seeking_q18">18. Saya bertanya pada orang lain yang pernah mengikuti perkuliahan secara online mengenai cara belajar yang efektif dalam perkuliahan online.</string>
     <string name="help_seeking_q19">19. Saya menghubungi teman sekelas dalam perkuliahan online ketika menghadapi kesulitan dalam belajar</string>
     <string name="help_seeking_q20">20. Saya berbagi masalah dalam perkuliahan online dengan teman-teman sekelas sehingga kita tahu apa masalah yang dialami bersama dan bagaimana memecahkan masalah tersebut.</string>
-    <string name="help_seeking_progress_indicator">20 out of 24 questions</string>
+    <string name="help_seeking_progress_indicator">20 dari 24 pertanyaan</string>
 
     // Self Evaluation
-    <string name="self_evaluation_indicator">6 of 6</string>
+    <string name="self_evaluation_indicator">6 dari 6</string>
     <string name="self_evaluation_title">Self-Evaluation</string>
     <string name="self_evaluation_q21">21. Saya mengevaluasi sejauh mana pemahaman saya mengenai materi pembelajaran dalam perkuliahan online yang saya ikuti.</string>
     <string name="self_evaluation_q22">22. Saya berkomunikasi dengan teman sekelas saya untuk mencari tahu apakah yang saya pahami berbeda dengan yang mereka pahami.</string>
     <string name="self_evaluation_q23">23. Saya melakukan evaluasi apakah strategi pembelajaran yang saya gunakan mampu mencapai target yang sudah saya tetapkan di awal perkuliahan online.</string>
     <string name="self_evaluation_q24">24. Di tengah semester, saya merefleksikan kembali apakah strategi pembelajaran yang saya gunakan dalam perkuliahan online sudah tepat.</string>
-    <string name="self_evaluation_progress_indicator">24 out of 24 questions</string>
+    <string name="self_evaluation_progress_indicator">24 dari 24 pertanyaan</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="str_submit_button">Submit</string>
+    <string name="course_toolbar_title">Mata Kuliah</string>
+    <string name="btn_do_quesionnaire">Ukur Keterampilan SRL</string>
+    <string name="heading_course_title">Nama Mata Kuliah</string>
+    <string name="heading_course_description">Semester Gasal 2023/2024</string>
+    <string name="course_semester_information">Semester Gasal 2024/2025</string>
+    <string name="course_description">Pada mata kuliah ini akan dilakukan pengukuran keterampilan Self-Regulated Learning sebanyak 3 kali, tiap pengukuran memiliki estimasi pengisian selama 5 menit. Pengukuran ini bertujuan untuk mengevaluasi dan meningkatkan keterampilan SRL Anda dalam proses pembelajaran. Berikut adalah jadwal pengukurannya :</string>
+    <string name="course_qs_periode">\u2022 Pengukuran Pertama : 1 - 7 September 2024\n\u2022 Pengukuran Kedua : 15 - 22 Oktober 2024\n\u2022 Pengukuran Ketiga : 10 - 17 Desember 2024</string>
 </resources>
