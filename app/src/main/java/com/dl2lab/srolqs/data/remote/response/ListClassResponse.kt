@@ -32,6 +32,8 @@ data class DataItem(
 	val classSemester: String? = null,
 	@SerializedName("class_id")
 	val classId: String? = null,
+	@SerializedName("progress")
+	val progress: String? = null,
 
 
 ) : Parcelable

@@ -116,6 +116,31 @@ class MainViewModel(
         emitSource(responseLiveData)
     }
 
+    fun getClassInformation(class_id: String): LiveData<Response<DetailClassResponse>> = liveData {
+        val responseLiveData = MutableLiveData<Response<DetailClassResponse>>()
+        _isLoading.value = true
+        val token = _token.value ?: ""
+        val client = repository.getClassInformation(class_id)
+        client.enqueue(object : Callback<DetailClassResponse> {
+            override fun onResponse(
+                call: Call<DetailClassResponse>,
+                response: Response<DetailClassResponse>
+            ) {
+                _isLoading.value = false
+                responseLiveData.value = response
+            }
+
+            override fun onFailure(call: Call<DetailClassResponse>, t: Throwable) {
+                _isLoading.value = false
+                val errorBody = (t.message ?: "Unknown error").toResponseBody(null)
+                val errorResponse = Response.error<DetailClassResponse>(500, errorBody)
+                responseLiveData.value = errorResponse
+                _errorMessage.value = t.message
+            }
+        })
+        emitSource(responseLiveData)
+    }
+
 
     fun logout() {
         runBlocking {

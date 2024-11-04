@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:fitsSystemWindows="true"
     tools:context=".ui.kelas.detail.DetailClassFragment">
 
     <LinearLayout
@@ -49,11 +50,15 @@
     </LinearLayout>
 
 
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingBottom="120dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_change_password">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -119,35 +124,27 @@
 
                 />
 
-            <TextView
-                android:id="@+id/course_qs_periode"
-                style="@style/B1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="10dp"
-                android:text="@string/course_qs_periode"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/course_description" />
-
-            <Button
-                android:id="@+id/btn_save_changes"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_period_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="40dp"
-                android:backgroundTint="@color/light_green"
-                android:text="@string/btn_do_quesionnaire"
-                android:textColor="@android:color/white"
-                app:layout_constraintTop_toBottomOf="@id/course_qs_periode"
+                android:layout_marginHorizontal="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+
+
+                android:overScrollMode="never"
+                android:scrollbars="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                />
-
+                app:layout_constraintTop_toBottomOf="@id/course_description"
+                tools:listitem="@layout/item_period" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </ScrollView>
 
 
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+

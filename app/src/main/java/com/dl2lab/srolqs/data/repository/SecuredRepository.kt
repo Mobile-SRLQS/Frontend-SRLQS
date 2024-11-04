@@ -55,6 +55,10 @@ class SecuredRepository private constructor(
         return apiServiceSecured.getClassDetail(id)
     }
 
+    fun getClassInformation(id: String) : Call<DetailClassResponse>{
+        return apiServiceSecured.getClassInformation(id)
+    }
+
     fun submitQuestionnaire(objectDTO: SubmitQuestionnaireRequest) : Call<SubmitQuestionnaireResponse> {
         return apiServiceSecured.submitQuestionnaire(objectDTO)
     }
