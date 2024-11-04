@@ -132,4 +132,11 @@
     <string name="susun_kegiatan">Susun Kegiatan</string>
     <string name="no_activities_available">Belum ada kegiatan terdaftar</string>
     <string name="belum_ada_kegiatan_terdaftar">Belum ada kegiatan terdaftar</string>
+    <string name="delete_kegiatan">Delete Kegiatan</string>
+    <string name="title_tanggal">Tanggal</string>
+    <string name="title_tipe">Tipe</string>
+    <string name="title_catatan">Catatan</string>
+    <string name="title_link">Link</string>
+    <string name="title_aksi">Aksi</string>
+    <string name="edit">Edit</string>
 </resources>
