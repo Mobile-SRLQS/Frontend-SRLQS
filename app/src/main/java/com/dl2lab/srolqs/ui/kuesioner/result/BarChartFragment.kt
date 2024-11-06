@@ -13,7 +13,6 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.utils.ColorTemplate
 
-
 class BarChartFragment : Fragment() {
 
     private lateinit var barChart: BarChart
@@ -27,7 +26,14 @@ class BarChartFragment : Fragment() {
         return view
     }
 
-    fun updateChartData(scores: List<Float>) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        arguments?.getFloatArray("SCORES")?.let { scores ->
+            updateChartData(scores.toList())
+        }
+    }
+
+    private fun updateChartData(scores: List<Float>) {
         val entries = scores.mapIndexed { index, score -> BarEntry(index.toFloat(), score) }
         val barDataSet = BarDataSet(entries, "SRL Skills")
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS, 255)

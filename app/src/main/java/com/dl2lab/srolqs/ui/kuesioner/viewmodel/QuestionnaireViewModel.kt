@@ -107,23 +107,19 @@ class QuestionnaireViewModel(private val repository: SecuredRepository) : ViewMo
                 if (response.isSuccessful) {
                     val data = response.body()?.data?.scoreResult
                     if (data != null) {
-                        Log.d("QuestionnaireViewModel", "Received score result: $data")
-                        _scoreResult.postValue(data.mapNotNull { it })  // postValue with null handling
-                        Log.d("QuestionnaireViewModel", "Updated score result: ${_scoreResult.value}")
+//                        Log.d("QuestionnaireViewModel", "Received score result: $data")
+                        _scoreResult.postValue(data.mapNotNull { it })
                     } else {
                         _errorMessage.postValue("No score result found")
-                        Log.e("QuestionnaireViewModel", "No score result found in response.")
                     }
                 } else {
                     _errorMessage.postValue(response.message())
-                    Log.e("QuestionnaireViewModel", "Error in response: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<GetQuestionnaireResponse>, t: Throwable) {
                 _isLoading.postValue(false)
                 _errorMessage.postValue(t.message)
-                Log.e("QuestionnaireViewModel", "Failed to fetch score result: ${t.message}")
             }
         })
     }

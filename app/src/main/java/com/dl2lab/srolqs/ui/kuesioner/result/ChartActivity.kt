@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Button
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.kuesioner.viewmodel.QuestionnaireViewModel
@@ -19,44 +20,46 @@ class ChartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chart)
 
-        // Set initial fragment (Radar Chart)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.chart_fragment_container, RadarChartFragment())
-            .commit()
-
-        // Button to show Radar Chart
+        // Initialize buttons and set click listeners
         findViewById<Button>(R.id.btn_show_radar_chart).setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.chart_fragment_container, RadarChartFragment())
-                .commit()
+            viewModel.scoreResult.value?.let { scores ->
+                displayFragment(RadarChartFragment().apply {
+                    arguments = Bundle().apply { putFloatArray("SCORES", scores.toFloatArray()) }
+                })
+            }
         }
 
-        // Button to show Bar Chart
         findViewById<Button>(R.id.btn_show_bar_chart).setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.chart_fragment_container, BarChartFragment())
-                .commit()
+            viewModel.scoreResult.value?.let { scores ->
+                displayFragment(BarChartFragment().apply {
+                    arguments = Bundle().apply { putFloatArray("SCORES", scores.toFloatArray()) }
+                })
+            }
         }
 
         // Fetch data for the specified class ID and period
         val classId = intent.getStringExtra("CLASSID")
         val period = intent.getStringExtra("PERIOD")
         if (classId != null && period != null) {
-            Log.d("ChartActivity", "Fetching score result for classId: $classId, period: $period")
             viewModel.fetchScoreResult(classId, period)
-        } else {
-            Log.e("ChartActivity", "classId or period is null.")
         }
 
-        // Observe scoreResult data and populate charts when available
+        // Observe scoreResult data and set initial fragment when data is available
         viewModel.scoreResult.observe(this) { scores ->
-            Log.d("ChartActivity", "Observed scoreResult data: $scores")
-            val currentFragment = supportFragmentManager.findFragmentById(R.id.chart_fragment_container)
-            if (currentFragment is RadarChartFragment) {
-                currentFragment.updateChartData(scores)
-            } else if (currentFragment is BarChartFragment) {
-                currentFragment.updateChartData(scores)
+            if (scores != null && scores.isNotEmpty()) {
+                displayFragment(RadarChartFragment().apply {
+                    arguments = Bundle().apply { putFloatArray("SCORES", scores.toFloatArray()) }
+                })
+            } else {
+                Log.e("ChartActivity", "No scores available to display.")
             }
         }
+    }
+
+    // Helper function to display the given fragment
+    private fun displayFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.chart_fragment_container, fragment)
+            .commit()
     }
 }

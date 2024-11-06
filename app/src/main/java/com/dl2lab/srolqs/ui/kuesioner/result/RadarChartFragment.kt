@@ -13,7 +13,6 @@ import com.github.mikephil.charting.data.RadarDataSet
 import com.github.mikephil.charting.data.RadarEntry
 import com.github.mikephil.charting.utils.ColorTemplate
 
-
 class RadarChartFragment : Fragment() {
 
     private lateinit var radarChart: RadarChart
@@ -27,7 +26,14 @@ class RadarChartFragment : Fragment() {
         return view
     }
 
-    fun updateChartData(scores: List<Float>) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        arguments?.getFloatArray("SCORES")?.let { scores ->
+            updateChartData(scores.toList())
+        }
+    }
+
+    private fun updateChartData(scores: List<Float>) {
         val entries = scores.mapIndexed { index, score -> RadarEntry(score) }
         val radarDataSet = RadarDataSet(entries, "SRL Skills")
         radarDataSet.setColors(ColorTemplate.MATERIAL_COLORS, 255)
@@ -37,7 +43,7 @@ class RadarChartFragment : Fragment() {
 
         radarChart.data = RadarData(radarDataSet)
         radarChart.description.text = "Radar Chart"
-        radarChart.invalidate()  // Refresh chart
+        radarChart.invalidate()
         radarChart.animateY(2000)
     }
 }
