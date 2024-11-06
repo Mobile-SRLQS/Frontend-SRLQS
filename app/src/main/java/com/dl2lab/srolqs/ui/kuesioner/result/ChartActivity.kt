@@ -1,5 +1,6 @@
 package com.dl2lab.srolqs.ui.kuesioner.result
 
+import BarChartFragment
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
