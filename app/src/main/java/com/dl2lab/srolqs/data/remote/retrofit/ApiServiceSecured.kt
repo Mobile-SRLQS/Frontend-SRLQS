@@ -19,6 +19,7 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiServiceSecured {
 
@@ -62,6 +63,7 @@ interface ApiServiceSecured {
 
     @GET("questionnaire/result")
     fun getQuestionnaireResult(
-        @Body getQuestionnaireRequest: GetQuestionnaireRequest
+        @Query("class_id") classId: String,
+        @Query("period") period: String
     ): Call<GetQuestionnaireResponse>
 }

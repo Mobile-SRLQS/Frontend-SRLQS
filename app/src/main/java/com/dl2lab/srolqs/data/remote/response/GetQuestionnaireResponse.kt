@@ -56,10 +56,10 @@ data class User(
 data class DataQuestionnaire(
 
 	@field:SerializedName("scoreResult")
-	val scoreResult: List<Any?>? = null,
+	val scoreResult: List<Float?>? = null,
 
 	@field:SerializedName("scoreAverage")
-	val scoreAverage: List<Any?>? = null,
+	val scoreAverage: List<Float?>? = null,
 
 	@field:SerializedName("user")
 	val user: User? = null

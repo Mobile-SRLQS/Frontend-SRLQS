@@ -65,9 +65,10 @@ class SecuredRepository private constructor(
         return apiServiceSecured.submitQuestionnaire(objectDTO)
     }
 
-    fun getQuestionnaire(objectDTO: GetQuestionnaireRequest) : Call<GetQuestionnaireResponse>{
-        return apiServiceSecured.getQuestionnaireResult(objectDTO)
+    fun getQuestionnaire(classId: String, period: String): Call<GetQuestionnaireResponse> {
+        return apiServiceSecured.getQuestionnaireResult(classId, period)
     }
+
 
 
     companion object {

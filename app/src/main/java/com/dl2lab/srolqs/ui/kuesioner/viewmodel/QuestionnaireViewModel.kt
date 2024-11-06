@@ -97,32 +97,39 @@ class QuestionnaireViewModel(private val repository: SecuredRepository) : ViewMo
 
     fun fetchScoreResult(classId: String, period: String) {
         _isLoading.value = true
-        val request = GetQuestionnaireRequest(classId, period)
-        val client = repository.getQuestionnaire(request)
+        val client = repository.getQuestionnaire(classId, period)
         client.enqueue(object : Callback<GetQuestionnaireResponse> {
             override fun onResponse(
                 call: Call<GetQuestionnaireResponse>,
                 response: Response<GetQuestionnaireResponse>
             ) {
-                _isLoading.value = false
+                _isLoading.postValue(false)
                 if (response.isSuccessful) {
                     val data = response.body()?.data?.scoreResult
                     if (data != null) {
-                        _scoreResult.value = data.mapNotNull { it as? Float }
+                        Log.d("QuestionnaireViewModel", "Received score result: $data")
+                        _scoreResult.postValue(data.mapNotNull { it })  // postValue with null handling
+                        Log.d("QuestionnaireViewModel", "Updated score result: ${_scoreResult.value}")
                     } else {
-                        _errorMessage.value = "No score result found"
+                        _errorMessage.postValue("No score result found")
+                        Log.e("QuestionnaireViewModel", "No score result found in response.")
                     }
                 } else {
-                    _errorMessage.value = response.message()
+                    _errorMessage.postValue(response.message())
+                    Log.e("QuestionnaireViewModel", "Error in response: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<GetQuestionnaireResponse>, t: Throwable) {
-                _isLoading.value = false
-                _errorMessage.value = t.message
+                _isLoading.postValue(false)
+                _errorMessage.postValue(t.message)
+                Log.e("QuestionnaireViewModel", "Failed to fetch score result: ${t.message}")
             }
         })
     }
+
+
+
 
 
 

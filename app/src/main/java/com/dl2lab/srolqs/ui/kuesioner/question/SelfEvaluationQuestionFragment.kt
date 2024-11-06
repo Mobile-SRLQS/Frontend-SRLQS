@@ -67,7 +67,13 @@ class SelfEvaluationQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
                     requireActivity().finish()
 
                 } else {
-                    requireContext().showCustomAlertDialog(ExtractErrorMessage.extractErrorMessage(response),"ok", "",{},{})
+//                    requireContext().showCustomAlertDialog(ExtractErrorMessage.extractErrorMessage(response),"ok", "",{},{})
+                    val intent = Intent(requireContext(), ChartActivity::class.java)
+                    intent.putExtra("CLASSID", classId)
+                    intent.putExtra("PERIOD", period)
+                    startActivity(intent)
+                    requireActivity().finish()
+
 
                 }
             }
