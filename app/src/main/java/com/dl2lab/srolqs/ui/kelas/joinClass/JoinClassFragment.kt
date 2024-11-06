@@ -13,15 +13,12 @@ import com.dl2lab.srolqs.databinding.FragmentJoinClassBinding
 import com.dl2lab.srolqs.ui.home.viewmodel.MainViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.dl2lab.srolqs.data.remote.response.DetailClassResponse
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
 import com.dl2lab.srolqs.ui.home.welcome.WelcomeActivity
 import com.dl2lab.srolqs.ui.kuesioner.question.QuestionnaireQuestionActivity
 import com.dl2lab.srolqs.utils.ExtractErrorMessage.extractErrorMessage
 import com.dl2lab.srolqs.utils.JwtUtils
-import org.json.JSONObject
-import retrofit2.Response
 
 class JoinClassFragment : Fragment() {
 

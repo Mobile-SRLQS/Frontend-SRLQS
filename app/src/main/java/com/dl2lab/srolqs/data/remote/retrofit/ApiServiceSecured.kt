@@ -46,6 +46,13 @@ interface ApiServiceSecured {
         @Path("id") id: String
     ): Call<DetailClassResponse>
 
+
+    @GET("class/detail-class/{id}")
+    fun getClassInformation(
+        @Path("id") id: String
+    ): Call<DetailClassResponse>
+
+
     @POST("questionnaire/submit")
     fun submitQuestionnaire(
         @Body submitQuestionnaireRequest: SubmitQuestionnaireRequest

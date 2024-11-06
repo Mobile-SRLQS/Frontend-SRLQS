@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/aapt"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    card_view:cardCornerRadius="10dp"
+
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_course_list_item"
+        android:padding="10dp"
+        android:paddingHorizontal="10dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/periodTitle"
+                style="@style/B1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pengukuran Pertama:" />
+
+            <TextView
+                android:id="@+id/periodDate"
+                style="@style/B2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="1 - 7 September 2024"
+                android:textColor="@color/light_green" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/periodButton"
+            style="@style/B2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:backgroundTint="@color/light_green"
+            android:padding="-5dp"
+            android:text="Lihat Hasil"
+            android:textColor="@android:color/white"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

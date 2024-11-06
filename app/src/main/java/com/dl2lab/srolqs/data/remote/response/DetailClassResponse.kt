@@ -41,5 +41,35 @@ data class ClassData(
 	val className: String? = null,
 
 	@field:SerializedName("prodi")
-	val prodi: String? = null
+	val prodi: String? = null,
+
+	@field:SerializedName("period_data")
+	val periodData: List<PeriodDataItem?>? = null,
+
+)
+
+
+data class PeriodDataItem(
+
+	@field:SerializedName("is_done")
+	val isDone: Boolean? = null,
+
+	@field:SerializedName("class_id")
+	val classId: String? = null,
+
+	@field:SerializedName("subtitle")
+	val subtitle: String? = null,
+
+	@field:SerializedName("period_name")
+	val periodName: Int? = null,
+
+	@field:SerializedName("period_id")
+	val periodId: Int? = null,
+
+	@field:SerializedName("title")
+	val title: String? = null,
+
+	@field:SerializedName("is_available")
+	val isAvailable: Boolean? = null
+
 )

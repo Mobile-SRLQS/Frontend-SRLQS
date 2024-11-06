@@ -11,6 +11,7 @@ class ClassAdapter(private val classList: List<DataItem?>, private val itemClick
     inner class ClassViewHolder(private val binding: ItemClassBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(classItem: DataItem) {
             binding.tvClassname.text = classItem.className
+            binding.tvProgress.text = classItem.progress
             binding.root.setOnClickListener {
                 itemClickListener.onItemClick(classItem)
             }
