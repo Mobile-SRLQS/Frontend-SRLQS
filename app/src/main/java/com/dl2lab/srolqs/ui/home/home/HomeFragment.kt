@@ -77,9 +77,6 @@ class HomeFragment : Fragment(), OnClassItemClickListener {
     }
 
     fun setupJoinClass(){
-
-
-
         binding.btnJoinClass.setOnClickListener{
             val classId= binding.etCourseCode.text.toString()
             if (classId.isEmpty()) {
