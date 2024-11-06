@@ -12,20 +12,21 @@ import com.dl2lab.srolqs.databinding.ActivityWelcomeBinding
 import com.dl2lab.srolqs.ui.authentication.login.LoginActivity
 import com.dl2lab.srolqs.ui.authentication.register.RegisterActivity
 import com.dl2lab.srolqs.ui.kuesioner.question.QuestionnaireQuestionActivity
+import com.dl2lab.srolqs.ui.kuesioner.result.ChartActivity
 
 class WelcomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWelcomeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
-        binding.buttonNav.setOnClickListener { navToKuesionerPage() }
+        binding.buttonNav.setOnClickListener { navToResultPage() }
         binding.buttonStudent.setOnClickListener { navToLoginPage("Student") }
         binding.buttonTeacher.setOnClickListener { navToLoginPage("Instructor") }
         setContentView(binding.root)
     }
 
-    private fun navToKuesionerPage() {
-        val intent = Intent(this, QuestionnaireQuestionActivity::class.java)
+    private fun navToResultPage() {
+        val intent = Intent(this, ChartActivity::class.java)
         startActivity(intent)    }
 
     private fun navToLoginPage(role: String) {

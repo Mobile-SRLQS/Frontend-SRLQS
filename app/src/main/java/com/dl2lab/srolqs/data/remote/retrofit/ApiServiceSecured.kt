@@ -1,6 +1,7 @@
 package com.dl2lab.srolqs.data.remote.retrofit
 
 import com.dl2lab.srolqs.data.remote.request.ChangePasswordRequest
+import com.dl2lab.srolqs.data.remote.request.GetQuestionnaireRequest
 import com.dl2lab.srolqs.data.remote.request.JoinClassRequest
 import com.dl2lab.srolqs.data.remote.request.SubmitQuestionnaireRequest
 import com.dl2lab.srolqs.data.remote.request.TambahKegiatanRequest
@@ -9,6 +10,7 @@ import com.dl2lab.srolqs.data.remote.response.DetailClassResponse
 import com.dl2lab.srolqs.data.remote.response.ListClassResponse
 import com.dl2lab.srolqs.data.remote.response.SubmitQuestionnaireResponse
 import com.dl2lab.srolqs.data.remote.response.GetKegiatanResponse
+import com.dl2lab.srolqs.data.remote.response.GetQuestionnaireResponse
 import com.dl2lab.srolqs.data.remote.response.TambahKegiatanResponse
 import retrofit2.Call
 import retrofit2.http.Body
@@ -51,4 +53,8 @@ interface ApiServiceSecured {
         @Body submitQuestionnaireRequest: SubmitQuestionnaireRequest
     ): Call<SubmitQuestionnaireResponse>
 
+    @GET("questionnaire/result")
+    fun getQuestionnaireResult(
+        @Body getQuestionnaireRequest: GetQuestionnaireRequest
+    ): Call<GetQuestionnaireResponse>
 }
