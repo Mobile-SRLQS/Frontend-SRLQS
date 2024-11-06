@@ -5,9 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import com.dl2lab.srolqs.data.remote.request.GetQuestionnaireRequest
 import com.dl2lab.srolqs.data.remote.request.JoinClassRequest
 import com.dl2lab.srolqs.data.remote.request.SubmitQuestionnaireRequest
 import com.dl2lab.srolqs.data.remote.response.BasicResponse
+import com.dl2lab.srolqs.data.remote.response.GetQuestionnaireResponse
 import com.dl2lab.srolqs.data.remote.response.SubmitQuestionnaireResponse
 import com.dl2lab.srolqs.data.repository.SecuredRepository
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -19,6 +21,9 @@ class QuestionnaireViewModel(private val repository: SecuredRepository) : ViewMo
     private val answers = MutableLiveData<HashMap<String, Int>>(HashMap())
     private val classId = MutableLiveData<String>()
     private val period = MutableLiveData<String>()
+
+    private val _scoreResult = MutableLiveData<List<Float>>()
+    val scoreResult: LiveData<List<Float>> = _scoreResult
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -89,6 +94,36 @@ class QuestionnaireViewModel(private val repository: SecuredRepository) : ViewMo
         })
         emitSource(responseLiveData)
     }
+
+    fun fetchScoreResult(classId: String, period: String) {
+        _isLoading.value = true
+        val client = repository.getQuestionnaire(classId, period)
+        client.enqueue(object : Callback<GetQuestionnaireResponse> {
+            override fun onResponse(
+                call: Call<GetQuestionnaireResponse>,
+                response: Response<GetQuestionnaireResponse>
+            ) {
+                _isLoading.postValue(false)
+                if (response.isSuccessful) {
+                    val data = response.body()?.data?.scoreResult
+                    if (data != null) {
+//                        Log.d("QuestionnaireViewModel", "Received score result: $data")
+                        _scoreResult.postValue(data.mapNotNull { it })
+                    } else {
+                        _errorMessage.postValue("No score result found")
+                    }
+                } else {
+                    _errorMessage.postValue(response.message())
+                }
+            }
+
+            override fun onFailure(call: Call<GetQuestionnaireResponse>, t: Throwable) {
+                _isLoading.postValue(false)
+                _errorMessage.postValue(t.message)
+            }
+        })
+    }
+
 
 
 

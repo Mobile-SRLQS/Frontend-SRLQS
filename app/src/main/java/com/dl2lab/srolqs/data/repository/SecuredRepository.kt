@@ -2,10 +2,12 @@ package com.dl2lab.srolqs.data.repository
 
 import com.dl2lab.srolqs.data.preference.user.User
 import com.dl2lab.srolqs.data.preference.user.UserPreference
+import com.dl2lab.srolqs.data.remote.request.GetQuestionnaireRequest
 import com.dl2lab.srolqs.data.remote.request.JoinClassRequest
 import com.dl2lab.srolqs.data.remote.request.SubmitQuestionnaireRequest
 import com.dl2lab.srolqs.data.remote.response.BasicResponse
 import com.dl2lab.srolqs.data.remote.response.DetailClassResponse
+import com.dl2lab.srolqs.data.remote.response.GetQuestionnaireResponse
 import com.dl2lab.srolqs.data.remote.response.ListClassResponse
 import com.dl2lab.srolqs.data.remote.response.SubmitQuestionnaireResponse
 import com.dl2lab.srolqs.data.remote.retrofit.ApiConfig.getApiServiceSecured
@@ -62,6 +64,11 @@ class SecuredRepository private constructor(
     fun submitQuestionnaire(objectDTO: SubmitQuestionnaireRequest) : Call<SubmitQuestionnaireResponse> {
         return apiServiceSecured.submitQuestionnaire(objectDTO)
     }
+
+    fun getQuestionnaire(classId: String, period: String): Call<GetQuestionnaireResponse> {
+        return apiServiceSecured.getQuestionnaireResult(classId, period)
+    }
+
 
 
     companion object {

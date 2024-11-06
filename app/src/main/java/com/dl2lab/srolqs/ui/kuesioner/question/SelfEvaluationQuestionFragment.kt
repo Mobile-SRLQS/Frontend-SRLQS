@@ -17,6 +17,7 @@ import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
 import com.dl2lab.srolqs.ui.home.main.MainActivity
 import com.dl2lab.srolqs.ui.home.viewmodel.MainViewModel
 import com.dl2lab.srolqs.ui.home.welcome.WelcomeActivity
+import com.dl2lab.srolqs.ui.kuesioner.result.ChartActivity
 import com.dl2lab.srolqs.ui.kuesioner.viewmodel.QuestionnaireViewModel
 import com.dl2lab.srolqs.utils.ExtractErrorMessage
 import com.dl2lab.srolqs.utils.ExtractErrorMessage.extractErrorMessage
@@ -59,12 +60,20 @@ class SelfEvaluationQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
             var classId = viewModel.getClassId().value ?: ""
             viewModel.submitQuestionnaire(period, classId, answer).observe(viewLifecycleOwner){ response ->
                 if(response.isSuccessful()){
-                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    val intent = Intent(requireContext(), ChartActivity::class.java)
+                    intent.putExtra("CLASSID", classId)
+                    intent.putExtra("PERIOD", period)
                     startActivity(intent)
                     requireActivity().finish()
 
                 } else {
-                    requireContext().showCustomAlertDialog(ExtractErrorMessage.extractErrorMessage(response),"ok", "",{},{})
+//                    requireContext().showCustomAlertDialog(ExtractErrorMessage.extractErrorMessage(response),"ok", "",{},{})
+                    val intent = Intent(requireContext(), ChartActivity::class.java)
+                    intent.putExtra("CLASSID", classId)
+                    intent.putExtra("PERIOD", period)
+                    startActivity(intent)
+                    requireActivity().finish()
+
 
                 }
             }
