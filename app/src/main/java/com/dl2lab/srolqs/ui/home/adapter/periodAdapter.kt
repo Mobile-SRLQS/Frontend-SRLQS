@@ -10,6 +10,7 @@ import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.data.remote.response.PeriodDataItem
 import com.dl2lab.srolqs.databinding.ItemPeriodBinding
 import com.dl2lab.srolqs.ui.kuesioner.question.QuestionnaireQuestionActivity
+import com.dl2lab.srolqs.ui.kuesioner.result.ChartActivity
 
 class PeriodAdapter(
     private val periodList: List<PeriodDataItem?>,
@@ -24,7 +25,9 @@ class PeriodAdapter(
 
             if (periodItem.isDone == true) {
                 buttonText = "Lihat Hasil"
-
+                binding.periodButton.setOnClickListener{
+                    seeGraphic(binding.periodButton.context, periodItem)
+                }
             } else{
                 binding.periodButton.setOnClickListener {
                     doQuestionnaire(binding.periodButton.context, periodItem)
@@ -46,6 +49,13 @@ class PeriodAdapter(
         val intent = Intent(context, QuestionnaireQuestionActivity::class.java)
         intent.putExtra("classId", periodItem.classId)
         intent.putExtra("period", periodItem.periodName)
+        context.startActivity(intent)
+    }
+
+    private fun seeGraphic(context: Context, periodItem: PeriodDataItem) {
+        val intent = Intent(context, ChartActivity::class.java)
+        intent.putExtra("CLASSID", periodItem.classId)
+        intent.putExtra("PERIOD", periodItem.periodName.toString())
         context.startActivity(intent)
     }
 
