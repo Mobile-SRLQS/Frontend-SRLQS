@@ -5,17 +5,19 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.dl2lab.srolqs.R
+import com.dl2lab.srolqs.databinding.ActivityChartBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.kuesioner.viewmodel.QuestionnaireViewModel
 
 class ChartActivity : AppCompatActivity() {
     private lateinit var toggleChartButton: Button
     private var isRadarChartDisplayed = true
-
+    private lateinit var binding: ActivityChartBinding
 
     private val viewModel: QuestionnaireViewModel by viewModels {
         ViewModelFactory.getInstance(applicationContext)
@@ -24,11 +26,18 @@ class ChartActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chart)
+        requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
+        this.window.setFlags(
+            android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        supportActionBar?.hide()
+        binding = ActivityChartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         toggleChartButton = findViewById(R.id.btn_toggle_chart)
         toggleChartButton.setOnClickListener { toggleChart() }
 
-
+        addReccomendation()
         // Fetch data for the specified class ID and period
         val classId = intent.getStringExtra("CLASSID")
         val period = intent.getStringExtra("PERIOD")
@@ -44,6 +53,35 @@ class ChartActivity : AppCompatActivity() {
                 })
             } else {
                 Log.e("ChartActivity", "No scores available to display.")
+            }
+        }
+    }
+
+    private fun addReccomendation() {
+        viewModel.reccomendationText.observe(this) { reccomendationText ->
+            if (reccomendationText != null) {
+                val reccomendationTextView = findViewById<TextView>(R.id.chart_description)
+                reccomendationTextView.text = reccomendationText
+            } else {
+                Log.e("ChartActivity", "No reccomendation available to display.")
+            }
+        }
+        viewModel.reccomendation.observe(this) { reccomendation ->
+            if (reccomendation != null) {
+                binding.GSTitle.text = reccomendation.gsTitle
+                binding.HSTitle.text = reccomendation.hsTitle
+                binding.ESTitle.text = reccomendation.esTitle
+                binding.SETitle.text = reccomendation.seTitle
+                binding.TMTitle.text = reccomendation.tmTitle
+                binding.TSTitle.text = reccomendation.tsTitle
+                binding.GSSubtitle.text = reccomendation.gsReccomendation
+                binding.HSSubtitle.text = reccomendation.hsReccomendation
+                binding.ESSubtitle.text = reccomendation.esReccomendation
+                binding.SESubtitle.text = reccomendation.seReccomendation
+                binding.TMSubtitle.text = reccomendation.tmReccomendation
+                binding.TSSubtitle.text = reccomendation.tsReccomendation
+            } else {
+                Log.e("ChartActivity", "No reccomendation available to display.")
             }
         }
     }

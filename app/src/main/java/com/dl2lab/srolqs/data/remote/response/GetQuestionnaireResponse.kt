@@ -45,6 +45,7 @@ data class DataQuestionnaire(
     @field:SerializedName("scoreAverage") val scoreAverage: List<Float?>? = null,
 
     @field:SerializedName("user") val user: User? = null,
+    @field:SerializedName("reccomendation") val reccomendation: String? = null,
     @field:SerializedName("dimensionReccomendation") val dimensionReccomendation: DimensionReccomendation? = null
 )
 
