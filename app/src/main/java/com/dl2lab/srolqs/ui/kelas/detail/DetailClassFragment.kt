@@ -75,6 +75,7 @@ class DetailClassFragment : Fragment(), OnPeriodItemClickListener {
                     binding.rvPeriodList.adapter = adapter
                 } else {
                     requireContext().showCustomAlertDialog(
+                        "",
                         ExtractErrorMessage.extractErrorMessage(response),
                         "OK",
                         "",
@@ -103,6 +104,7 @@ class DetailClassFragment : Fragment(), OnPeriodItemClickListener {
                     startActivity(Intent(requireActivity(), WelcomeActivity::class.java))
                     requireActivity().finish()
                     requireContext().showCustomAlertDialog(
+                        "",
                         "Session Expired. Please login again!",
                         "Login",
                         "",

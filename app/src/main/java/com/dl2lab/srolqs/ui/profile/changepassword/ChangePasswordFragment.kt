@@ -63,6 +63,7 @@ class ChangePasswordFragment : Fragment() {
                         startActivity(Intent(requireActivity(), WelcomeActivity::class.java))
                         requireActivity().finish()
                         requireContext().showCustomAlertDialog(
+                            "",
                             "Session Expired. Please login again!",
                             "Login",
                             "",
@@ -84,6 +85,7 @@ class ChangePasswordFragment : Fragment() {
 
             if(oldPassword.isEmpty() || newPassword.isEmpty() || confirmedPassword.isEmpty()){
                 requireContext().showCustomAlertDialog(
+                    "",
                     "Please input all fields",
                     "OK",
                     "Cancel",
@@ -97,6 +99,7 @@ class ChangePasswordFragment : Fragment() {
 
             if(newPassword != confirmedPassword){
                 requireContext().showCustomAlertDialog(
+                    "",
                     "New password and confirmed password must be the same",
                     "OK",
                     "Cancel",
@@ -113,6 +116,7 @@ class ChangePasswordFragment : Fragment() {
                     val body = response.body()
                     if (body != null) {
                         requireContext().showCustomAlertDialog(
+                            "",
                             body.message ?: "Change password success",
                             "OK",
                             "",
@@ -126,6 +130,7 @@ class ChangePasswordFragment : Fragment() {
                     }
                 } else {
                     requireContext().showCustomAlertDialog(
+                        "",
                         extractErrorMessage(response),
                         "OK",
                         "",

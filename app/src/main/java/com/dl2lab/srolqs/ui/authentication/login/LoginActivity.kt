@@ -11,6 +11,8 @@ import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.authentication.forgotPassword.ForgotPasswordActivity
 import com.dl2lab.srolqs.ui.authentication.register.RegisterActivity
 import com.dl2lab.srolqs.ui.authentication.viewmodel.LoginViewModel
+import com.dl2lab.srolqs.ui.customview.LoadingManager
+import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
 import com.dl2lab.srolqs.ui.home.main.MainActivity
 
 class LoginActivity : AppCompatActivity() {
@@ -27,11 +29,15 @@ class LoginActivity : AppCompatActivity() {
         role = intent.getStringExtra("role") ?: "Student"
 
         setContentView(binding.root)
+        LoadingManager.init(this)
         observeViewModel()
         binding.registerButton.setOnClickListener { navToRegisterPage() }
         binding.loginButton.setOnClickListener { validateAndSubmitForm() }
         binding.tvForgotPassword.setOnClickListener { navToForgotPassword(this) }
     }
+
+
+
 
     private fun navToForgotPassword(context: Context){
         val intent = Intent(context, ForgotPasswordActivity::class.java)
@@ -57,7 +63,15 @@ class LoginActivity : AppCompatActivity() {
         val password = binding.inputPasswordLogin.text.toString()
 
         if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Please fill all fields!", Toast.LENGTH_SHORT).show()
+            showCustomAlertDialog(
+                "Login Gagal",
+                "Tolong masukkan email dan password Anda!",
+                "OK",
+                "",
+                {},
+                {}
+            )
+
             return
         }
 
@@ -88,9 +102,9 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.isLoading.observe(this) { isLoading ->
             // Show loading indicator if needed
             if (isLoading) {
-                // Show a loading spinner or some UI feedback for loading
+                LoadingManager.show()
             } else {
-                // Hide loading spinner
+                LoadingManager.hide()
             }
         }
 

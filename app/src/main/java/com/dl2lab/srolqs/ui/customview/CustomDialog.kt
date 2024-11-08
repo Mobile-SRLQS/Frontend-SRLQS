@@ -10,7 +10,8 @@ import android.widget.TextView
 import com.dl2lab.srolqs.R
 
 fun Context.showCustomAlertDialog(
-    title: String,
+    title: String="",
+    subtitle: String ,
     positiveButtonText: String,
     negativeButtonText: String,
     onPositiveButtonClick: () -> Unit,
@@ -18,13 +19,21 @@ fun Context.showCustomAlertDialog(
 ) {
     val dialogView = LayoutInflater.from(this).inflate(R.layout.custom_dialog, null)
     val dialogTitle = dialogView.findViewById<TextView>(R.id.dialog_title)
+    val dialogSubtitle = dialogView.findViewById<TextView>(R.id.dialog_subtitle)
     val positiveButton = dialogView.findViewById<Button>(R.id.dialog_positive_button)
     val negativeButton = dialogView.findViewById<Button>(R.id.dialog_negative_button)
     if(negativeButtonText == "" ){
         negativeButton.visibility = View.GONE
     }
     val dialogBuilder = AlertDialog.Builder(this).setView(dialogView)
-    dialogTitle.text = title
+    if(title == ""){
+        dialogTitle.visibility = View.GONE
+    } else{
+        dialogTitle.text=title
+    }
+
+    dialogSubtitle.text = subtitle
+
     positiveButton.text = positiveButtonText
 
 

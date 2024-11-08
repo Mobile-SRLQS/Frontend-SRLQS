@@ -71,7 +71,7 @@ class ProfileFragment : Fragment() {
         binding.buttonLogout.setOnClickListener {
 
             requireContext().showCustomAlertDialog(
-                title = "Are you sure you want to logout?",
+                subtitle = "Are you sure you want to logout?",
                 positiveButtonText = "Logout",
                 negativeButtonText = "Cancel",
                 onPositiveButtonClick = {
