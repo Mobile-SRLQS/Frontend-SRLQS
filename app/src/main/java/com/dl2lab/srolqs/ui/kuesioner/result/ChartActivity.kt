@@ -19,6 +19,7 @@ class ChartActivity : AppCompatActivity() {
     private lateinit var toggleAverageDataButton: Button
     private var isRadarChartDisplayed = true
     private var isAvgDataRadarChartDisplayed = false
+    private var isAvgDataBarChartDisplayed = false
     private lateinit var binding: ActivityChartBinding
 
     private val viewModel: QuestionnaireViewModel by viewModels {
@@ -39,7 +40,7 @@ class ChartActivity : AppCompatActivity() {
         toggleChartButton = findViewById(R.id.btn_toggle_chart)
         toggleAverageDataButton = findViewById(R.id.btn_toggle_average_data)
         toggleChartButton.setOnClickListener { toggleChart() }
-        toggleAverageDataButton.setOnClickListener { toggleAverageDataRadarChart() }
+        toggleAverageDataButton.setOnClickListener { toggleAverageData() }
 
         addReccomendation()
         // Fetch data for the specified class ID and period
@@ -92,12 +93,14 @@ class ChartActivity : AppCompatActivity() {
 
     // Helper function to display the given fragment
     private fun displayFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.chart_fragment_container, fragment)
+        supportFragmentManager.beginTransaction().replace(R.id.chart_fragment_container, fragment)
             .commit()
     }
 
     private fun toggleChart() {
+        isAvgDataBarChartDisplayed = false
+        isAvgDataRadarChartDisplayed = false
+        toggleAverageDataButton.text = "Dengan Rata-Rata Kelas"
         viewModel.scoreResult.value?.let { scores ->
             if (isRadarChartDisplayed) {
                 displayBarChart(scores.toFloatArray())
@@ -113,11 +116,28 @@ class ChartActivity : AppCompatActivity() {
         }
     }
 
+    private fun toggleAverageData() {
+        if (isAvgDataRadarChartDisplayed || isAvgDataBarChartDisplayed) {
+            toggleAverageDataButton.text = "Dengan Rata-Rata Kelas"
+        } else {
+            toggleAverageDataButton.text = "Tanpa Rata-Rata Kelas"
+        }
+
+        if (isRadarChartDisplayed) {
+            toggleAverageDataRadarChart()
+            isAvgDataRadarChartDisplayed = !isAvgDataRadarChartDisplayed
+            isAvgDataBarChartDisplayed = false
+        } else {
+            toggleAverageDataBarChart()
+            isAvgDataBarChartDisplayed = !isAvgDataBarChartDisplayed
+            isAvgDataRadarChartDisplayed = false
+        }
+    }
+
     private fun toggleAverageDataRadarChart() {
         viewModel.scoreResult.value?.let { scores ->
             if (isAvgDataRadarChartDisplayed) {
                 displayRadarChart(scores.toFloatArray())
-                toggleAverageDataButton.text = "Lihat Rata-Rata Kelas"
             } else {
                 viewModel.scoreAverage.value?.let { averageScores ->
                     displayFragment(RadarChartFragment().apply {
@@ -127,9 +147,24 @@ class ChartActivity : AppCompatActivity() {
                         }
                     })
                 }
-                toggleAverageDataButton.text = "Tanpa Rata-Rata Kelas"
             }
-            isAvgDataRadarChartDisplayed = !isAvgDataRadarChartDisplayed
+        }
+    }
+
+    private fun toggleAverageDataBarChart() {
+        viewModel.scoreResult.value?.let { scores ->
+            if (isAvgDataBarChartDisplayed) {
+                displayBarChart(scores.toFloatArray())
+            } else {
+                viewModel.scoreAverage.value?.let { averageScores ->
+                    displayFragment(BarChartFragment().apply {
+                        arguments = Bundle().apply {
+                            putFloatArray("SCORES", scores.toFloatArray())
+                            putFloatArray("SCORES2", averageScores.toFloatArray())
+                        }
+                    })
+                }
+            }
         }
     }
 
@@ -143,10 +178,7 @@ class ChartActivity : AppCompatActivity() {
         displayFragment(BarChartFragment().apply {
             arguments = Bundle().apply {
                 putFloatArray("SCORES", scores)
-                putFloatArray("SCORES2", scores)
             }
         })
     }
-
-
 }

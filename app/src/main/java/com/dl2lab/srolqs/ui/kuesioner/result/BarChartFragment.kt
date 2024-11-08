@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import com.dl2lab.srolqs.R
 import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
@@ -17,6 +16,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 class BarChartFragment : Fragment() {
 
     private lateinit var horizontalBarChart: HorizontalBarChart
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,21 +29,20 @@ class BarChartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.getFloatArray("SCORES")?.let { scores ->
-            arguments?.getFloatArray("SCORES2")?.let { scores2 ->
-                updateChartData(scores.toList(), scores2.toList())
-            }
+        var scores1 = arguments?.getFloatArray("SCORES")?.toList()
+        var scores2 = arguments?.getFloatArray("SCORES2")?.toList()
+        if (scores1 != null) {
+            updateChartData(scores1.toList())
         }
+        if (scores1!=null && scores2 != null) {
+            updateChartData(scores1.toList(), scores2.toList())
+        }
+
     }
 
-    private fun updateChartData(scores1: List<Float>, scores2: List<Float>) {
-        // Create BarEntries for both datasets
+    private fun updateChartData(scores1: List<Float>, scores2: List<Float>? = null) {
         val entries1 = scores1.mapIndexed { index, score -> BarEntry(index.toFloat(), score) }
-        val entries2 = scores2.mapIndexed { index, score -> BarEntry(index.toFloat(), score) }
-
-
-
-        val barDataSet1 = BarDataSet(entries1, "SRL Skills 1")
+        val barDataSet1 = BarDataSet(entries1, "Keterampilan SRL Anda")
         barDataSet1.color = Color.parseColor("#1ABC9C")
         barDataSet1.valueTextColor = Color.BLACK
         barDataSet1.valueTextSize = 12f
@@ -56,34 +55,35 @@ class BarChartFragment : Fragment() {
             }
         }
 
-        val barDataSet2 = BarDataSet(entries2, "SRL Skills 2")
-        barDataSet2.color = Color.parseColor("#FF5733")
-        barDataSet2.valueTextColor = Color.BLACK
-        barDataSet2.valueTextSize = 12f
-        barDataSet2.valueFormatter = object : ValueFormatter() {
-            override fun getFormattedValue(value: Float): String {
-                return when {
-                    value % 1 == 0f -> value.toInt().toString()
-                    else -> String.format("%.1f", value)
+        val barData = if (scores2 != null) {
+            val entries2 = scores2.mapIndexed { index, score -> BarEntry(index.toFloat(), score) }
+            val barDataSet2 = BarDataSet(entries2, "Rata-rata Keteramplilan SRL Kelas Anda")
+            barDataSet2.color = Color.parseColor("#FF5733")
+            barDataSet2.valueTextColor = Color.BLACK
+            barDataSet2.valueTextSize = 12f
+            barDataSet2.valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return when {
+                        value % 1 == 0f -> value.toInt().toString()
+                        else -> String.format("%.1f", value)
+                    }
                 }
             }
+            BarData(barDataSet1, barDataSet2)
+        } else {
+            BarData(barDataSet1)
         }
 
-        val barData = BarData(barDataSet1, barDataSet2)
-        barData.barWidth = 0.3f  // Adjust bar width
-
+        barData.barWidth = 0.3f
         horizontalBarChart.data = barData
         horizontalBarChart.description.isEnabled = false
 
-        // Customize the XAxis (now it shows scores)
-        val labels = listOf("","Goal Settings", "Environment Structuring", "Task Strategies", "Time Management", "Help Seeking", "Self Evaluation")
-
-
+        val labels = listOf("Goal Settings", "Environment Structuring", "Task Strategies", "Time Management", "Help Seeking", "Self Evaluation")
         horizontalBarChart.xAxis.apply {
-            labelCount = labels.size - 1
+            labelCount = labels.size
             valueFormatter = IndexAxisValueFormatter(labels)
             axisMinimum = 0f
-            axisMaximum = scores1.size.toFloat() + 0.5f // Tambahkan ruang ekstra untuk grup terakhir agar terlihat jelas.
+            axisMaximum = labels.size.toFloat()
             granularity = 1f
             setDrawGridLines(true)
             position = XAxis.XAxisPosition.BOTTOM
@@ -92,41 +92,21 @@ class BarChartFragment : Fragment() {
             typeface = android.graphics.Typeface.DEFAULT_BOLD
         }
 
-
         horizontalBarChart.axisLeft.apply {
             textColor = Color.DKGRAY
             textSize = 12f
             typeface = android.graphics.Typeface.DEFAULT_BOLD
             granularity = 1f
             setDrawGridLines(false)
-            axisMinimum = -0.5f
-            axisMaximum = labels.size - 0.5f
-            valueFormatter = object : ValueFormatter() {
-                override fun getFormattedValue(value: Float): String {
-                    return when {
-                        value % 1 == 0f -> value.toInt().toString()
-                        else -> String.format("%.1f", value)
-                    }
-                }
-            }
+            axisMinimum = 0f
+            axisMaximum = 6f
         }
-
 
         horizontalBarChart.axisRight.isEnabled = false
 
-
-        horizontalBarChart.axisRight.apply {
-            axisMaximum = 6f
-            axisMinimum = 0f
+        if (scores2 != null) {
+            horizontalBarChart.groupBars(0f, 0.4f, 0.05f)
         }
-
-        horizontalBarChart.axisLeft.apply {
-            axisMaximum = 6f
-            axisMinimum = 0f
-        }
-
-
-        horizontalBarChart.groupBars(0f, 0.4f, 0.05f)
 
         horizontalBarChart.invalidate()
         horizontalBarChart.animateY(2000)
