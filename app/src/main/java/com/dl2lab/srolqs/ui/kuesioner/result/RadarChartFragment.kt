@@ -42,18 +42,23 @@ class RadarChartFragment : Fragment() {
     private fun updateChartData(scores: List<Float>) {
         val entries = scores.mapIndexed { index, score -> RadarEntry(score) }
         val radarDataSet = RadarDataSet(entries, "SRL Skills")
-
+        radarDataSet.valueFormatter = object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return when {
+                    value % 1 == 0f -> value.toInt().toString()
+                    else -> String.format("%.1f", value)
+                }
+            }
+        }
 
         radarDataSet.setColors(ColorTemplate.MATERIAL_COLORS, 255)
         radarDataSet.lineWidth = 2f
         radarDataSet.valueTextColor = Color.BLACK
         radarDataSet.valueTextSize = 12f
 
-        // Apply custom color for both line and filled area
-        radarDataSet.color = lightGreen         // Line color
-        radarDataSet.fillColor = lightGreen     // Fill color
-        radarDataSet.setDrawFilled(true)         // Enable filled area with custom color
-
+        radarDataSet.color = lightGreen
+        radarDataSet.fillColor = lightGreen
+        radarDataSet.setDrawFilled(true)
         radarChart.data = RadarData(radarDataSet)
         radarChart.description.text = "Radar Chart"
 
@@ -73,23 +78,24 @@ class RadarChartFragment : Fragment() {
             axisMinimum = 0f
             granularity = 1f
             isGranularityEnabled = true
-            setDrawLabels(true)
+            setDrawLabels(false)
             setLabelCount(7, true)
             textColor = Color.DKGRAY
             textSize = 12f
             valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
                     return when {
-                        value % 1 == 0f -> value.toInt().toString() // Show as whole number if it's a whole number
-                        else -> String.format("%.1f", value) // Format to one decimal place otherwise
+                        value % 1 == 0f -> value.toInt().toString()
+                        else -> String.format("%.1f", value)
                     }
                 }
             }
-
         }
 
-
+        radarChart.description.isEnabled = false
+        radarChart.legend.isEnabled = false
         radarChart.invalidate()
         radarChart.animateY(2000)
+
     }
 }

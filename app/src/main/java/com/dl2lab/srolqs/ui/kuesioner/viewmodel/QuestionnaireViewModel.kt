@@ -31,6 +31,7 @@ class QuestionnaireViewModel(private val repository: SecuredRepository) : ViewMo
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> = _errorMessage
 
+
     fun setClassId(classId: String) {
         this.classId.value = classId
     }

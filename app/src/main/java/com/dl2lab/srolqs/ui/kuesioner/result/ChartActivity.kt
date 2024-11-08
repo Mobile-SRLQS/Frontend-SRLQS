@@ -1,6 +1,7 @@
 package com.dl2lab.srolqs.ui.kuesioner.result
 
 import BarChartFragment
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -12,31 +13,21 @@ import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.kuesioner.viewmodel.QuestionnaireViewModel
 
 class ChartActivity : AppCompatActivity() {
+    private lateinit var toggleChartButton: Button
+    private var isRadarChartDisplayed = true
+
 
     private val viewModel: QuestionnaireViewModel by viewModels {
         ViewModelFactory.getInstance(applicationContext)
     }
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chart)
+        toggleChartButton = findViewById(R.id.btn_toggle_chart)
+        toggleChartButton.setOnClickListener { toggleChart() }
 
-        // Initialize buttons and set click listeners
-        findViewById<Button>(R.id.btn_show_radar_chart).setOnClickListener {
-            viewModel.scoreResult.value?.let { scores ->
-                displayFragment(RadarChartFragment().apply {
-                    arguments = Bundle().apply { putFloatArray("SCORES", scores.toFloatArray()) }
-                })
-            }
-        }
-
-        findViewById<Button>(R.id.btn_show_bar_chart).setOnClickListener {
-            viewModel.scoreResult.value?.let { scores ->
-                displayFragment(BarChartFragment().apply {
-                    arguments = Bundle().apply { putFloatArray("SCORES", scores.toFloatArray()) }
-                })
-            }
-        }
 
         // Fetch data for the specified class ID and period
         val classId = intent.getStringExtra("CLASSID")
@@ -62,5 +53,30 @@ class ChartActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.chart_fragment_container, fragment)
             .commit()
+    }
+
+    private fun toggleChart() {
+        viewModel.scoreResult.value?.let { scores ->
+            if (isRadarChartDisplayed) {
+                displayBarChart(scores.toFloatArray())
+                toggleChartButton.text = "Lihat Versi Radar Chart"
+            } else {
+                displayRadarChart(scores.toFloatArray())
+                toggleChartButton.text = "Lihat Versi Bar Chart"
+            }
+            isRadarChartDisplayed = !isRadarChartDisplayed
+        }
+    }
+
+    private fun displayRadarChart(scores: FloatArray) {
+        displayFragment(RadarChartFragment().apply {
+            arguments = Bundle().apply { putFloatArray("SCORES", scores) }
+        })
+    }
+
+    private fun displayBarChart(scores: FloatArray) {
+        displayFragment(BarChartFragment().apply {
+            arguments = Bundle().apply { putFloatArray("SCORES", scores) }
+        })
     }
 }
