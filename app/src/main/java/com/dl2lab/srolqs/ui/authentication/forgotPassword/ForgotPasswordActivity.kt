@@ -47,6 +47,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
         if(email.isEmpty() ){
             this.showCustomAlertDialog(
+                "",
                 "Please input all fields",
                 "OK",
                 "Cancel",
@@ -64,6 +65,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
                 val body = response.body()
                 if (body != null) {
                     this.showCustomAlertDialog(
+                        "",
                         body.message ?: "Code sent successfully",
                         "OK",
                         "",
@@ -77,6 +79,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
                 }
             } else {
                 this.showCustomAlertDialog(
+                    "",
                     extractErrorMessage(response),
                     "OK",
                     "",

@@ -53,6 +53,7 @@ class CreateNewPasswordActivity : AppCompatActivity() {
 
         if(newPassword.isEmpty() || confirmNewPassword.isEmpty() || verificationCode.isEmpty() ){
             this.showCustomAlertDialog(
+                "",
                 "Please input all fields",
                 "OK",
                 "Cancel",
@@ -65,6 +66,7 @@ class CreateNewPasswordActivity : AppCompatActivity() {
 
         if (newPassword != confirmNewPassword) {
             this.showCustomAlertDialog(
+                "",
                 "Password and Confirm Password must be the same",
                 "OK",
                 "",
@@ -82,6 +84,7 @@ class CreateNewPasswordActivity : AppCompatActivity() {
                 val body = response.body()
                 if (body != null) {
                     this.showCustomAlertDialog(
+                        "",
                         body.message ?: "Password changed successfully",
                         "OK",
                         "",
@@ -95,6 +98,7 @@ class CreateNewPasswordActivity : AppCompatActivity() {
                 }
             } else {
                 this.showCustomAlertDialog(
+                    "",
                     extractErrorMessage(response),
                     "OK",
                     "",

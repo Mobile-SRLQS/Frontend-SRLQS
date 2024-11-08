@@ -62,6 +62,7 @@ class HomeFragment : Fragment(), OnClassItemClickListener {
                     startActivity(Intent(requireActivity(), WelcomeActivity::class.java))
                     requireActivity().finish()
                     requireContext().showCustomAlertDialog(
+                        "",
                         "Session Expired. Please login again!",
                         "Login",
                         "",
@@ -81,6 +82,7 @@ class HomeFragment : Fragment(), OnClassItemClickListener {
             val classId= binding.etCourseCode.text.toString()
             if (classId.isEmpty()) {
                 requireContext().showCustomAlertDialog(
+                    "",
                     "Tolong masukkan kode kelas terlebih dahulu",
                     "OK",
                     "",
@@ -103,6 +105,7 @@ class HomeFragment : Fragment(), OnClassItemClickListener {
                         }
                     } else {
                         requireContext().showCustomAlertDialog(
+                            "",
                             "Pastikan kode kelas yang anda masukkan benar",
                             "OK",
                             "",

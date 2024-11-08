@@ -9,10 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.dl2lab.srolqs.R
 import com.github.mikephil.charting.charts.RadarChart
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.RadarData
 import com.github.mikephil.charting.data.RadarDataSet
 import com.github.mikephil.charting.data.RadarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 
 class RadarChartFragment : Fragment() {
@@ -75,6 +77,15 @@ class RadarChartFragment : Fragment() {
             setLabelCount(7, true)
             textColor = Color.DKGRAY
             textSize = 12f
+            valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return when {
+                        value % 1 == 0f -> value.toInt().toString() // Show as whole number if it's a whole number
+                        else -> String.format("%.1f", value) // Format to one decimal place otherwise
+                    }
+                }
+            }
+
         }
 
 

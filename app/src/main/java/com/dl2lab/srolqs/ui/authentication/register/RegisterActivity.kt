@@ -1,6 +1,7 @@
 package com.dl2lab.srolqs.ui.authentication.register
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -11,6 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.dl2lab.srolqs.databinding.ActivityRegisterBinding
 import com.dl2lab.srolqs.ui.authentication.viewmodel.RegisterViewModel
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
+import com.dl2lab.srolqs.ui.authentication.login.LoginActivity
+import com.dl2lab.srolqs.ui.customview.LoadingManager
+import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
+import com.dl2lab.srolqs.ui.home.main.MainActivity
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -30,7 +35,7 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
         role = intent.getStringExtra("role") ?: "Student"
-
+        LoadingManager.init(this)
         observeViewModel()
         if(role == "Instructor"){
             hideInput()
@@ -63,17 +68,28 @@ class RegisterActivity : AppCompatActivity() {
             if (response.error) {
                 Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "Registration Successful!", Toast.LENGTH_SHORT).show()
-                finish() // Optionally finish the activity on successful registration
+                showCustomAlertDialog(
+                    "Registrasi Berhasil!",
+                    "Selamat! Akun Anda telah berhasil dibuat. Anda sekarang dapat masuk dan mulai menggunakan aplikasi. Jangan ragu untuk menjelajahi berbagai fitur yang tersedia.",
+                    "Masuk Akun",
+                    "",
+                    {
+                        finish()
+                        val intent = Intent(this, LoginActivity::class.java)
+                        intent.putExtra("role", role)
+                        startActivity(intent)
+                    },
+                    {}
+                )
             }
         }
 
         registerViewModel.isLoading.observe(this) { isLoading ->
             // Show loading indicator if needed
             if (isLoading) {
-                // Show a loading spinner or some UI feedback for loading
+                LoadingManager.show()
             } else {
-                // Hide loading spinner
+                LoadingManager.hide()
             }
         }
 

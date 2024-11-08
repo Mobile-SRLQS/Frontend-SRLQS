@@ -67,6 +67,7 @@ class JoinClassFragment : Fragment() {
 
                 } else {
                     requireContext().showCustomAlertDialog(
+                        "",
                         extractErrorMessage(response),
                         "OK",
                         "",
@@ -99,6 +100,7 @@ class JoinClassFragment : Fragment() {
                     startActivity(Intent(requireActivity(), WelcomeActivity::class.java))
                     requireActivity().finish()
                     requireContext().showCustomAlertDialog(
+                        "",
                         "Session Expired. Please login again!",
                         "Login",
                         "",
@@ -130,6 +132,7 @@ class JoinClassFragment : Fragment() {
                     }
                 } else {
                     requireContext().showCustomAlertDialog(
+                        "",
                         extractErrorMessage(response),
                         "OK",
                         "",

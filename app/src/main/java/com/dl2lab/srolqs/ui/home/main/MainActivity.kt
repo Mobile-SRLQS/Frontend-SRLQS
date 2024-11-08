@@ -9,9 +9,11 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
+import androidx.paging.LoadState
 import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.databinding.ActivityMainBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
+import com.dl2lab.srolqs.ui.customview.LoadingManager
 import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
 import com.dl2lab.srolqs.ui.home.viewmodel.MainViewModel
 import com.dl2lab.srolqs.ui.home.welcome.WelcomeActivity
@@ -32,9 +34,11 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        LoadingManager.init(this)
         
         setupViewModel()
         checkUserSession()
+        observeViewModel()
 
         val navView: BottomNavigationView = binding.navView
 
@@ -107,6 +111,16 @@ class MainActivity : AppCompatActivity() {
         checkUserSession()
     }
 
+    private fun observeViewModel(){
+        viewModel.isLoading.observe(this){
+            if(it){
+                LoadingManager.show()
+            } else{
+                LoadingManager.hide()
+            }
+        }
+    }
+
     private fun setupViewModel(){
         viewModel = ViewModelProvider(
             this,
@@ -122,6 +136,7 @@ class MainActivity : AppCompatActivity() {
                     startActivity(Intent(this, WelcomeActivity::class.java))
                     this.finish()
                     this.showCustomAlertDialog(
+                        "",
                         "Session Expired. Please login again!",
                         "Login",
                         "",

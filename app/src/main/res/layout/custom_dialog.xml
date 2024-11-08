@@ -9,17 +9,24 @@
     android:orientation="vertical"
     android:padding="20dp">
 
-
     <TextView
         android:id="@+id/dialog_title"
-        style="@style/H2"
+        style="@style/H1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Apakah Anda yakin ingin keluar?"
+        />
+    <TextView
+        android:id="@+id/dialog_subtitle"
+        style="@style/B1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
         android:text="Apakah Anda yakin ingin keluar?"
        />
-
 
     <LinearLayout
         android:layout_width="match_parent"
