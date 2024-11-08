@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/chart_activity"
+    android:background="@color/white"
 
     >
 
@@ -55,14 +56,14 @@
         android:layout_height="wrap_content"
         android:text="Lihat Versi Barchart"
         android:textSize="12sp"
-        app:layout_constraintEnd_toStartOf="@+id/btn_show_bar_chart"
+        app:layout_constraintEnd_toStartOf="@+id/btn_toggle_average_data"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chart_fragment_container" />
 
     <!-- Container to hold the chart fragments -->
 
     <Button
-        android:id="@+id/btn_show_bar_chart"
+        android:id="@+id/btn_toggle_average_data"
         style="@style/OutlinedButtonLightGreen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -87,7 +88,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_show_bar_chart"
+        app:layout_constraintTop_toBottomOf="@id/btn_toggle_average_data"
         app:layout_constraintBottom_toTopOf="@id/guideline2"
         >
 

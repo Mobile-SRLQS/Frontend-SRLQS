@@ -34,15 +34,28 @@ class RadarChartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.getFloatArray("SCORES")?.let { scores ->
+        var scores = arguments?.getFloatArray("SCORES")
+        var scores2 = arguments?.getFloatArray("SCORES2")
+        if (scores != null) {
             updateChartData(scores.toList())
         }
+        if (scores!=null && scores2 != null) {
+            updateChartData(scores.toList(), scores2.toList())
+        }
+
+
     }
 
-    private fun updateChartData(scores: List<Float>) {
-        val entries = scores.mapIndexed { index, score -> RadarEntry(score) }
-        val radarDataSet = RadarDataSet(entries, "SRL Skills")
-        radarDataSet.valueFormatter = object : ValueFormatter() {
+    private fun updateChartData(scores1: List<Float>, scores2: List<Float>? = null) {
+        val entries1 = scores1.mapIndexed { index, score -> RadarEntry(score) }
+        val radarDataSet1 = RadarDataSet(entries1, "Keterampilan SRL Anda")
+        radarDataSet1.lineWidth = 2f
+        radarDataSet1.valueTextColor = Color.BLACK
+        radarDataSet1.valueTextSize = 12f
+        radarDataSet1.color = Color.parseColor("#1ABC9C")
+        radarDataSet1.fillColor = Color.parseColor("#1ABC9C")
+        radarDataSet1.setDrawFilled(true)
+        radarDataSet1.valueFormatter = object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
                 return when {
                     value % 1 == 0f -> value.toInt().toString()
@@ -51,34 +64,47 @@ class RadarChartFragment : Fragment() {
             }
         }
 
-        radarDataSet.setColors(ColorTemplate.MATERIAL_COLORS, 255)
-        radarDataSet.lineWidth = 2f
-        radarDataSet.valueTextColor = Color.BLACK
-        radarDataSet.valueTextSize = 12f
+        val radarData = if (scores2 != null) {
+            val entries2 = scores2.mapIndexed { index, score -> RadarEntry(score) }
+            val radarDataSet2 = RadarDataSet(entries2, "Rata-rata Keteramplilan SRL Kelas Anda")
+            radarDataSet2.setColors(ColorTemplate.MATERIAL_COLORS, 255)
+            radarDataSet2.lineWidth = 2f
+            radarDataSet2.valueTextColor = Color.BLACK
+            radarDataSet2.valueTextSize = 12f
+            radarDataSet2.color = Color.RED
+            radarDataSet2.fillColor = Color.RED
+            radarDataSet2.setDrawFilled(true)
+            radarDataSet2.valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return when {
+                        value % 1 == 0f -> value.toInt().toString()
+                        else -> String.format("%.1f", value)
+                    }
+                }
+            }
+            RadarData(radarDataSet1, radarDataSet2)
+        } else {
+            RadarData(radarDataSet1)
+        }
 
-        radarDataSet.color = lightGreen
-        radarDataSet.fillColor = lightGreen
-        radarDataSet.setDrawFilled(true)
-        radarChart.data = RadarData(radarDataSet)
+        radarChart.data = radarData
         radarChart.description.text = "Radar Chart"
 
         val labels = listOf("Goal Settings", "Environment Structuring", "Task Strategies", "Time Management", "Help Seeking", "Self Evaluation")
 
-        // Set up the XAxis to display the labels
         radarChart.xAxis.apply {
             valueFormatter = IndexAxisValueFormatter(labels)
             textColor = Color.BLACK
             textSize = 6f
             typeface = Typeface.DEFAULT_BOLD
-
         }
-        // Set the maximum value for the Y axis
+
         radarChart.yAxis.apply {
             axisMaximum = 6f
             axisMinimum = 0f
             granularity = 1f
             isGranularityEnabled = true
-            setDrawLabels(false)
+            setDrawLabels(true)
             setLabelCount(7, true)
             textColor = Color.DKGRAY
             textSize = 12f
@@ -93,9 +119,8 @@ class RadarChartFragment : Fragment() {
         }
 
         radarChart.description.isEnabled = false
-        radarChart.legend.isEnabled = false
+        radarChart.legend.isEnabled = true
         radarChart.invalidate()
         radarChart.animateY(2000)
-
     }
 }

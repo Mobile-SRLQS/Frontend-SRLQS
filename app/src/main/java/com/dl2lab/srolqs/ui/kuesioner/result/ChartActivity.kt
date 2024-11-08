@@ -16,7 +16,9 @@ import com.dl2lab.srolqs.ui.kuesioner.viewmodel.QuestionnaireViewModel
 
 class ChartActivity : AppCompatActivity() {
     private lateinit var toggleChartButton: Button
+    private lateinit var toggleAverageDataButton: Button
     private var isRadarChartDisplayed = true
+    private var isAvgDataRadarChartDisplayed = false
     private lateinit var binding: ActivityChartBinding
 
     private val viewModel: QuestionnaireViewModel by viewModels {
@@ -35,7 +37,9 @@ class ChartActivity : AppCompatActivity() {
         binding = ActivityChartBinding.inflate(layoutInflater)
         setContentView(binding.root)
         toggleChartButton = findViewById(R.id.btn_toggle_chart)
+        toggleAverageDataButton = findViewById(R.id.btn_toggle_average_data)
         toggleChartButton.setOnClickListener { toggleChart() }
+        toggleAverageDataButton.setOnClickListener { toggleAverageDataRadarChart() }
 
         addReccomendation()
         // Fetch data for the specified class ID and period
@@ -98,11 +102,34 @@ class ChartActivity : AppCompatActivity() {
             if (isRadarChartDisplayed) {
                 displayBarChart(scores.toFloatArray())
                 toggleChartButton.text = "Lihat Versi Radar Chart"
+                isAvgDataRadarChartDisplayed = false
+
             } else {
                 displayRadarChart(scores.toFloatArray())
                 toggleChartButton.text = "Lihat Versi Bar Chart"
+                isAvgDataRadarChartDisplayed = false
             }
             isRadarChartDisplayed = !isRadarChartDisplayed
+        }
+    }
+
+    private fun toggleAverageDataRadarChart() {
+        viewModel.scoreResult.value?.let { scores ->
+            if (isAvgDataRadarChartDisplayed) {
+                displayRadarChart(scores.toFloatArray())
+                toggleAverageDataButton.text = "Lihat Rata-Rata Kelas"
+            } else {
+                viewModel.scoreAverage.value?.let { averageScores ->
+                    displayFragment(RadarChartFragment().apply {
+                        arguments = Bundle().apply {
+                            putFloatArray("SCORES", scores.toFloatArray())
+                            putFloatArray("SCORES2", averageScores.toFloatArray())
+                        }
+                    })
+                }
+                toggleAverageDataButton.text = "Tanpa Rata-Rata Kelas"
+            }
+            isAvgDataRadarChartDisplayed = !isAvgDataRadarChartDisplayed
         }
     }
 
@@ -114,7 +141,12 @@ class ChartActivity : AppCompatActivity() {
 
     private fun displayBarChart(scores: FloatArray) {
         displayFragment(BarChartFragment().apply {
-            arguments = Bundle().apply { putFloatArray("SCORES", scores) }
+            arguments = Bundle().apply {
+                putFloatArray("SCORES", scores)
+                putFloatArray("SCORES2", scores)
+            }
         })
     }
+
+
 }
