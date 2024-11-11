@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.data.remote.response.DataItem
+import com.dl2lab.srolqs.data.remote.response.KegiatanItem
 import com.dl2lab.srolqs.databinding.FragmentHomeBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
@@ -20,9 +21,10 @@ import com.dl2lab.srolqs.ui.home.adapter.ClassAdapter
 import com.dl2lab.srolqs.ui.home.adapter.OnClassItemClickListener
 import com.dl2lab.srolqs.ui.home.viewmodel.MainViewModel
 import com.dl2lab.srolqs.ui.home.welcome.WelcomeActivity
+import com.dl2lab.srolqs.ui.kegiatan.adapter.KegiatanAdapter
 import com.dl2lab.srolqs.utils.JwtUtils
 
-class HomeFragment : Fragment(), OnClassItemClickListener {
+class HomeFragment : Fragment(), OnClassItemClickListener, KegiatanAdapter.OnKegiatanItemClickListener {
 
 
     private var _binding: FragmentHomeBinding? = null
@@ -42,6 +44,7 @@ class HomeFragment : Fragment(), OnClassItemClickListener {
         getUserName()
         setupJoinClass()
         getClassList()
+        getActivityList()
 
         return root
     }
@@ -131,9 +134,24 @@ class HomeFragment : Fragment(), OnClassItemClickListener {
         viewModel.getListClass().observe(viewLifecycleOwner, Observer { response ->
             if (response.isSuccessful) {
                 val classList = response.body()?.data ?: emptyList()
-                val adapter = ClassAdapter(classList, this)
+                val limitedClassList = classList.take(3) // Ini akan mengambil tiga item pertama
+                val adapter = ClassAdapter(limitedClassList, this)
                 binding.rvCourseList.layoutManager = LinearLayoutManager(requireContext())
                 binding.rvCourseList.adapter = adapter
+            } else {
+
+            }
+        })
+    }
+
+    fun getActivityList() {
+        viewModel.getListKegiatan().observe(viewLifecycleOwner, Observer { response ->
+            if (response.isSuccessful) {
+                val listKegiatan = response.body()?.data ?: emptyList()
+                val limitedListKegiatan = listKegiatan.take(3) // Ini akan mengambil tiga item pertama
+                val adapter = KegiatanAdapter(limitedListKegiatan, this)
+                binding.rvActivityList.layoutManager = LinearLayoutManager(requireContext())
+                binding.rvActivityList.adapter = adapter
             } else {
 
             }
@@ -146,6 +164,11 @@ class HomeFragment : Fragment(), OnClassItemClickListener {
         })
     }
 
+    override fun onItemClick(kegiatanItem: KegiatanItem) {
+        // Handle the item click event for KegiatanItem
+//        val action = HomeFragmentDirections.actionNavigationHomeToDetailKegiatanFragment(kegiatanItem)
+//        findNavController().navigate(action)
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

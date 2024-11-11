@@ -10,5 +10,5 @@
     <color name="light_green">#1ABC9C</color>
     <color name="light_light_green">#7AD8C6</color>
     <color name="grey">#79747E</color>
-    <string name="register_an_account">Register an account</string>
+    <string name="register_an_account">Daftarkan Diri Anda</string>
 </resources>

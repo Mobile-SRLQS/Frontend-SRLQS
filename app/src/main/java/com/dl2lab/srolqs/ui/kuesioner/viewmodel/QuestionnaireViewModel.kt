@@ -12,6 +12,9 @@ import com.dl2lab.srolqs.data.remote.request.SubmitQuestionnaireRequest
 import com.dl2lab.srolqs.data.remote.response.BasicResponse
 import com.dl2lab.srolqs.data.remote.response.DimensionReccomendation
 import com.dl2lab.srolqs.data.remote.response.GetQuestionnaireResponse
+import com.dl2lab.srolqs.data.remote.response.ProgressData
+import com.dl2lab.srolqs.data.remote.response.ShowAvailablePeriodResponse
+import com.dl2lab.srolqs.data.remote.response.StudentProgressResponse
 import com.dl2lab.srolqs.data.remote.response.SubmitQuestionnaireResponse
 import com.dl2lab.srolqs.data.repository.SecuredRepository
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -33,11 +36,17 @@ class QuestionnaireViewModel(private val repository: SecuredRepository) : ViewMo
     val scoreResult: LiveData<List<Float>> = _scoreResult
 
     private val _scoreAverage = MutableLiveData<List<Float>>()
-    val scoreAverage: LiveData<List<Float>> = _scoreResult
+    val scoreAverage: LiveData<List<Float>> = _scoreAverage
 
 
     private val _reccomendation = MutableLiveData<DimensionReccomendation>()
     val reccomendation: LiveData<DimensionReccomendation> = _reccomendation
+
+    private val _periods = MutableLiveData<List<String>>()
+    val periods : LiveData<List<String>> = _periods
+
+    private val _studentProgress = MutableLiveData<ProgressData>()
+    val studentProgress : LiveData<ProgressData> = _studentProgress
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -148,6 +157,61 @@ class QuestionnaireViewModel(private val repository: SecuredRepository) : ViewMo
             }
 
             override fun onFailure(call: Call<GetQuestionnaireResponse>, t: Throwable) {
+                _isLoading.postValue(false)
+                _errorMessage.postValue(t.message)
+            }
+        })
+    }
+
+
+    fun fetchAvailablePeriod(classId: String) {
+        _isLoading.value = true
+        val client = repository.getAvailablePeriod(classId)
+        client.enqueue(object : Callback<ShowAvailablePeriodResponse> {
+            override fun onResponse(
+                call: Call<ShowAvailablePeriodResponse>,
+                response: Response<ShowAvailablePeriodResponse>
+            ) {
+                _isLoading.postValue(false)
+                if (response.isSuccessful) {
+                    val data = response.body()?.data
+                    if(data != null) {
+                        _periods.postValue(data.mapNotNull { it })
+                    }
+                } else {
+                    _errorMessage.postValue(response.message())
+                }
+            }
+
+            override fun onFailure(call: Call<ShowAvailablePeriodResponse>, t: Throwable) {
+                _isLoading.postValue(false)
+                _errorMessage.postValue(t.message)
+            }
+        })
+    }
+
+    fun fetchStudentProgress(classId: String, type:String){
+        _isLoading.value = true
+        val client =  repository.getStudentProgress(classId, type)
+        client.enqueue(object  : Callback<StudentProgressResponse>{
+
+            override fun onResponse(
+                call: Call<StudentProgressResponse>,
+                response: Response<StudentProgressResponse>
+            ) {
+                _isLoading.postValue(false)
+                if(response.isSuccessful){
+                    val data = response.body()?.data
+                    if(data != null) {
+                        _studentProgress.postValue(data!!)
+                    }
+
+                } else{
+                    _errorMessage.postValue(response.message())
+                }
+            }
+
+            override fun onFailure(call: Call<StudentProgressResponse>, t: Throwable) {
                 _isLoading.postValue(false)
                 _errorMessage.postValue(t.message)
             }

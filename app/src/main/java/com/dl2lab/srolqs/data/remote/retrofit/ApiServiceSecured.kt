@@ -11,6 +11,8 @@ import com.dl2lab.srolqs.data.remote.response.ListClassResponse
 import com.dl2lab.srolqs.data.remote.response.SubmitQuestionnaireResponse
 import com.dl2lab.srolqs.data.remote.response.GetKegiatanResponse
 import com.dl2lab.srolqs.data.remote.response.GetQuestionnaireResponse
+import com.dl2lab.srolqs.data.remote.response.ShowAvailablePeriodResponse
+import com.dl2lab.srolqs.data.remote.response.StudentProgressResponse
 import com.dl2lab.srolqs.data.remote.response.TambahKegiatanResponse
 import retrofit2.Call
 import retrofit2.http.Body
@@ -54,6 +56,19 @@ interface ApiServiceSecured {
     fun getClassInformation(
         @Path("id") id: String
     ): Call<DetailClassResponse>
+
+    @GET("class/available-periods/{class_id}")
+    fun getAvailablePeriod(
+        @Path("class_id") classId :String
+    ) : Call<ShowAvailablePeriodResponse>
+
+    @GET("questionnaire/progress/dimensi")
+    fun getStudentProgress(
+        @Query("class_id") classId :String,
+        @Query("type") type: String
+    ) : Call<StudentProgressResponse>
+
+
 
 
     @POST("questionnaire/submit")

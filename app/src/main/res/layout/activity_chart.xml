@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingTop="30dp"
+        android:gravity="center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -27,14 +28,30 @@
             android:paddingVertical="8dp"
             android:src="@drawable/arrow_back_icon" />
 
-        <TextView
-            style="@style/H1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Periode 1" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:background="@drawable/rounded_course_list_item"
+            android:layout_height="wrap_content">
+            <Spinner
+                android:id="@+id/spinner_dropdown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="120dp"
+                android:paddingStart="8dp"
+
+                android:paddingEnd="8dp"
+                android:spinnerMode="dropdown" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <ImageButton
             android:id="@+id/btnEdit"
@@ -48,12 +65,14 @@
             android:visibility="invisible" />
     </LinearLayout>
 
+
     <!-- Buttons to switch between fragments -->
     <Button
         android:id="@+id/btn_toggle_chart"
         style="@style/BasicButtonLightGreen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         android:text="Lihat Versi Barchart"
         android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@+id/btn_toggle_average_data"
@@ -67,6 +86,7 @@
         style="@style/OutlinedButtonLightGreen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         android:text="Lihat Rata-Rata Kelas"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -77,16 +97,20 @@
         android:id="@+id/chart_fragment_container"
         android:layout_width="0dp"
         android:layout_height="350dp"
+        android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
         android:cropToPadding="true"
         android:fitsSystemWindows="true"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_result_activity" />
+
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_toggle_average_data"
         app:layout_constraintBottom_toTopOf="@id/guideline2"
@@ -239,6 +263,41 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/spinner_dimension_linear_layout"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chart_fragment_container"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/rounded_course_list_item"
+        android:layout_height="wrap_content">
+        <Spinner
+            android:id="@+id/spinner_dimension"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="120dp"
+            android:paddingStart="8dp"
+
+            android:paddingEnd="8dp"
+            android:spinnerMode="dropdown" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_dimension"
+        android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guideline2"
+        android:layout_marginHorizontal="20dp"
+        android:justificationMode="inter_word"
+        android:text="Keterampilan S lorep ipsum
+        dolor sit amet, consectetur adipiscing elit. Nulla"
+        style="@style/B1"
+        app:layout_constraintTop_toBottomOf="@id/spinner_dimension_linear_layout"/>
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"

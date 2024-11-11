@@ -9,11 +9,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dl2lab.srolqs.R
-import com.dl2lab.srolqs.data.remote.response.DataItem
 import com.dl2lab.srolqs.data.remote.response.KegiatanItem
 import com.dl2lab.srolqs.data.repository.KegiatanRepository
 import com.dl2lab.srolqs.databinding.FragmentKegiatanBinding
@@ -22,7 +20,7 @@ import com.dl2lab.srolqs.ui.kegiatan.adapter.KegiatanAdapter
 import com.dl2lab.srolqs.ui.kegiatan.viewmodel.KegiatanViewModel
 import com.dl2lab.srolqs.ui.profile.viewmodel.ProfileViewModel
 
-class KegiatanFragment : Fragment() {
+class KegiatanFragment : Fragment(), KegiatanAdapter.OnKegiatanItemClickListener {
 
     private lateinit var binding: FragmentKegiatanBinding
     private val kegiatanViewModel: KegiatanViewModel by viewModels {
@@ -75,19 +73,13 @@ class KegiatanFragment : Fragment() {
     }
 
     private fun setupRecyclerView(kegiatanList: List<KegiatanItem>) {
-        val adapter = KegiatanAdapter(kegiatanList,
-            onEditClick = { kegiatan ->
-                // Handle edit action here
-                Toast.makeText(requireContext(), "Edit ${kegiatan.namaKegiatan}", Toast.LENGTH_SHORT).show()
-            },
-            onDeleteClick = { kegiatan ->
-                // Handle delete action here
-                Toast.makeText(requireContext(), "Delete ${kegiatan.namaKegiatan}", Toast.LENGTH_SHORT).show()
-            }
-        )
+        val adapter = KegiatanAdapter(kegiatanList, this)
         binding.rvKegiatan.adapter = adapter
     }
 
+    override fun onItemClick(kegiatanItem: KegiatanItem) {
+        Toast.makeText(requireContext(), "Detail Kegiatan", Toast.LENGTH_SHORT).show()
+    }
 
     private fun showEmptyState() {
         if (binding.viewstubEmptyState.parent != null) {

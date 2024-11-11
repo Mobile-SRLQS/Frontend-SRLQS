@@ -1,10 +1,15 @@
 package com.dl2lab.srolqs.ui.kuesioner.result
 
 import BarChartFragment
+import LineChartFragment
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -13,13 +18,17 @@ import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.databinding.ActivityChartBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.kuesioner.viewmodel.QuestionnaireViewModel
+import java.util.Locale
 
 class ChartActivity : AppCompatActivity() {
     private lateinit var toggleChartButton: Button
+    private lateinit var periodSpinner: Spinner
     private lateinit var toggleAverageDataButton: Button
     private var isRadarChartDisplayed = true
     private var isAvgDataRadarChartDisplayed = false
     private var isAvgDataBarChartDisplayed = false
+    private var classId: String? = null
+    private var period: String? = null
     private lateinit var binding: ActivityChartBinding
 
     private val viewModel: QuestionnaireViewModel by viewModels {
@@ -39,15 +48,18 @@ class ChartActivity : AppCompatActivity() {
         setContentView(binding.root)
         toggleChartButton = findViewById(R.id.btn_toggle_chart)
         toggleAverageDataButton = findViewById(R.id.btn_toggle_average_data)
+        periodSpinner = findViewById(R.id.spinner_dropdown)
         toggleChartButton.setOnClickListener { toggleChart() }
         toggleAverageDataButton.setOnClickListener { toggleAverageData() }
 
         addReccomendation()
+        setupPeriodSpinner()
+        setupDimensionSpinner()
         // Fetch data for the specified class ID and period
-        val classId = intent.getStringExtra("CLASSID")
-        val period = intent.getStringExtra("PERIOD")
+        classId = intent.getStringExtra("CLASSID")
+        period = intent.getStringExtra("PERIOD")
         if (classId != null && period != null) {
-            viewModel.fetchScoreResult(classId, period)
+            viewModel.fetchScoreResult(classId!!, period!!)
         }
 
         // Observe scoreResult data and set initial fragment when data is available
@@ -59,6 +71,147 @@ class ChartActivity : AppCompatActivity() {
             } else {
                 Log.e("ChartActivity", "No scores available to display.")
             }
+        }
+    }
+
+    private fun showPeriodData(isShow: Boolean) {
+        if (isShow) {
+            binding.scrollView.visibility = View.VISIBLE
+            binding.btnToggleAverageData.visibility = View.VISIBLE
+            binding.btnToggleChart.visibility = View.VISIBLE
+            binding.spinnerDimensionLinearLayout.visibility = View.INVISIBLE
+            binding.tvDimension.visibility = View.INVISIBLE
+        } else {
+            binding.scrollView.visibility = View.INVISIBLE
+            binding.btnToggleAverageData.visibility = View.INVISIBLE
+            binding.btnToggleChart.visibility = View.INVISIBLE
+            binding.spinnerDimensionLinearLayout.visibility = View.VISIBLE
+            binding.tvDimension.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setupPeriodSpinner() {
+        classId = intent.getStringExtra("CLASSID")
+
+        var periodString = arrayOf("")
+        classId?.let { viewModel.fetchAvailablePeriod(it) }
+        viewModel.periods.observe(this) { periods ->
+            periodString = periods.toTypedArray()
+            // Update adapter dan notify data changed
+            val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, periodString)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            periodSpinner.adapter = adapter
+            // Set initial selection
+
+            periodSpinner.setSelection(0)
+
+        }
+
+        periodSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val selectedPeriod = periodString[position]
+                if (selectedPeriod != period) {
+                    period = selectedPeriod
+                    if (selectedPeriod != "Progress Anda") {
+                        fetchDataForPeriod((position + 1).toString())
+                    } else {
+                        fetchDataForPeriod("Progress Anda")
+                    }
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Do nothing
+            }
+        }
+
+
+    }
+
+    private fun setupDimensionSpinner() {
+        val dimensions = arrayOf(
+            "Goal Setting",
+            "Environment Structuring",
+            "Task Strategies",
+            "Time Management",
+            "Help Seeking",
+            "Self Evaluation"
+        )
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, dimensions)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        var dimensionSpinner = findViewById<Spinner>(R.id.spinner_dimension)
+        dimensionSpinner.adapter = adapter
+
+        dimensionSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val selectedPeriod = dimensions[position]
+                val selectedDimension = selectedPeriod.lowercase(Locale.getDefault()).replace(" ", "_")
+                fetchDataForDimension(selectedDimension)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                fetchDataForDimension("goal_setting")
+            }
+        }
+
+        // Set initial selection
+        val initialPeriodIndex = dimensions.indexOf("Goal Setting")
+        if (initialPeriodIndex != -1) {
+            dimensionSpinner.setSelection(initialPeriodIndex)
+        }
+    }
+
+    private fun fetchDataForDimension(selectedDimension: String) {
+        classId?.let {
+            viewModel.fetchStudentProgress(it, selectedDimension)
+        }
+        viewModel.studentProgress.observe(this) { progress ->
+            Log.d("ChartActivity", "Progress data received: $progress") // Log the fetched progress
+
+            if (progress != null) {
+                binding.tvDimension.text = progress.description // Ensure this is updating the UI
+                val scores = progress.scores ?: emptyList()
+                Log.d("ChartActivity", "Scores for $selectedDimension: $scores") // Log scores
+
+                if (scores.isNotEmpty()) {
+                    val floatScores = scores.map { score -> score?.toFloat() ?: 0f }.toFloatArray()
+                    displayFragment(LineChartFragment().apply {
+                        arguments = Bundle().apply {
+                            putFloatArray("SCORES", floatScores)
+                        }
+                    })
+                } else {
+                    Log.e("ChartActivity", "No scores available for the selected dimension.")
+                }
+            } else {
+                Log.e("ChartActivity", "Progress data is null, ensure data is fetched correctly.")
+            }
+        }
+    }
+
+
+    private fun fetchDataForPeriod(selectedPeriod: String) {
+        if (classId != null) {
+            if (selectedPeriod != "Progress Anda") {
+                viewModel.fetchScoreResult(classId!!, selectedPeriod)
+
+                showPeriodData(true)
+            } else {
+                viewModel.fetchStudentProgress(classId!!, "goal_setting")
+                fetchDataForDimension("goal_setting")
+                showPeriodData(false)
+            }
+
         }
     }
 

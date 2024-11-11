@@ -31,7 +31,14 @@ class CreateNewPasswordActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
+        this.window.setFlags(
+            android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        supportActionBar?.hide()
         binding = ActivityCreateNewPasswordBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         email = intent.getStringExtra("email") ?: ""
 
         setContentView(binding.root)

@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.dl2lab.srolqs.databinding.ActivityLoginBinding
 import com.dl2lab.srolqs.databinding.ActivityRegisterBinding
 import com.dl2lab.srolqs.ui.authentication.viewmodel.RegisterViewModel
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
@@ -32,6 +33,12 @@ class RegisterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
+        this.window.setFlags(
+            android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        supportActionBar?.hide()
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
         role = intent.getStringExtra("role") ?: "Student"
