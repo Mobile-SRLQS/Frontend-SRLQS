@@ -39,7 +39,7 @@
         android:id="@+id/rv_course_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginHorizontal="16dp"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
         android:clipChildren="false"
@@ -52,6 +52,29 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:itemCount="5"
         tools:listitem="@layout/item_class" />
+
+    <LinearLayout
+        android:id="@+id/shimmer_activity_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="24dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewstub_empty_kelas_state">
+
+        <include layout="@layout/item_shimmer_class" />
+
+        <include layout="@layout/item_shimmer_class" />
+        <include layout="@layout/item_shimmer_class" />
+        <include layout="@layout/item_shimmer_class" />
+        <include layout="@layout/item_shimmer_class" />
+        <include layout="@layout/item_shimmer_class" />
+        <include layout="@layout/item_shimmer_class" />
+        <include layout="@layout/item_shimmer_class" />
+    </LinearLayout>
 
     <!-- Progress Bar for Loading -->
     <ProgressBar

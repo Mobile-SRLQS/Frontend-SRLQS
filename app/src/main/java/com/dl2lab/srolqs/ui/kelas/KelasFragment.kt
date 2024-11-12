@@ -15,6 +15,7 @@ import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.home.adapter.ClassAdapter
 import com.dl2lab.srolqs.ui.home.adapter.OnClassItemClickListener
 import com.dl2lab.srolqs.ui.home.viewmodel.MainViewModel
+import com.facebook.shimmer.ShimmerFrameLayout
 
 class KelasFragment : Fragment(), OnClassItemClickListener {
 
@@ -38,21 +39,53 @@ class KelasFragment : Fragment(), OnClassItemClickListener {
         ).get(MainViewModel::class.java)
     }
 
+    private fun showRvClass(isShow: Boolean) {
+        if(isShow){
+            binding.rvCourseList.visibility = View.VISIBLE
+        } else{
+            binding.rvCourseList.visibility = View.INVISIBLE
+        }
+
+    }
+
     private fun getClassList() {
+        showRvClass(false)
+        showShimmerClass(true)
         viewModel.getListClass().observe(viewLifecycleOwner, Observer { response ->
             if (response.isSuccessful) {
+                showShimmerClass(false)
                 val classList = response.body()?.data ?: emptyList()
                 if (classList.isEmpty()) {
                     showEmptyState()
                 } else {
                     hideEmptyState()
                     setupRecyclerView(classList)
+                    showRvClass(true)
                 }
             } else {
-                // Handle error response if needed
+                showShimmerClass(false)
                 showEmptyState()
             }
         })
+    }
+
+    private fun showShimmerClass(isShow: Boolean) {
+        var linearLayout = binding.shimmerActivityContainer
+        for (i in 0 until linearLayout.childCount) {
+            val child = linearLayout.getChildAt(i)
+            if (child is ShimmerFrameLayout) {
+                if (isShow) {
+                    child.startShimmer()
+                } else {
+                    child.stopShimmer()
+                }
+            }
+        }
+        if (isShow) {
+            linearLayout.visibility = View.VISIBLE
+        } else {
+            linearLayout.visibility = View.GONE
+        }
     }
 
     private fun setupRecyclerView(classList: List<DataItem?>) {
@@ -62,7 +95,6 @@ class KelasFragment : Fragment(), OnClassItemClickListener {
     }
 
     private fun showEmptyState() {
-        // Inflate the empty state ViewStub if it hasn't been inflated yet
         if (binding.viewstubEmptyKelasState.parent != null) {
             binding.viewstubEmptyKelasState.inflate()
         }
@@ -70,7 +102,6 @@ class KelasFragment : Fragment(), OnClassItemClickListener {
     }
 
     private fun hideEmptyState() {
-        // Hide the empty state layout if it exists and show the RecyclerView
         binding.viewstubEmptyKelasState.visibility = View.GONE
         binding.rvCourseList.visibility = View.VISIBLE
     }

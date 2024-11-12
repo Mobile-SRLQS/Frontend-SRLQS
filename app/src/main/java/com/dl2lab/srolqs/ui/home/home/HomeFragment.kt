@@ -23,6 +23,7 @@ import com.dl2lab.srolqs.ui.home.viewmodel.MainViewModel
 import com.dl2lab.srolqs.ui.home.welcome.WelcomeActivity
 import com.dl2lab.srolqs.ui.kegiatan.adapter.KegiatanAdapter
 import com.dl2lab.srolqs.utils.JwtUtils
+import com.facebook.shimmer.ShimmerFrameLayout
 
 class HomeFragment : Fragment(), OnClassItemClickListener, KegiatanAdapter.OnKegiatanItemClickListener {
 
@@ -130,29 +131,116 @@ class HomeFragment : Fragment(), OnClassItemClickListener, KegiatanAdapter.OnKeg
         findNavController().navigate(action)
     }
 
+    private fun showShimmerClass(isShow: Boolean) {
+        var linearLayout = binding.shimmerViewContainer
+        for (i in 0 until linearLayout.childCount) {
+            val child = linearLayout.getChildAt(i)
+            if (child is ShimmerFrameLayout) {
+                if (isShow) {
+                    child.startShimmer()
+                } else {
+                    child.stopShimmer()
+                }
+            }
+        }
+        if (isShow) {
+            linearLayout.visibility = View.VISIBLE
+        } else {
+            linearLayout.visibility = View.GONE
+        }
+    }
+
+    private fun showClassList(isShow: Boolean){
+        if (isShow) {
+            binding.rvCourseList.visibility = View.VISIBLE
+        } else {
+            binding.rvCourseList.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun showEmptyClassList(isShow: Boolean){
+        if (isShow) {
+            binding.clCourseListEmpty.visibility = View.VISIBLE
+        } else {
+            binding.clCourseListEmpty.visibility = View.INVISIBLE
+        }
+    }
+
     fun getClassList() {
+        showShimmerClass(true)
         viewModel.getListClass().observe(viewLifecycleOwner, Observer { response ->
             if (response.isSuccessful) {
+                showShimmerClass(false)
                 val classList = response.body()?.data ?: emptyList()
-                val limitedClassList = classList.take(3) // Ini akan mengambil tiga item pertama
-                val adapter = ClassAdapter(limitedClassList, this)
-                binding.rvCourseList.layoutManager = LinearLayoutManager(requireContext())
-                binding.rvCourseList.adapter = adapter
+
+                if (classList.isEmpty()) {
+                    showEmptyClassList(true)
+                } else {
+                    val limitedClassList = classList.take(3) // Ini akan mengambil tiga item pertama
+                    val adapter = ClassAdapter(limitedClassList, this)
+                    binding.rvCourseList.layoutManager = LinearLayoutManager(requireContext())
+                    binding.rvCourseList.adapter = adapter
+                    showClassList(true)
+
+                }
+
             } else {
+                showShimmerClass(false)
+                showEmptyClassList(true)
+                binding.tvEmptyClassList.text = "Gagal memuat data kelas"
 
             }
         })
     }
+    private fun showEmptyActivityList(isShow: Boolean){
+        if (isShow) {
+            binding.clActivityEmpty.visibility = View.VISIBLE
+        } else {
+            binding.clActivityEmpty.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun showShimmerActivity(isShow: Boolean) {
+        var linearLayout = binding.shimmerActivityContainer
+        for (i in 0 until linearLayout.childCount) {
+            val child = linearLayout.getChildAt(i)
+            if (child is ShimmerFrameLayout) {
+                if (isShow) {
+                    child.startShimmer()
+                } else {
+                    child.stopShimmer()
+                }
+            }
+        }
+        if (isShow) {
+            linearLayout.visibility = View.VISIBLE
+        } else {
+            linearLayout.visibility = View.GONE
+        }
+    }
 
     fun getActivityList() {
+        showShimmerActivity(true)
         viewModel.getListKegiatan().observe(viewLifecycleOwner, Observer { response ->
             if (response.isSuccessful) {
+                showShimmerActivity(false)
                 val listKegiatan = response.body()?.data ?: emptyList()
-                val limitedListKegiatan = listKegiatan.take(3) // Ini akan mengambil tiga item pertama
-                val adapter = KegiatanAdapter(limitedListKegiatan, this)
-                binding.rvActivityList.layoutManager = LinearLayoutManager(requireContext())
-                binding.rvActivityList.adapter = adapter
+                if(listKegiatan.isEmpty()){
+                    showEmptyActivityList(true)
+                } else {
+                    showEmptyActivityList(false)
+                    val limitedListKegiatan =
+                        listKegiatan.take(3) // Ini akan mengambil tiga item pertama
+                    val adapter = KegiatanAdapter(limitedListKegiatan, this)
+                    binding.rvActivityList.layoutManager = LinearLayoutManager(requireContext())
+                    binding.rvActivityList.adapter = adapter
+                }
             } else {
+                showShimmerActivity(false)
+                showEmptyActivityList(true)
+                binding.tvActivityEmpty.text = "Gagal memuat data kegiatan"
+
+
 
             }
         })
@@ -160,7 +248,8 @@ class HomeFragment : Fragment(), OnClassItemClickListener, KegiatanAdapter.OnKeg
 
     private fun getUserName(){
         viewModel.getSession().observe(viewLifecycleOwner, Observer { userModel ->
-            binding.tvGreeting.text = "Hello, ${userModel.nama}"
+            var nama= userModel.nama.split(" ").take(2).joinToString(" ")
+            binding.tvGreeting.text = "Hello, ${nama}"
         })
     }
 

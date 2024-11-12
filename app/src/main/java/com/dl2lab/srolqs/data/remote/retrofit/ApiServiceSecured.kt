@@ -16,6 +16,7 @@ import com.dl2lab.srolqs.data.remote.response.StudentProgressResponse
 import com.dl2lab.srolqs.data.remote.response.TambahKegiatanResponse
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -68,9 +69,6 @@ interface ApiServiceSecured {
         @Query("type") type: String
     ) : Call<StudentProgressResponse>
 
-
-
-
     @POST("questionnaire/submit")
     fun submitQuestionnaire(
         @Body submitQuestionnaireRequest: SubmitQuestionnaireRequest
@@ -81,4 +79,15 @@ interface ApiServiceSecured {
         @Query("class_id") classId: String,
         @Query("period") period: String
     ): Call<GetQuestionnaireResponse>
+
+    @DELETE("todo/{id}")
+    fun checklistKegiatan(
+        @Path("id") id: String
+    ): Call<BasicResponse>
+
+    @GET("todo/list/{type}")
+    fun getKegiatanByType(
+        @Path("type") type: String
+    ): Call<GetKegiatanResponse>
+
 }

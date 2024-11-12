@@ -69,7 +69,6 @@ class MainViewModel(
 
     fun getListClass(): LiveData<Response<ListClassResponse>> = liveData {
         val responseLiveData = MutableLiveData<Response<ListClassResponse>>()
-        _isLoading.value = true
         val token = _token.value ?: ""
         val client = repository.getListClass()
         client.enqueue(object : Callback<ListClassResponse> {
@@ -77,12 +76,10 @@ class MainViewModel(
                 call: Call<ListClassResponse>,
                 response: Response<ListClassResponse>
             ) {
-                _isLoading.value = false
                 responseLiveData.value = response
             }
 
             override fun onFailure(call: Call<ListClassResponse>, t: Throwable) {
-                _isLoading.value = false
                 val errorBody = (t.message ?: "Unknown error").toResponseBody(null)
                 val errorResponse = Response.error<ListClassResponse>(500, errorBody)
                 responseLiveData.value = errorResponse
@@ -94,7 +91,6 @@ class MainViewModel(
 
     fun getListKegiatan(): LiveData<Response<GetKegiatanResponse>> = liveData {
         val responseLiveData = MutableLiveData<Response<GetKegiatanResponse>>()
-        _isLoading.value = true
         val token = _token.value ?: ""
         val client = repository.getListKegiatan()
         client.enqueue(object : Callback<GetKegiatanResponse> {
@@ -102,12 +98,10 @@ class MainViewModel(
                 call: Call<GetKegiatanResponse>,
                 response: Response<GetKegiatanResponse>
             ) {
-                _isLoading.value = false
                 responseLiveData.value = response
             }
 
             override fun onFailure(call: Call<GetKegiatanResponse>, t: Throwable) {
-                _isLoading.value = false
                 val errorBody = (t.message ?: "Unknown error").toResponseBody(null)
                 val errorResponse = Response.error<GetKegiatanResponse>(500, errorBody)
                 responseLiveData.value = errorResponse

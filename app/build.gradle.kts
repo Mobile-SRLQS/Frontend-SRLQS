@@ -102,4 +102,7 @@ dependencies {
     // chart
     implementation(libs.mpandroidchart)
 
+    // shimmer
+    implementation(libs.shimmer)
+
 }

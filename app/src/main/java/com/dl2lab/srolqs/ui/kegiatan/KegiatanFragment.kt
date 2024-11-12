@@ -41,18 +41,13 @@ class KegiatanFragment : Fragment(), KegiatanAdapter.OnKegiatanItemClickListener
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set up RecyclerView
         binding.rvKegiatan.layoutManager = LinearLayoutManager(requireContext())
-
-        // Observe token from ProfileViewModel
         profileViewModel.getSession().observe(viewLifecycleOwner, Observer { user ->
             user.token?.let { token ->
-                // Load data (fetch list of kegiatan) with the token
                 kegiatanViewModel.fetchKegiatanList(token)
             }
         })
 
-        // Observe the kegiatan list from KegiatanViewModel
         kegiatanViewModel.kegiatanList.observe(viewLifecycleOwner, Observer { kegiatanList ->
             if (kegiatanList.isNullOrEmpty()) {
                 showEmptyState()
@@ -62,7 +57,6 @@ class KegiatanFragment : Fragment(), KegiatanAdapter.OnKegiatanItemClickListener
             }
         })
 
-        // Add button click listener
         binding.btnAddKegiatan.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_kegiatan_to_addKegiatanFragment)
         }
@@ -89,7 +83,7 @@ class KegiatanFragment : Fragment(), KegiatanAdapter.OnKegiatanItemClickListener
     }
 
     private fun hideEmptyState() {
-        binding.viewstubEmptyState.visibility = View.GONE // Hide inflated empty state if it exists
+        binding.viewstubEmptyState.visibility = View.GONE
         binding.rvKegiatan.visibility = View.VISIBLE
     }
 }
