@@ -82,7 +82,14 @@ class SecuredRepository private constructor(
 
     fun getListKegiatan() : Call<GetKegiatanResponse>{
         return apiServiceSecured.getListKegiatan()
+    }
 
+    fun getListKegiatanByType(type: String) : Call<GetKegiatanResponse>{
+        return apiServiceSecured.getKegiatanByType(type)
+    }
+
+    fun checklistKegiatan(id: Int) : Call<BasicResponse>{
+        return apiServiceSecured.checklistKegiatan(id)
     }
 
 

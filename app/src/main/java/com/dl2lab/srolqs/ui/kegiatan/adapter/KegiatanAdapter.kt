@@ -9,19 +9,25 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class KegiatanAdapter(private val listKegiatan: List<KegiatanItem?>, private val itemClickListener: OnKegiatanItemClickListener) : RecyclerView.Adapter<KegiatanAdapter.KegiatanViewHolder>() {
+class KegiatanAdapter(private var listKegiatan: List<KegiatanItem?>, private val itemClickListener: OnKegiatanItemClickListener) : RecyclerView.Adapter<KegiatanAdapter.KegiatanViewHolder>() {
 
     interface OnKegiatanItemClickListener {
         fun onItemClick(kegiatanItem: KegiatanItem)
+        fun onItemChecked(kegiatanItem: KegiatanItem, isChecked: Boolean)
     }
 
     inner class KegiatanViewHolder(private val binding: ItemKegiatanBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: KegiatanItem) {
             binding.tvNamaKegiatan.text = item.namaKegiatan
-            var tenggat = formatTanggal(item.tenggat)
+            val tenggat = formatTanggal(item.tenggat)
             binding.tvTenggatKegiatan.text = tenggat
             binding.checkBoxKegiatan.isChecked = item.isDone
-
+            binding.checkBoxKegiatan.setOnCheckedChangeListener { _, isChecked ->
+                itemClickListener.onItemChecked(item, isChecked)
+            }
+            binding.root.setOnClickListener {
+                itemClickListener.onItemClick(item)
+            }
         }
     }
 
@@ -34,8 +40,8 @@ class KegiatanAdapter(private val listKegiatan: List<KegiatanItem?>, private val
         listKegiatan[position]?.let { holder.bind(it) }
     }
 
-
     override fun getItemCount(): Int = listKegiatan.size
+
     fun formatTanggal(tanggal: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS'Z'", Locale.getDefault())
         val outputFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
@@ -47,5 +53,9 @@ class KegiatanAdapter(private val listKegiatan: List<KegiatanItem?>, private val
             e.printStackTrace()
             tanggal
         }
+    }
+    fun updateData(newList: List<KegiatanItem?>) {
+        listKegiatan = newList
+        notifyDataSetChanged()
     }
 }

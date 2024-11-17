@@ -46,25 +46,20 @@ class AddKegiatanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set up Date Picker for tenggat (due date)
         binding.inputTanggalKegiatan.setOnClickListener { showDatePicker() }
         binding.inputTanggalKegiatanLayout.setEndIconOnClickListener { showDatePicker() }
 
-        // Set up dropdown for tipe kegiatan
         setUpTipeKegiatanDropdown()
 
-        // Observe token from ProfileViewModel
         profileViewModel.getSession().observe(viewLifecycleOwner, Observer { user ->
             user.token?.let { token ->
                 setupAddKegiatanListener(token)
             }
         })
 
-        // Observe the result of addKegiatan
         kegiatanViewModel.addKegiatanResult.observe(viewLifecycleOwner, Observer { result ->
             result.onSuccess {
                 Toast.makeText(requireContext(), "Kegiatan berhasil ditambah", Toast.LENGTH_SHORT).show()
-                // Navigate back to KegiatanFragment
                 findNavController().navigate(R.id.action_addKegiatanFragment_to_navigation_kegiatan)
             }.onFailure {
                 Toast.makeText(requireContext(), "Gagal menambah kegiatan: ${it.message}", Toast.LENGTH_SHORT).show()

@@ -19,6 +19,8 @@ import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.kegiatan.adapter.KegiatanAdapter
 import com.dl2lab.srolqs.ui.kegiatan.viewmodel.KegiatanViewModel
 import com.dl2lab.srolqs.ui.profile.viewmodel.ProfileViewModel
+import androidx.appcompat.widget.SearchView
+
 
 class KegiatanFragment : Fragment(), KegiatanAdapter.OnKegiatanItemClickListener {
 
@@ -42,6 +44,8 @@ class KegiatanFragment : Fragment(), KegiatanAdapter.OnKegiatanItemClickListener
         super.onViewCreated(view, savedInstanceState)
 
         binding.rvKegiatan.layoutManager = LinearLayoutManager(requireContext())
+        setUpSearchBar()
+
         profileViewModel.getSession().observe(viewLifecycleOwner, Observer { user ->
             user.token?.let { token ->
                 kegiatanViewModel.fetchKegiatanList(token)
@@ -66,19 +70,63 @@ class KegiatanFragment : Fragment(), KegiatanAdapter.OnKegiatanItemClickListener
         })
     }
 
+    private fun setUpSearchBar() {
+        binding.searchView.queryHint = "Cari kegiatan Anda"
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let {
+                    filterKegiatanList(it)
+                }
+                return true
+            }
+        })
+    }
+
+    private fun filterKegiatanList(query: String) {
+        val filteredList = kegiatanViewModel.kegiatanList.value?.filter {
+            it.namaKegiatan.contains(query, ignoreCase = true)
+        } ?: emptyList()
+
+
+
+        setupRecyclerView(filteredList)
+    }
+
+
     private fun setupRecyclerView(kegiatanList: List<KegiatanItem>) {
         val adapter = KegiatanAdapter(kegiatanList, this)
         binding.rvKegiatan.adapter = adapter
+        if (kegiatanList.isEmpty()) {
+            showEmptyState()
+        } else {
+            hideEmptyState()
+        }
     }
 
     override fun onItemClick(kegiatanItem: KegiatanItem) {
-        Toast.makeText(requireContext(), "Detail Kegiatan", Toast.LENGTH_SHORT).show()
+        val action = KegiatanFragmentDirections.actionNavigationKegiatanToDetailKegiatanFragment(kegiatanItem.id)
+        findNavController().navigate(action)
+    }
+
+    override fun onItemChecked(kegiatanItem: KegiatanItem, isChecked: Boolean) {
+        if (isChecked) {
+            profileViewModel.getSession().observe(viewLifecycleOwner, Observer { user ->
+                user.token?.let { token ->
+                    kegiatanViewModel.checklistKegiatan(kegiatanItem.id, token)
+                }
+            })
+        }
     }
 
     private fun showEmptyState() {
         if (binding.viewstubEmptyState.parent != null) {
             binding.viewstubEmptyState.inflate()
         }
+        binding.viewstubEmptyState.visibility = View.VISIBLE
         binding.rvKegiatan.visibility = View.GONE
     }
 

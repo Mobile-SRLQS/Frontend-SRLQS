@@ -1,6 +1,8 @@
 package com.dl2lab.srolqs.data.remote.response
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 data class GetKegiatanResponse(
 
@@ -14,6 +16,7 @@ data class GetKegiatanResponse(
 	val message: String
 )
 
+@Parcelize
 data class KegiatanItem(
 
 	@field:SerializedName("is_done")
@@ -42,4 +45,4 @@ data class KegiatanItem(
 
 	@field:SerializedName("id")
 	val id: Int
-)
+) : Parcelable

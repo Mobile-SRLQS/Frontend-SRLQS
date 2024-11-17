@@ -77,4 +77,5 @@
         <item name="overlapAnchor">true</item>
         <item name="android:background">@drawable/spinner_background</item>
     </style>
+
 </resources>

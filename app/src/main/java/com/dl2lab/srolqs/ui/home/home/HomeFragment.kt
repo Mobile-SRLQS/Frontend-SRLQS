@@ -1,5 +1,6 @@
 package com.dl2lab.srolqs.ui.home.home
 
+import KegiatanViewModelFactory
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,13 +8,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.data.remote.response.DataItem
 import com.dl2lab.srolqs.data.remote.response.KegiatanItem
+import com.dl2lab.srolqs.data.repository.KegiatanRepository
 import com.dl2lab.srolqs.databinding.FragmentHomeBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
@@ -22,8 +26,10 @@ import com.dl2lab.srolqs.ui.home.adapter.OnClassItemClickListener
 import com.dl2lab.srolqs.ui.home.viewmodel.MainViewModel
 import com.dl2lab.srolqs.ui.home.welcome.WelcomeActivity
 import com.dl2lab.srolqs.ui.kegiatan.adapter.KegiatanAdapter
+import com.dl2lab.srolqs.ui.kegiatan.viewmodel.KegiatanViewModel
 import com.dl2lab.srolqs.utils.JwtUtils
 import com.facebook.shimmer.ShimmerFrameLayout
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment(), OnClassItemClickListener, KegiatanAdapter.OnKegiatanItemClickListener {
 
@@ -219,9 +225,18 @@ class HomeFragment : Fragment(), OnClassItemClickListener, KegiatanAdapter.OnKeg
         }
     }
 
+    private fun showRVActivityList(isShow: Boolean){
+        if (isShow) {
+            binding.rvActivityList.visibility = View.VISIBLE
+        } else {
+            binding.rvActivityList.visibility = View.INVISIBLE
+        }
+    }
+
     fun getActivityList() {
+        showRVActivityList(false)
         showShimmerActivity(true)
-        viewModel.getListKegiatan().observe(viewLifecycleOwner, Observer { response ->
+        viewModel.getListKegiatanByType("undone").observe(viewLifecycleOwner, Observer { response ->
             if (response.isSuccessful) {
                 showShimmerActivity(false)
                 val listKegiatan = response.body()?.data ?: emptyList()
@@ -234,6 +249,7 @@ class HomeFragment : Fragment(), OnClassItemClickListener, KegiatanAdapter.OnKeg
                     val adapter = KegiatanAdapter(limitedListKegiatan, this)
                     binding.rvActivityList.layoutManager = LinearLayoutManager(requireContext())
                     binding.rvActivityList.adapter = adapter
+                    showRVActivityList(true)
                 }
             } else {
                 showShimmerActivity(false)
@@ -254,9 +270,35 @@ class HomeFragment : Fragment(), OnClassItemClickListener, KegiatanAdapter.OnKeg
     }
 
     override fun onItemClick(kegiatanItem: KegiatanItem) {
-        // Handle the item click event for KegiatanItem
-//        val action = HomeFragmentDirections.actionNavigationHomeToDetailKegiatanFragment(kegiatanItem)
-//        findNavController().navigate(action)
+        val action = HomeFragmentDirections.actionNavigationKegiatanToDetailKegiatanFragment(kegiatanItem.id)
+        findNavController().navigate(action)
+    }
+
+
+    override fun onItemChecked(kegiatanItem: KegiatanItem, isChecked: Boolean) {
+        if (isChecked) {
+            viewModel.checklistKegiatan(kegiatanItem.id).observe(viewLifecycleOwner, Observer { result ->
+                if (result.isSuccessful) {
+                   this.getActivityList()
+                } else {
+                    // Handle error
+                }
+            })
+        } else {
+            viewModel.checklistKegiatan(kegiatanItem.id).observe(viewLifecycleOwner, Observer { result ->
+                if (result.isSuccessful) {
+                    this.getActivityList()
+                } else {
+                    // Handle error
+                }
+            })
+
+        }
+    }
+
+    // Method to get the token (implement this as per your logic)
+    private suspend fun getToken(): String? {
+        return viewModel.getSession().value?.token
     }
 
     override fun onDestroyView() {

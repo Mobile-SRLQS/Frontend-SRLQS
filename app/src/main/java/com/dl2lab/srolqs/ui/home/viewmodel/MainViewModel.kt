@@ -111,6 +111,50 @@ class MainViewModel(
         emitSource(responseLiveData)
     }
 
+    fun getListKegiatanByType(type:String): LiveData<Response<GetKegiatanResponse>> = liveData {
+        val responseLiveData = MutableLiveData<Response<GetKegiatanResponse>>()
+        val token = _token.value ?: ""
+        val client = repository.getListKegiatanByType(type)
+        client.enqueue(object : Callback<GetKegiatanResponse> {
+            override fun onResponse(
+                call: Call<GetKegiatanResponse>,
+                response: Response<GetKegiatanResponse>
+            ) {
+                responseLiveData.value = response
+            }
+
+            override fun onFailure(call: Call<GetKegiatanResponse>, t: Throwable) {
+                val errorBody = (t.message ?: "Unknown error").toResponseBody(null)
+                val errorResponse = Response.error<GetKegiatanResponse>(500, errorBody)
+                responseLiveData.value = errorResponse
+                _errorMessage.value = t.message
+            }
+        })
+        emitSource(responseLiveData)
+    }
+
+    fun checklistKegiatan(id: Int): LiveData<Response<BasicResponse>> = liveData {
+        val responseLiveData = MutableLiveData<Response<BasicResponse>>()
+        val token = _token.value ?: ""
+        val client = repository.checklistKegiatan(id)
+        client.enqueue(object : Callback<BasicResponse> {
+            override fun onResponse(
+                call: Call<BasicResponse>,
+                response: Response<BasicResponse>
+            ) {
+                responseLiveData.value = response
+            }
+
+            override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+                val errorBody = (t.message ?: "Unknown error").toResponseBody(null)
+                val errorResponse = Response.error<BasicResponse>(500, errorBody)
+                responseLiveData.value = errorResponse
+                _errorMessage.value = t.message
+            }
+        })
+        emitSource(responseLiveData)
+    }
+
     fun getClassDetail(class_id: String): LiveData<Response<DetailClassResponse>> = liveData {
         val responseLiveData = MutableLiveData<Response<DetailClassResponse>>()
         _isLoading.value = true
