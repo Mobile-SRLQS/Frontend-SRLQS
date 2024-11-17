@@ -2,7 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/chart_activity"
+    android:background="@color/white"
+
+    >
 
     <LinearLayout
         android:id="@+id/toolbar_result_activity"
@@ -10,6 +14,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingTop="30dp"
+        android:gravity="center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,14 +28,30 @@
             android:paddingVertical="8dp"
             android:src="@drawable/arrow_back_icon" />
 
-        <TextView
-            style="@style/H1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Periode 1" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:background="@drawable/rounded_course_list_item"
+            android:layout_height="wrap_content">
+            <Spinner
+                android:id="@+id/spinner_dropdown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="120dp"
+                android:paddingStart="8dp"
+
+                android:paddingEnd="8dp"
+                android:spinnerMode="dropdown" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <ImageButton
             android:id="@+id/btnEdit"
@@ -44,197 +65,245 @@
             android:visibility="invisible" />
     </LinearLayout>
 
+
     <!-- Buttons to switch between fragments -->
     <Button
-        android:id="@+id/btn_show_radar_chart"
+        android:id="@+id/btn_toggle_chart"
+        style="@style/BasicButtonLightGreen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Show Radar Chart"
-        app:layout_constraintEnd_toStartOf="@+id/btn_show_bar_chart"
+        android:visibility="invisible"
+        android:text="Lihat Versi Barchart"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/btn_toggle_average_data"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chart_fragment_container" />
-
-    <Button
-        android:id="@+id/btn_show_bar_chart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Show Bar Chart"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_show_radar_chart"
         app:layout_constraintTop_toBottomOf="@id/chart_fragment_container" />
 
     <!-- Container to hold the chart fragments -->
 
+    <Button
+        android:id="@+id/btn_toggle_average_data"
+        style="@style/OutlinedButtonLightGreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:text="Lihat Rata-Rata Kelas"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_toggle_chart"
+        app:layout_constraintTop_toBottomOf="@id/chart_fragment_container" />
+
     <FrameLayout
         android:id="@+id/chart_fragment_container"
         android:layout_width="0dp"
-        android:layout_height="300dp"
+        android:layout_height="350dp"
+        android:layout_marginTop="8dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:fitsSystemWindows="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_result_activity" />
-    <!--        app:layout_constraintTop_toBottomOf="@id/btn_show_bar_chart"-->
+
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="100dp"
+        android:layout_height="0dp"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_show_bar_chart"
-
-
+        app:layout_constraintTop_toBottomOf="@id/btn_toggle_average_data"
+        app:layout_constraintBottom_toTopOf="@id/guideline2"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            >
+            android:padding="20dp">
+
             <TextView
                 android:id="@+id/chart_description"
+                style="@style/B1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                style="@style/B1"
                 android:justificationMode="inter_word"
                 android:text="Keterampilan SRL pada periode 1 menunjukkan bahwa empat dimensi berada dalam kategori tinggi dengan rentang nilai 4.1-6 sementara dua dimensi berada dalam kategori cukup dengan rentang nilai 2.1-4. Dimensi dengan kategori tinggi yaitu Goal Setting dengan nitai 4.75, Environment Structuring dengan nilai 4.5, Task Strategies dengan nilai 5, dan Help Seeking dengan nilai 4.75 yang mana keempatnya menunjukan performa yang baik. Sedangkan dimensi dengan kategori cukup yaitu Time Management dan Self Evaluation dengan masing-masing nilai 4. Untuk mencapai performa keterampilan SRL yang lebin baik, diperlukan peningkatan pada dimensi dengan kategori rendah dan cukup."
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/GS_title"
+                style="@style/H2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                style="@style/H2"
                 android:layout_marginTop="5dp"
                 android:text="Goal Setting (4.75)"
-                app:layout_constraintTop_toBottomOf="@id/chart_description"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/chart_description" />
 
             <TextView
                 android:id="@+id/GS_subtitle"
+                style="@style/B1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                style="@style/B1"
                 android:layout_marginTop="5dp"
                 android:justificationMode="inter_word"
                 android:text="Anda sudah baik dalam menetapkan tujuan belajar. Untuk meningkatkan kemampuan Anda, cobalah untuk meningkatkan kompleksitas tujuan Anda. Hubungkan tujuan jangka pendek dengan tujuan jangka panjang untuk menciptakan strategi belajar yang lebih kohesif."
-                app:layout_constraintTop_toBottomOf="@id/GS_title"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/GS_title" />
 
             <TextView
-            android:id="@+id/ES_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            style="@style/H2"
-            android:layout_marginTop="5dp"
-            android:text="Environtment Structuring (4.5)"
-            app:layout_constraintTop_toBottomOf="@id/GS_subtitle"/>
+                android:id="@+id/ES_title"
+                style="@style/H2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Environtment Structuring (4.5)"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/GS_subtitle" />
 
             <TextView
                 android:id="@+id/ES_subtitle"
+                style="@style/B1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                style="@style/B1"
                 android:layout_marginTop="5dp"
                 android:justificationMode="inter_word"
                 android:text="Anda sudah baik dalam mengatur lingkungan belajar. Untuk meningkatkan fokus, cobalah menggunakan aplikasi pemblokir distraksi saat belajar online. Buatlah juga /'ritual/' sebelum belajar untuk mempersiapkan pikiran Anda."
-                app:layout_constraintTop_toBottomOf="@id/ES_title"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ES_title" />
 
             <TextView
                 android:id="@+id/TS_title"
+                style="@style/H2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                style="@style/H2"
                 android:layout_marginTop="5dp"
                 android:text="Task Strategies (5)"
-                app:layout_constraintTop_toBottomOf="@id/ES_subtitle"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ES_subtitle" />
 
             <TextView
                 android:id="@+id/TS_subtitle"
+                style="@style/B1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                style="@style/B1"
                 android:layout_marginTop="5dp"
                 android:justificationMode="inter_word"
                 android:text="Anda sangat baik dalam menerapkan strategi pengerjaan tugas. Untuk terus berkembang, cobalah menggunakan teknik elaborasi untuk memperdalam pemahaman Anda. Terapkan juga metode /'spaced repetition/' untuk membantu Anda mengingat materi dengan lebih baik."
-                app:layout_constraintTop_toBottomOf="@id/TS_title"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/TS_title" />
 
             <TextView
                 android:id="@+id/TM_title"
+                style="@style/H2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                style="@style/H2"
                 android:layout_marginTop="5dp"
                 android:text="Time Management (4.75)"
-                app:layout_constraintTop_toBottomOf="@id/TS_subtitle"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/TS_subtitle" />
 
             <TextView
                 android:id="@+id/TM_subtitle"
+                style="@style/B1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                style="@style/B1"
                 android:layout_marginTop="5dp"
                 android:justificationMode="inter_word"
                 android:text="Anda sudah baik dalam mengelola waktu belajar. Untuk meningkatkan efisiensi, terapkan teknik /'time blocking/' dalam jadwal Anda. Jangan lupa untuk secara rutin mengevaluasi dan menyesuaikan jadwal mingguan Anda sesuai dengan kebutuhan."
-                app:layout_constraintTop_toBottomOf="@id/TM_title"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/TM_title" />
 
 
             <TextView
                 android:id="@+id/HS_title"
+                style="@style/H2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                style="@style/H2"
                 android:layout_marginTop="5dp"
                 android:text="Time Management (4.75)"
-                app:layout_constraintTop_toBottomOf="@id/TM_subtitle"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/TM_subtitle" />
 
             <TextView
                 android:id="@+id/HS_subtitle"
+                style="@style/B1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                style="@style/B1"
                 android:layout_marginTop="5dp"
                 android:justificationMode="inter_word"
                 android:text="Anda sudah baik dalam mengelola waktu belajar. Untuk meningkatkan efisiensi, terapkan teknik /'time blocking/' dalam jadwal Anda. Jangan lupa untuk secara rutin mengevaluasi dan menyesuaikan jadwal mingguan Anda sesuai dengan kebutuhan."
-                app:layout_constraintTop_toBottomOf="@id/HS_title"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/HS_title" />
 
             <TextView
                 android:id="@+id/SE_title"
+                style="@style/H2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                style="@style/H2"
                 android:layout_marginTop="5dp"
                 android:text="Time Management (4.75)"
-                app:layout_constraintTop_toBottomOf="@id/HS_subtitle"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/HS_subtitle" />
 
             <TextView
                 android:id="@+id/SE_subtitle"
+                style="@style/B1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                style="@style/B1"
                 android:layout_marginTop="5dp"
                 android:justificationMode="inter_word"
                 android:text="Anda sudah baik dalam mengelola waktu belajar. Untuk meningkatkan efisiensi, terapkan teknik /'time blocking/' dalam jadwal Anda. Jangan lupa untuk secara rutin mengevaluasi dan menyesuaikan jadwal mingguan Anda sesuai dengan kebutuhan."
-                app:layout_constraintTop_toBottomOf="@id/SE_title"/>
-
-
-
-
-
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/SE_title" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/spinner_dimension_linear_layout"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chart_fragment_container"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/rounded_course_list_item"
+        android:layout_height="wrap_content">
+        <Spinner
+            android:id="@+id/spinner_dimension"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="120dp"
+            android:paddingStart="8dp"
+
+            android:paddingEnd="8dp"
+            android:spinnerMode="dropdown" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_dimension"
+        android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guideline2"
+        android:layout_marginHorizontal="20dp"
+        android:justificationMode="inter_word"
+        android:text="Keterampilan S lorep ipsum
+        dolor sit amet, consectetur adipiscing elit. Nulla"
+        style="@style/B1"
+        app:layout_constraintTop_toBottomOf="@id/spinner_dimension_linear_layout"/>
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="1" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

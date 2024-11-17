@@ -16,6 +16,9 @@ import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.home.viewmodel.MainViewModel
 import com.dl2lab.srolqs.ui.home.welcome.WelcomeActivity
 import com.dl2lab.srolqs.ui.profile.viewmodel.ProfileViewModel
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class ProfileDetailFragment : Fragment() {
 
@@ -64,17 +67,27 @@ class ProfileDetailFragment : Fragment() {
     private fun getDetailProfileInformation(){
         viewModel.getSession().observe(viewLifecycleOwner, Observer { userModel ->
             binding.profileName.text = userModel.nama
-            binding.profileName2.text = userModel.nama
             binding.profileIdentityNumber.text = userModel.identityNumber
             binding.profileEmail.text = userModel.email
-            binding.profileDob.text = userModel.birthDate
+            binding.profileDob.text = formatTanggal(userModel.birthDate)
             binding.profileInstitution.text = userModel.institution
-            binding.profileBatch.text = "Batch of ${userModel.batch}"
+            binding.profileBatch.text = userModel.batch
             binding.profileDegree.text = userModel.degree
 
         })
     }
+    fun formatTanggal(tanggal: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS'Z'", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
 
+        return try {
+            val date: Date = inputFormat.parse(tanggal) ?: return tanggal
+            outputFormat.format(date)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            tanggal
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

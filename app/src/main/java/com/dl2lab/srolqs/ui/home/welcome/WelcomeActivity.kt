@@ -18,8 +18,14 @@ class WelcomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWelcomeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
+        this.window.setFlags(
+            android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        supportActionBar?.hide()
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
-        binding.buttonNav.setOnClickListener { navToResultPage() }
+        setContentView(binding.root)
         binding.buttonStudent.setOnClickListener { navToLoginPage("Student") }
         binding.buttonTeacher.setOnClickListener { navToLoginPage("Instructor") }
         setContentView(binding.root)

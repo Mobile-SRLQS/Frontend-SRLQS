@@ -15,7 +15,7 @@
         android:id="@+id/tv_register_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="48dp"
         style="@style/H1"
         android:text="@string/register_an_account"
@@ -24,12 +24,14 @@
 
     <TextView
         android:id="@+id/tv_register_subtitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginTop="8dp"
         style="@style/H2"
         android:text="@string/fill_details_below"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_register_title" />
 
@@ -40,7 +42,7 @@
         android:text="@string/register_name_field"
         style="@style/B1"
         android:layout_marginTop="30dp"
-        android:layout_marginHorizontal="15dp"
+        android:layout_marginHorizontal="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_register_subtitle" />
 
@@ -49,7 +51,7 @@
         style="@style/CustomTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="15dp"
+        android:layout_marginHorizontal="20dp"
         app:boxBackgroundMode="outline"
 
         app:boxStrokeColor="@color/dark_green"
@@ -87,7 +89,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_email_layout"
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="15dp"
+        android:layout_marginHorizontal="20dp"
         android:layout_height="wrap_content"
         style="@style/CustomTextInputLayout"
         app:boxBackgroundMode="outline"
@@ -123,7 +125,7 @@
         android:id="@+id/input_dob_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="15dp"
+        android:layout_marginHorizontal="20dp"
         style="@style/CustomTextInputLayout"
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="@color/dark_green"
@@ -165,7 +167,7 @@
         android:layout_height="wrap_content"
         style="@style/CustomTextInputLayout"
         app:boxBackgroundMode="outline"
-        android:layout_marginHorizontal="15dp"
+        android:layout_marginHorizontal="20dp"
         app:boxStrokeColor="@color/dark_green"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -202,7 +204,7 @@
         app:boxStrokeColor="@color/dark_green"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="15dp"
+        android:layout_marginHorizontal="20dp"
         app:layout_constraintTop_toBottomOf="@id/tv_npm_label"
         app:layout_constraintWidth_percent="0.85">
 
@@ -238,7 +240,7 @@
         app:endIconContentDescription="@string/dropdown_icon_description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="15dp"
+        android:layout_marginHorizontal="20dp"
         app:layout_constraintTop_toBottomOf="@id/tv_batch_label"
         app:layout_constraintWidth_percent="0.85">
 
@@ -271,7 +273,7 @@
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="@color/dark_green"
         app:endIconMode="dropdown_menu"
-        android:layout_marginHorizontal="15dp"
+        android:layout_marginHorizontal="20dp"
         app:endIconContentDescription="@string/dropdown_icon_description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -302,7 +304,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_password_layout"
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="15dp"
+        android:layout_marginHorizontal="20dp"
         android:layout_height="wrap_content"
         style="@style/CustomTextInputLayout"
         app:boxBackgroundMode="outline"
@@ -342,7 +344,7 @@
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="@color/dark_green"
         app:endIconMode="password_toggle"
-        android:layout_marginHorizontal="15dp"
+        android:layout_marginHorizontal="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_password_confirm_label"
@@ -362,7 +364,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:layout_marginHorizontal="15dp"
+        android:layout_marginHorizontal="20dp"
         android:text="@string/register_button_text"
         android:textColor="@android:color/white"
         android:backgroundTint="@color/light_green"

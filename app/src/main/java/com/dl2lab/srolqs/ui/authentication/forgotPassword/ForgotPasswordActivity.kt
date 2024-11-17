@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.dl2lab.srolqs.data.remote.response.BasicResponse
+import com.dl2lab.srolqs.databinding.ActivityCreateNewPasswordBinding
 import com.dl2lab.srolqs.databinding.ActivityForgotPasswordBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.authentication.createNewPassword.CreateNewPasswordActivity
@@ -26,7 +27,14 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
+        this.window.setFlags(
+            android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        supportActionBar?.hide()
         binding = ActivityForgotPasswordBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         role = intent.getStringExtra("email") ?: ""
 
         setContentView(binding.root)

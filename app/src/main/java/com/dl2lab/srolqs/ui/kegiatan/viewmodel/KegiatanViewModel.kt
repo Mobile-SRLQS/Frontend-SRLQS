@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dl2lab.srolqs.data.remote.request.TambahKegiatanRequest
-import com.dl2lab.srolqs.data.remote.response.DataItem
+import com.dl2lab.srolqs.data.remote.request.UpdateKegiatanRequest
 import com.dl2lab.srolqs.data.remote.response.KegiatanItem
 import com.dl2lab.srolqs.data.remote.response.TambahKegiatanResponse
 import com.dl2lab.srolqs.data.repository.KegiatanRepository
@@ -24,6 +24,15 @@ class KegiatanViewModel(private val kegiatanRepository: KegiatanRepository) : Vi
 
     private val _kegiatanList = MutableLiveData<List<KegiatanItem>>()
     val kegiatanList: LiveData<List<KegiatanItem>> = _kegiatanList
+
+    private  val _kegiatanItem = MutableLiveData<KegiatanItem>()
+    val kegiatanItem : LiveData<KegiatanItem> = _kegiatanItem
+
+    private val _kegiatanDoneList = MutableLiveData<List<KegiatanItem>>()
+    val kegiatanDoneList: LiveData<List<KegiatanItem>> = _kegiatanDoneList
+
+    private val _kegiatanNotDoneList = MutableLiveData<List<KegiatanItem>>()
+    val kegiatanNotDoneList: LiveData<List<KegiatanItem>> = _kegiatanNotDoneList
 
     fun addKegiatan(request: TambahKegiatanRequest, token: String) {
         _isLoading.value = true
@@ -47,6 +56,50 @@ class KegiatanViewModel(private val kegiatanRepository: KegiatanRepository) : Vi
                 result.onSuccess {
                     _kegiatanList.postValue(it.data)
                     _errorMessage.postValue(null)
+                }.onFailure { exception ->
+                    _errorMessage.postValue(exception.message)
+                }
+                _isLoading.postValue(false)
+            }
+        }
+    }
+
+    fun checklistKegiatan(id: Int, token: String) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            kegiatanRepository.checklistKegiatan(token, id) { result ->
+                result.onSuccess {
+                    // Handle success
+                }.onFailure { exception ->
+                    _errorMessage.postValue(exception.message)
+                }
+                _isLoading.postValue(false)
+            }
+        }
+    }
+
+    fun fetchDetailKegiatan(id:Int, token: String) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            kegiatanRepository.getKegiatanDetail(token,id) { result ->
+                result.onSuccess {
+                    if(it.data != null){
+                        _kegiatanItem.postValue(it.data[0]!!)
+                    }
+                    _errorMessage.postValue(null)
+                }.onFailure { exception ->
+                    _errorMessage.postValue(exception.message)
+                }
+                _isLoading.postValue(false)
+            }
+        }
+    }
+
+    fun updateKegiatan(request: UpdateKegiatanRequest,id: Int, token: String) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            kegiatanRepository.updateKegiatan(token, id,  request) { result ->
+                result.onSuccess {
                 }.onFailure { exception ->
                     _errorMessage.postValue(exception.message)
                 }

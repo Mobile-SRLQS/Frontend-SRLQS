@@ -9,11 +9,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dl2lab.srolqs.R
-import com.dl2lab.srolqs.data.remote.response.DataItem
 import com.dl2lab.srolqs.data.remote.response.KegiatanItem
 import com.dl2lab.srolqs.data.repository.KegiatanRepository
 import com.dl2lab.srolqs.databinding.FragmentKegiatanBinding
@@ -21,8 +19,10 @@ import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.kegiatan.adapter.KegiatanAdapter
 import com.dl2lab.srolqs.ui.kegiatan.viewmodel.KegiatanViewModel
 import com.dl2lab.srolqs.ui.profile.viewmodel.ProfileViewModel
+import androidx.appcompat.widget.SearchView
 
-class KegiatanFragment : Fragment() {
+
+class KegiatanFragment : Fragment(), KegiatanAdapter.OnKegiatanItemClickListener {
 
     private lateinit var binding: FragmentKegiatanBinding
     private val kegiatanViewModel: KegiatanViewModel by viewModels {
@@ -43,18 +43,15 @@ class KegiatanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set up RecyclerView
         binding.rvKegiatan.layoutManager = LinearLayoutManager(requireContext())
+        setUpSearchBar()
 
-        // Observe token from ProfileViewModel
         profileViewModel.getSession().observe(viewLifecycleOwner, Observer { user ->
             user.token?.let { token ->
-                // Load data (fetch list of kegiatan) with the token
                 kegiatanViewModel.fetchKegiatanList(token)
             }
         })
 
-        // Observe the kegiatan list from KegiatanViewModel
         kegiatanViewModel.kegiatanList.observe(viewLifecycleOwner, Observer { kegiatanList ->
             if (kegiatanList.isNullOrEmpty()) {
                 showEmptyState()
@@ -64,7 +61,6 @@ class KegiatanFragment : Fragment() {
             }
         })
 
-        // Add button click listener
         binding.btnAddKegiatan.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_kegiatan_to_addKegiatanFragment)
         }
@@ -74,30 +70,68 @@ class KegiatanFragment : Fragment() {
         })
     }
 
-    private fun setupRecyclerView(kegiatanList: List<KegiatanItem>) {
-        val adapter = KegiatanAdapter(kegiatanList,
-            onEditClick = { kegiatan ->
-                // Handle edit action here
-                Toast.makeText(requireContext(), "Edit ${kegiatan.namaKegiatan}", Toast.LENGTH_SHORT).show()
-            },
-            onDeleteClick = { kegiatan ->
-                // Handle delete action here
-                Toast.makeText(requireContext(), "Delete ${kegiatan.namaKegiatan}", Toast.LENGTH_SHORT).show()
+    private fun setUpSearchBar() {
+        binding.searchView.queryHint = "Cari kegiatan Anda"
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
             }
-        )
-        binding.rvKegiatan.adapter = adapter
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let {
+                    filterKegiatanList(it)
+                }
+                return true
+            }
+        })
     }
 
+    private fun filterKegiatanList(query: String) {
+        val filteredList = kegiatanViewModel.kegiatanList.value?.filter {
+            it.namaKegiatan.contains(query, ignoreCase = true)
+        } ?: emptyList()
+
+
+
+        setupRecyclerView(filteredList)
+    }
+
+
+    private fun setupRecyclerView(kegiatanList: List<KegiatanItem>) {
+        val adapter = KegiatanAdapter(kegiatanList, this)
+        binding.rvKegiatan.adapter = adapter
+        if (kegiatanList.isEmpty()) {
+            showEmptyState()
+        } else {
+            hideEmptyState()
+        }
+    }
+
+    override fun onItemClick(kegiatanItem: KegiatanItem) {
+        val action = KegiatanFragmentDirections.actionNavigationKegiatanToDetailKegiatanFragment(kegiatanItem.id)
+        findNavController().navigate(action)
+    }
+
+    override fun onItemChecked(kegiatanItem: KegiatanItem, isChecked: Boolean) {
+        if (isChecked) {
+            profileViewModel.getSession().observe(viewLifecycleOwner, Observer { user ->
+                user.token?.let { token ->
+                    kegiatanViewModel.checklistKegiatan(kegiatanItem.id, token)
+                }
+            })
+        }
+    }
 
     private fun showEmptyState() {
         if (binding.viewstubEmptyState.parent != null) {
             binding.viewstubEmptyState.inflate()
         }
+        binding.viewstubEmptyState.visibility = View.VISIBLE
         binding.rvKegiatan.visibility = View.GONE
     }
 
     private fun hideEmptyState() {
-        binding.viewstubEmptyState.visibility = View.GONE // Hide inflated empty state if it exists
+        binding.viewstubEmptyState.visibility = View.GONE
         binding.rvKegiatan.visibility = View.VISIBLE
     }
 }

@@ -5,16 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.dl2lab.srolqs.R
-import com.github.mikephil.charting.charts.HorizontalBarChart  // Use HorizontalBarChart instead of BarChart
+import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 
 class BarChartFragment : Fragment() {
 
-    private lateinit var horizontalBarChart: HorizontalBarChart  // Change to HorizontalBarChart
+    private lateinit var horizontalBarChart: HorizontalBarChart
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,56 +29,86 @@ class BarChartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.getFloatArray("SCORES")?.let { scores ->
-            updateChartData(scores.toList())
+        var scores1 = arguments?.getFloatArray("SCORES")?.toList()
+        var scores2 = arguments?.getFloatArray("SCORES2")?.toList()
+        if (scores1 != null) {
+            updateChartData(scores1.toList())
         }
+        if (scores1!=null && scores2 != null) {
+            updateChartData(scores1.toList(), scores2.toList())
+        }
+
     }
 
-    private fun updateChartData(scores: List<Float>) {
-        // Create BarEntries with proper indices for horizontal layout
-        val entries = scores.mapIndexed { index, score -> BarEntry(index.toFloat(), score) }
-        val barDataSet = BarDataSet(entries, "SRL Skills")
+    private fun updateChartData(scores1: List<Float>, scores2: List<Float>? = null) {
+        val entries1 = scores1.mapIndexed { index, score -> BarEntry(index.toFloat(), score) }
+        val barDataSet1 = BarDataSet(entries1, "Keterampilan SRL Anda")
+        barDataSet1.color = Color.parseColor("#1ABC9C")
+        barDataSet1.valueTextColor = Color.BLACK
+        barDataSet1.valueTextSize = 12f
+        barDataSet1.valueFormatter = object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return when {
+                    value % 1 == 0f -> value.toInt().toString()
+                    else -> String.format("%.1f", value)
+                }
+            }
+        }
 
-        // Set custom color for the bars
-        barDataSet.color = Color.parseColor("#1ABC9C")  // Use teal color as in the example
-        barDataSet.valueTextColor = Color.BLACK
-        barDataSet.valueTextSize = 12f
+        val barData = if (scores2 != null) {
+            val entries2 = scores2.mapIndexed { index, score -> BarEntry(index.toFloat(), score) }
+            val barDataSet2 = BarDataSet(entries2, "Rata-rata Keteramplilan SRL Kelas Anda")
+            barDataSet2.color = Color.parseColor("#FF5733")
+            barDataSet2.valueTextColor = Color.BLACK
+            barDataSet2.valueTextSize = 12f
+            barDataSet2.valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return when {
+                        value % 1 == 0f -> value.toInt().toString()
+                        else -> String.format("%.1f", value)
+                    }
+                }
+            }
+            BarData(barDataSet1, barDataSet2)
+        } else {
+            BarData(barDataSet1)
+        }
 
-        val barData = BarData(barDataSet)
-        barData.barWidth = 0.5f  // Adjust bar width
-
+        barData.barWidth = 0.3f
         horizontalBarChart.data = barData
-        horizontalBarChart.description.isEnabled = false  // Hide description
+        horizontalBarChart.description.isEnabled = false
 
-        // Customize the XAxis (now it shows scores)
+        val labels = listOf("Goal Settings", "Environment Structuring", "Task Strategies", "Time Management", "Help Seeking", "Self Evaluation")
         horizontalBarChart.xAxis.apply {
+            labelCount = labels.size
+            valueFormatter = IndexAxisValueFormatter(labels)
             axisMinimum = 0f
-            axisMaximum = 6f  // Set maximum value to 6 for scores range
+            axisMaximum = labels.size.toFloat()
             granularity = 1f
             setDrawGridLines(true)
-            position = XAxis.XAxisPosition.BOTTOM  // Position labels at bottom (horizontal layout)
+            position = XAxis.XAxisPosition.BOTTOM
             textColor = Color.DKGRAY
-            textSize = 12f
-            typeface = android.graphics.Typeface.DEFAULT_BOLD  // Make labels bold
+            textSize = 6f
+            typeface = android.graphics.Typeface.DEFAULT_BOLD
         }
 
-        // Customize the Left YAxis (now it shows labels)
-        val labels = listOf("Goal Settings", "Environment Structuring", "Task Strategies", "Time Management", "Help Seeking", "Self Evaluation")
         horizontalBarChart.axisLeft.apply {
-            valueFormatter = IndexAxisValueFormatter(labels)
             textColor = Color.DKGRAY
             textSize = 12f
-            typeface = android.graphics.Typeface.DEFAULT_BOLD  // Make labels bold
+            typeface = android.graphics.Typeface.DEFAULT_BOLD
             granularity = 1f
-            labelCount = labels.size
-            setDrawGridLines(false)  // Disable grid lines on Y-axis for cleaner look
+            setDrawGridLines(false)
+            axisMinimum = 0f
+            axisMaximum = 6f
         }
 
-        // Disable right Y-axis as it's not needed in this case.
         horizontalBarChart.axisRight.isEnabled = false
 
-        // Refresh and animate the chart for better user experience.
+        if (scores2 != null) {
+            horizontalBarChart.groupBars(0f, 0.4f, 0.05f)
+        }
+
         horizontalBarChart.invalidate()
-        horizontalBarChart.animateY(2000)  // Animate vertically since it's now horizontal.
+        horizontalBarChart.animateY(2000)
     }
 }

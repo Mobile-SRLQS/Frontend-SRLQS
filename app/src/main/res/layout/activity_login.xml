@@ -37,7 +37,7 @@
                 style="@style/H1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Welcome to SROL-QS Mobile"
+                android:text="Selamat Datang"
                 android:layout_marginTop="25dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Please enter your account credentials to access the application"
+                android:text="Silakan masukkan kredensial akun Anda untuk mengakses aplikasi"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_login_title"
                 />
@@ -164,7 +164,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="7dp"
-                    android:text="Doesn’t have an account?"
+                    android:text="Belum Punya Akun?"
                     />
                 <TextView
                     android:id="@+id/register_button"

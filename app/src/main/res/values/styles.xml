@@ -72,4 +72,10 @@
         <item name="passwordToggleTint">@color/dark_dark_green</item>
         <item name="startIconTint">@color/dark_green</item>
     </style>
+
+    <style name="Widget.App.Spinner" parent="@style/Widget.AppCompat.Spinner">
+        <item name="overlapAnchor">true</item>
+        <item name="android:background">@drawable/spinner_background</item>
+    </style>
+
 </resources>

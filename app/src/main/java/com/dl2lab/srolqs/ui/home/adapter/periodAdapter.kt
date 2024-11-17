@@ -40,6 +40,17 @@ class PeriodAdapter(
                 )
                 binding.periodButton.isEnabled = false
             }
+
+            if (periodItem.isDone == true && periodItem.isAvailable == false) {
+                buttonText = "Lihat Hasil"
+                binding.periodButton.setOnClickListener{
+                    seeGraphic(binding.periodButton.context, periodItem)
+                }
+                binding.periodButton.isEnabled = true
+                binding.periodButton.setBackgroundColor(
+                    ContextCompat.getColor(binding.periodButton.context, R.color.light_green)
+                )
+            }
             binding.periodButton.text = buttonText
 
         }

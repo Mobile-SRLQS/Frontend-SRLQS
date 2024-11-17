@@ -5,15 +5,21 @@ import com.dl2lab.srolqs.data.remote.request.GetQuestionnaireRequest
 import com.dl2lab.srolqs.data.remote.request.JoinClassRequest
 import com.dl2lab.srolqs.data.remote.request.SubmitQuestionnaireRequest
 import com.dl2lab.srolqs.data.remote.request.TambahKegiatanRequest
+import com.dl2lab.srolqs.data.remote.request.UpdateKegiatanRequest
 import com.dl2lab.srolqs.data.remote.response.BasicResponse
 import com.dl2lab.srolqs.data.remote.response.DetailClassResponse
+import com.dl2lab.srolqs.data.remote.response.GetKegiatanDetailResponse
 import com.dl2lab.srolqs.data.remote.response.ListClassResponse
 import com.dl2lab.srolqs.data.remote.response.SubmitQuestionnaireResponse
 import com.dl2lab.srolqs.data.remote.response.GetKegiatanResponse
 import com.dl2lab.srolqs.data.remote.response.GetQuestionnaireResponse
+import com.dl2lab.srolqs.data.remote.response.KegiatanItem
+import com.dl2lab.srolqs.data.remote.response.ShowAvailablePeriodResponse
+import com.dl2lab.srolqs.data.remote.response.StudentProgressResponse
 import com.dl2lab.srolqs.data.remote.response.TambahKegiatanResponse
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -55,6 +61,16 @@ interface ApiServiceSecured {
         @Path("id") id: String
     ): Call<DetailClassResponse>
 
+    @GET("class/available-periods/{class_id}")
+    fun getAvailablePeriod(
+        @Path("class_id") classId :String
+    ) : Call<ShowAvailablePeriodResponse>
+
+    @GET("questionnaire/progress/dimensi")
+    fun getStudentProgress(
+        @Query("class_id") classId :String,
+        @Query("type") type: String
+    ) : Call<StudentProgressResponse>
 
     @POST("questionnaire/submit")
     fun submitQuestionnaire(
@@ -66,4 +82,26 @@ interface ApiServiceSecured {
         @Query("class_id") classId: String,
         @Query("period") period: String
     ): Call<GetQuestionnaireResponse>
+
+    @DELETE("todo/{id}")
+    fun checklistKegiatan(
+        @Path("id") id: Int
+    ): Call<BasicResponse>
+
+    @GET("todo/list/{type}")
+    fun getKegiatanByType(
+        @Path("type") type: String
+    ): Call<GetKegiatanResponse>
+
+    @GET("todo/{id}")
+    fun getKegiatanDetail(
+        @Path("id") id: Int
+    ): Call<GetKegiatanDetailResponse>
+
+    @PUT("todo/{id}")
+    fun updateKegiatan(
+        @Path("id") id: Int,
+        @Body updateKegiatanRequest: UpdateKegiatanRequest
+    ): Call<BasicResponse>
+
 }

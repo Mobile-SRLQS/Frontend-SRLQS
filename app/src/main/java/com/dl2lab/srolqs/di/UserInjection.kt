@@ -11,7 +11,6 @@ object UserInjection {
         val pref = UserPreference.getInstance(context.dataStore)
         return UserRepository.getInstance(pref)
     }
-
     fun provideSecuredRepository(context: Context): SecuredRepository {
         val pref = UserPreference.getInstance(context.dataStore)
         return SecuredRepository.getInstance(pref)

@@ -15,7 +15,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Your Profile"
+        android:text="Profil Anda"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,12 +27,12 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="20dp"
-        android:paddingHorizontal="30dp"
-        android:paddingVertical="10dp"
         android:background="@drawable/rounded_corner_card"
         android:backgroundTint="@color/light_green"
-        app:layout_constraintStart_toStartOf="parent"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="10dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_profile_heading">
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -53,67 +53,67 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
+            android:layout_toEndOf="@id/icon"
+            android:ellipsize="end"
             android:maxLines="1"
             android:text="Gabriel Zebaoth"
-            android:ellipsize="end"
-            android:textColor="@color/white"
-            android:layout_toEndOf="@id/icon"
-            />
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/profileEmail"
             style="@style/B1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="gabiiing13@gmail.com"
-            android:textColor="@color/white"
             android:layout_below="@id/profileName"
             android:layout_alignStart="@id/profileName"
-            android:layout_marginTop="4dp"/>
+            android:layout_marginTop="4dp"
+            android:text="gabiiing13@gmail.com"
+            android:textColor="@color/white" />
+
         <TextView
             android:id="@+id/profile_institution"
             style="@style/B1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Universitas Indonesia"
-            android:textColor="@color/white"
             android:layout_below="@id/profileEmail"
             android:layout_alignStart="@id/profileName"
-            android:layout_marginTop="4dp"/>
+            android:layout_marginTop="4dp"
+            android:text="Universitas Indonesia"
+            android:textColor="@color/white" />
     </RelativeLayout>
-    
+
     <TextView
         android:id="@+id/tv_profile_setting_label"
+        style="@style/H1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rl_profile"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        style="@style/H1"
-        android:text="Profile's Settings"
-        />
+        android:text="Pengaturan Profil"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rl_profile" />
+
     <RelativeLayout
         android:id="@+id/button_account_information"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_course_list_item"
         android:paddingHorizontal="15dp"
         android:paddingVertical="15dp"
-        android:background="@drawable/rounded_course_list_item"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_profile_setting_label">
 
 
         <TextView
+            style="@style/H2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:text="Account Information"
-            style="@style/H2"
-            />
+            android:text="Informasi Akun" />
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -129,21 +129,21 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_course_list_item"
         android:paddingHorizontal="15dp"
         android:paddingVertical="15dp"
-        android:background="@drawable/rounded_course_list_item"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button_account_information">
 
 
         <TextView
+            style="@style/H2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:text="Update Password"
-            style="@style/H2"
-            />
+            android:text="Ubah Password" />
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -159,21 +159,21 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_course_list_item"
         android:paddingHorizontal="15dp"
         android:paddingVertical="15dp"
-        android:background="@drawable/rounded_course_list_item"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button_update_password">
 
 
         <TextView
+            style="@style/H2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:text="Logout"
-            style="@style/H2"
-            />
+            android:text="Logout" />
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -186,15 +186,14 @@
 
     <TextView
         android:id="@+id/tv_other_label"
+        style="@style/H1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_logout"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        style="@style/H1"
-        android:text="Other"
-        />
+        android:text="Lainnya"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_logout" />
 
     <RelativeLayout
         android:id="@+id/button_about_application"
@@ -202,21 +201,21 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_course_list_item"
         android:paddingHorizontal="15dp"
         android:paddingVertical="15dp"
-        android:background="@drawable/rounded_course_list_item"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_other_label">
 
 
         <TextView
+            style="@style/H2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:text="About Application"
-            style="@style/H2"
-            />
+            android:text="Tentang Aplikasi" />
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -232,21 +231,21 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_course_list_item"
         android:paddingHorizontal="15dp"
         android:paddingVertical="15dp"
-        android:background="@drawable/rounded_course_list_item"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button_about_application">
 
 
         <TextView
+            style="@style/H2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:text="FAQs"
-            style="@style/H2"
-            />
+            android:text="FAQs" />
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"

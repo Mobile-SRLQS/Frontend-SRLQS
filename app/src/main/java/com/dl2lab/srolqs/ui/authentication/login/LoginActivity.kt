@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.dl2lab.srolqs.databinding.ActivityLoginBinding
+import com.dl2lab.srolqs.databinding.ActivityWelcomeBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.authentication.forgotPassword.ForgotPasswordActivity
 import com.dl2lab.srolqs.ui.authentication.register.RegisterActivity
@@ -25,7 +26,14 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
+        this.window.setFlags(
+            android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        supportActionBar?.hide()
         binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         role = intent.getStringExtra("role") ?: "Student"
 
         setContentView(binding.root)

@@ -7,8 +7,11 @@ import com.dl2lab.srolqs.data.remote.request.JoinClassRequest
 import com.dl2lab.srolqs.data.remote.request.SubmitQuestionnaireRequest
 import com.dl2lab.srolqs.data.remote.response.BasicResponse
 import com.dl2lab.srolqs.data.remote.response.DetailClassResponse
+import com.dl2lab.srolqs.data.remote.response.GetKegiatanResponse
 import com.dl2lab.srolqs.data.remote.response.GetQuestionnaireResponse
 import com.dl2lab.srolqs.data.remote.response.ListClassResponse
+import com.dl2lab.srolqs.data.remote.response.ShowAvailablePeriodResponse
+import com.dl2lab.srolqs.data.remote.response.StudentProgressResponse
 import com.dl2lab.srolqs.data.remote.response.SubmitQuestionnaireResponse
 import com.dl2lab.srolqs.data.remote.retrofit.ApiConfig.getApiServiceSecured
 import com.dl2lab.srolqs.data.remote.retrofit.ApiServiceSecured
@@ -69,9 +72,29 @@ class SecuredRepository private constructor(
         return apiServiceSecured.getQuestionnaireResult(classId, period)
     }
 
+    fun getAvailablePeriod(classId : String) : Call<ShowAvailablePeriodResponse>{
+        return apiServiceSecured.getAvailablePeriod(classId)
+    }
+
+    fun getStudentProgress(classId : String, type: String) : Call<StudentProgressResponse> {
+        return apiServiceSecured.getStudentProgress(classId, type)
+    }
+
+    fun getListKegiatan() : Call<GetKegiatanResponse>{
+        return apiServiceSecured.getListKegiatan()
+    }
+
+    fun getListKegiatanByType(type: String) : Call<GetKegiatanResponse>{
+        return apiServiceSecured.getKegiatanByType(type)
+    }
+
+    fun checklistKegiatan(id: Int) : Call<BasicResponse>{
+        return apiServiceSecured.checklistKegiatan(id)
+    }
 
 
-    companion object {
+
+        companion object {
         @Volatile
         private var instance: SecuredRepository? = null
         fun getInstance(

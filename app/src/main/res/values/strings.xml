@@ -12,40 +12,40 @@
     <string name="register_button_text">Register</string>
 
     // Welcome Activity
-    <string name="welcome_student">Student</string>
-    <string name="welcome_teacher">Teacher/Lecturer</string>
-    <string name="welcome_text">Welcome! Please select your role to proceed using the app</string>
+    <string name="welcome_student">Pelajar</string>
+    <string name="welcome_teacher">Pengajar</string>
+    <string name="welcome_text">Selamat datang! Silahkan pilih peran Anda terlebih dahulu untuk menggunakan aplikasi</string>
 
     // Register Activity
-    <string name="fill_details_below">Fill in the details below to create one</string>
-    <string name="register_name_field">Name</string>
+    <string name="fill_details_below">Isi detail informasi di bawah ini untuk membuat akun</string>
+    <string name="register_name_field">Nama</string>
     <string name="email_label">Email</string>
-    <string name="register_name_hint">Enter your full name</string>
-    <string name="register_email_hint">Enter your email address</string>
-    <string name="dob_label">Date of Birth</string>
-    <string name="register_dob_hint">Choose your date of birth</string>
+    <string name="register_name_hint">Masukkan nama anda</string>
+    <string name="register_email_hint">Masukkan alamat email akun anda</string>
+    <string name="dob_label">Tanggal lahir</string>
+    <string name="register_dob_hint">Pilih tanggal lahir anda</string>
     <string name="calendar_icon_description">Calendar</string>
-    <string name="university_label">University</string>
-    <string name="register_university_hint">Enter your university name</string>
-    <string name="batch_label">Batch of</string>
-    <string name="register_batch_hint">Choose the year you joined university</string>
+    <string name="university_label">Universitas</string>
+    <string name="register_university_hint">Masukkan nama universitas anda</string>
+    <string name="batch_label">Angkatan</string>
+    <string name="register_batch_hint">Pilih tahun angkatan anda</string>
     <string name="dropdown_icon_description">dropdown batch</string>
-    <string name="degree_label">Degree</string>
-    <string name="register_degree_hint">Choose the degree you are pursuing</string>
-    <string name="password_label">Password</string>
-    <string name="register_password_hint">Enter your password</string>
-    <string name="register_password_confirm_hint">Enter your password again</string>
-    <string name="register_npm_hint">Enter your student identity number (NIM/NPM)</string>
-    <string name="register_npm_field">Student Identity Number</string>
+    <string name="degree_label">Gelar</string>
+    <string name="register_degree_hint">Pilih gelar yang sedang and tempuh</string>
+    <string name="password_label">Kata sandi</string>
+    <string name="register_password_hint">Masukkan kata sandi akun anda</string>
+    <string name="register_password_confirm_hint">Masukkan kembali kata sandi akun anda</string>
+    <string name="register_npm_hint">Masukkan NPM/NIM Anda</string>
+    <string name="register_npm_field">Nomor Identitas Mahasiswa</string>
     <string name="title_home">Beranda</string>
     <string name="title_scan_qr">Scan QR</string>
     <string name="title_profile">Profil</string>
     <string name="title_mata_kuliah">Mata Kuliah</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="register_here"><u>Register Here</u></string>
-    <string name="forgot_password"><u>Forgot Password?</u></string>
-    <string name="password_confirm_label">Password Confirmation</string>
+    <string name="register_here"><u>Daftar disini</u></string>
+    <string name="forgot_password"><u>Lupa Password</u></string>
+    <string name="password_confirm_label">Konfirmasi kata sandi</string>
 
     // Goal setting Activity
     <string name="goal_setting_indicator">1 dari 6</string>
