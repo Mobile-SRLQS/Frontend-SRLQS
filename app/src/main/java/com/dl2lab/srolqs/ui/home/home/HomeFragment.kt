@@ -1,23 +1,22 @@
 package com.dl2lab.srolqs.ui.home.home
 
-import KegiatanViewModelFactory
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.data.remote.response.DataItem
 import com.dl2lab.srolqs.data.remote.response.KegiatanItem
-import com.dl2lab.srolqs.data.repository.KegiatanRepository
 import com.dl2lab.srolqs.databinding.FragmentHomeBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
@@ -26,12 +25,13 @@ import com.dl2lab.srolqs.ui.home.adapter.OnClassItemClickListener
 import com.dl2lab.srolqs.ui.home.viewmodel.MainViewModel
 import com.dl2lab.srolqs.ui.home.welcome.WelcomeActivity
 import com.dl2lab.srolqs.ui.kegiatan.adapter.KegiatanAdapter
-import com.dl2lab.srolqs.ui.kegiatan.viewmodel.KegiatanViewModel
 import com.dl2lab.srolqs.utils.JwtUtils
 import com.facebook.shimmer.ShimmerFrameLayout
-import kotlinx.coroutines.launch
+import android.provider.Settings
+import android.net.Uri
 
-class HomeFragment : Fragment(), OnClassItemClickListener, KegiatanAdapter.OnKegiatanItemClickListener {
+class HomeFragment : Fragment(), OnClassItemClickListener,
+    KegiatanAdapter.OnKegiatanItemClickListener {
 
 
     private var _binding: FragmentHomeBinding? = null
@@ -39,9 +39,7 @@ class HomeFragment : Fragment(), OnClassItemClickListener, KegiatanAdapter.OnKeg
     private val binding get() = _binding!!
     private lateinit var viewModel: MainViewModel
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
@@ -50,9 +48,12 @@ class HomeFragment : Fragment(), OnClassItemClickListener, KegiatanAdapter.OnKeg
         checkUserSession()
         getUserName()
         setupJoinClass()
+        binding.btnNotification.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToNotificationFragment())
+        }
         getClassList()
         getActivityList()
-
+        checkNotificationPermission(requireContext())
         return root
     }
 
@@ -66,7 +67,7 @@ class HomeFragment : Fragment(), OnClassItemClickListener, KegiatanAdapter.OnKeg
     private fun checkUserSession() {
 
         viewModel.getSession().observe(viewLifecycleOwner, Observer { userModel ->
-            if(userModel.token != null) {
+            if (userModel.token != null) {
                 if (JwtUtils.isTokenExpired(userModel.token)) {
                     viewModel.logout()
                     startActivity(Intent(requireActivity(), WelcomeActivity::class.java))
@@ -80,16 +81,16 @@ class HomeFragment : Fragment(), OnClassItemClickListener, KegiatanAdapter.OnKeg
                         {},
                     )
                 }
-            } else{
+            } else {
                 startActivity(Intent(requireActivity(), WelcomeActivity::class.java))
                 requireActivity().finish()
             }
         })
     }
 
-    fun setupJoinClass(){
-        binding.btnJoinClass.setOnClickListener{
-            val classId= binding.etCourseCode.text.toString()
+    fun setupJoinClass() {
+        binding.btnJoinClass.setOnClickListener {
+            val classId = binding.etCourseCode.text.toString()
             if (classId.isEmpty()) {
                 requireContext().showCustomAlertDialog(
                     "",
@@ -99,18 +100,22 @@ class HomeFragment : Fragment(), OnClassItemClickListener, KegiatanAdapter.OnKeg
                     {},
                     {},
                 )
-            } else{
+            } else {
                 viewModel.getClassDetail(classId).observe(viewLifecycleOwner) { response ->
                     if (response.isSuccessful) {
                         val body = response.body()
 
                         if (body != null) {
                             // Dismiss any showing dialogs
-                            val currentDialog = requireActivity().supportFragmentManager.findFragmentByTag("CustomDialog")
+                            val currentDialog =
+                                requireActivity().supportFragmentManager.findFragmentByTag("CustomDialog")
                             if (currentDialog != null) {
                                 (currentDialog as DialogFragment).dismiss()
                             }
-                            val action = HomeFragmentDirections.actionNavigationHomeToJoinClassFragment(classId)
+                            val action =
+                                HomeFragmentDirections.actionNavigationHomeToJoinClassFragment(
+                                    classId
+                                )
                             findNavController().navigate(action)
                         }
                     } else {
@@ -129,9 +134,8 @@ class HomeFragment : Fragment(), OnClassItemClickListener, KegiatanAdapter.OnKeg
         }
 
 
-
-
     }
+
     override fun onItemClick(classItem: DataItem) {
         val action = HomeFragmentDirections.actionNavigationHomeToDetailClassFragment(classItem)
         findNavController().navigate(action)
@@ -156,7 +160,7 @@ class HomeFragment : Fragment(), OnClassItemClickListener, KegiatanAdapter.OnKeg
         }
     }
 
-    private fun showClassList(isShow: Boolean){
+    private fun showClassList(isShow: Boolean) {
         if (isShow) {
             binding.rvCourseList.visibility = View.VISIBLE
         } else {
@@ -164,7 +168,7 @@ class HomeFragment : Fragment(), OnClassItemClickListener, KegiatanAdapter.OnKeg
         }
     }
 
-    private fun showEmptyClassList(isShow: Boolean){
+    private fun showEmptyClassList(isShow: Boolean) {
         if (isShow) {
             binding.clCourseListEmpty.visibility = View.VISIBLE
         } else {
@@ -198,7 +202,8 @@ class HomeFragment : Fragment(), OnClassItemClickListener, KegiatanAdapter.OnKeg
             }
         })
     }
-    private fun showEmptyActivityList(isShow: Boolean){
+
+    private fun showEmptyActivityList(isShow: Boolean) {
         if (isShow) {
             binding.clActivityEmpty.visibility = View.VISIBLE
         } else {
@@ -225,7 +230,7 @@ class HomeFragment : Fragment(), OnClassItemClickListener, KegiatanAdapter.OnKeg
         }
     }
 
-    private fun showRVActivityList(isShow: Boolean){
+    private fun showRVActivityList(isShow: Boolean) {
         if (isShow) {
             binding.rvActivityList.visibility = View.VISIBLE
         } else {
@@ -240,7 +245,7 @@ class HomeFragment : Fragment(), OnClassItemClickListener, KegiatanAdapter.OnKeg
             if (response.isSuccessful) {
                 showShimmerActivity(false)
                 val listKegiatan = response.body()?.data ?: emptyList()
-                if(listKegiatan.isEmpty()){
+                if (listKegiatan.isEmpty()) {
                     showEmptyActivityList(true)
                 } else {
                     showEmptyActivityList(false)
@@ -257,49 +262,102 @@ class HomeFragment : Fragment(), OnClassItemClickListener, KegiatanAdapter.OnKeg
                 binding.tvActivityEmpty.text = "Gagal memuat data kegiatan"
 
 
-
             }
         })
     }
 
-    private fun getUserName(){
+    private fun getUserName() {
         viewModel.getSession().observe(viewLifecycleOwner, Observer { userModel ->
-            var nama= userModel.nama.split(" ").take(2).joinToString(" ")
+            var nama = userModel.nama.split(" ").take(2).joinToString(" ")
             binding.tvGreeting.text = "Hello, ${nama}"
         })
     }
 
     override fun onItemClick(kegiatanItem: KegiatanItem) {
-        val action = HomeFragmentDirections.actionNavigationKegiatanToDetailKegiatanFragment(kegiatanItem.id)
+        val action =
+            HomeFragmentDirections.actionNavigationKegiatanToDetailKegiatanFragment(kegiatanItem.id)
         findNavController().navigate(action)
     }
 
 
     override fun onItemChecked(kegiatanItem: KegiatanItem, isChecked: Boolean) {
         if (isChecked) {
-            viewModel.checklistKegiatan(kegiatanItem.id).observe(viewLifecycleOwner, Observer { result ->
-                if (result.isSuccessful) {
-                   this.getActivityList()
-                } else {
-                    // Handle error
-                }
-            })
+            viewModel.checklistKegiatan(kegiatanItem.id)
+                .observe(viewLifecycleOwner, Observer { result ->
+                    if (result.isSuccessful) {
+                        this.getActivityList()
+                    } else {
+                        // Handle error
+                    }
+                })
         } else {
-            viewModel.checklistKegiatan(kegiatanItem.id).observe(viewLifecycleOwner, Observer { result ->
-                if (result.isSuccessful) {
-                    this.getActivityList()
-                } else {
-                    // Handle error
-                }
-            })
+            viewModel.checklistKegiatan(kegiatanItem.id)
+                .observe(viewLifecycleOwner, Observer { result ->
+                    if (result.isSuccessful) {
+                        this.getActivityList()
+                    } else {
+                        // Handle error
+                    }
+                })
 
         }
     }
 
-    // Method to get the token (implement this as per your logic)
     private suspend fun getToken(): String? {
         return viewModel.getSession().value?.token
     }
+
+
+    // Notifikasi
+
+    private fun checkNotificationPermission(context: Context) {
+        if (NotificationManagerCompat.from(context).areNotificationsEnabled()) {
+            return
+        } else {
+            showPermissionDialog(context as Activity)
+        }
+    }
+
+    private fun showPermissionDialog(activity: Activity) {
+        requireContext().showCustomAlertDialog(title = "Notification Permission",
+            subtitle = "Enable notifications to receive reminders for your activities.",
+            positiveButtonText = "Enable",
+            negativeButtonText = "Cancel",
+            onPositiveButtonClick = {
+                try {
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            putExtra(Settings.EXTRA_APP_PACKAGE, activity.packageName)
+                        }
+                        startActivity(intent)
+                    } else {
+                        // For Android 7 and below
+                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            data = Uri.fromParts("package", activity.packageName, null)
+                        }
+                        startActivity(intent)
+                    }
+                } catch (e: Exception) {
+                    // Fallback if the above methods fail
+                    val intent = Intent(Settings.ACTION_SETTINGS).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+
+                } catch (e: Exception) {
+                    // Fallback if the above methods fail
+                    val intent = Intent(Settings.ACTION_SETTINGS).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+                    startActivity(intent)
+
+                }
+            },
+            onNegativeButtonClick = {})
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

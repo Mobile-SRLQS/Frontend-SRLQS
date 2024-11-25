@@ -103,6 +103,41 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
+            android:id="@+id/tv_reminder_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set Reminder"
+            style="@style/B1"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="@id/input_reminder_layout"
+            app:layout_constraintTop_toBottomOf="@id/input_link_kegiatan_layout" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_reminder_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/CustomTextInputLayout"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/dark_green"
+            app:endIconMode="dropdown_menu"
+            app:endIconContentDescription="Dropdown for reminder options"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="15dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_reminder_label"
+            app:layout_constraintWidth_percent="0.85">
+
+            <AutoCompleteTextView
+                android:id="@+id/input_reminder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                style="@style/B1"
+                android:hint="Atur pengingat untuk kegiatan Anda"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
             android:id="@+id/tv_tipe_kegiatan_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -217,9 +252,25 @@
             android:textColor="@android:color/white"
             android:backgroundTint="@color/light_green"
             app:layout_constraintStart_toStartOf="parent"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/input_link_kegiatan_layout"
+            app:layout_constraintTop_toBottomOf="@id/input_reminder_layout"
             app:layout_constraintWidth_percent="0.85" />
+
+        <Button
+            android:id="@+id/btn_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginHorizontal="15dp"
+            android:text="test"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/light_green"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/input_reminder_layout"
+            app:layout_constraintWidth_percent="0.85" />
+
 
         <ProgressBar
             android:id="@+id/progress_bar"

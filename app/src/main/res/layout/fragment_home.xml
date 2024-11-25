@@ -17,9 +17,24 @@
         android:layout_marginTop="24dp"
         android:text="Halo, Sarah Tonin"
         android:textColor="@color/dark_green"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_notification"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <ImageButton
+        android:id="@+id/btn_notification"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/baseline_notifications_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_greeting"
+        />
+
+
 
     <RelativeLayout
         android:id="@+id/rl_input_course_code"
@@ -44,7 +59,7 @@
 
         <EditText
             android:id="@+id/et_course_code"
-            style="@style/B2"
+            style="@style/B1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/text"
@@ -58,7 +73,7 @@
 
         <Button
             android:id="@+id/btn_join_class"
-            style="@style/B2"
+            style="@style/B1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/et_course_code"
