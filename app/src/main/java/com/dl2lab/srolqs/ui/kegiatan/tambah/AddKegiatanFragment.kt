@@ -76,17 +76,17 @@ class AddKegiatanFragment : Fragment() {
             }
         })
 
-        // AddKegiatanFragment.kt
-        binding.btnTest.setOnClickListener {
-            val title = "Gabing"
-            val message = "This is a test notification"
-            notificationHelper.scheduleTestNotification(title, message)
-            Toast.makeText(
-                context,
-                "Test notification will appear in 10 seconds",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+//        // AddKegiatanFragment.kt
+//        binding.btnTest.setOnClickListener {
+//            val title = "Gabing"
+//            val message = "This is a test notification"
+//            notificationHelper.scheduleTestNotification(title, message)
+//            Toast.makeText(
+//                context,
+//                "Test notification will appear in 10 seconds",
+//                Toast.LENGTH_SHORT
+//            ).show()
+//        }
 
         kegiatanViewModel.addKegiatanResult.observe(viewLifecycleOwner, Observer { result ->
             result.fold(

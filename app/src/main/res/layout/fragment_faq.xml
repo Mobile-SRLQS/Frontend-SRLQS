@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/faq_fragment"
@@ -8,15 +8,14 @@
     android:background="@color/white"
     tools:context=".ui.profile.faq.FaqFragment">
 
+    <!-- Toolbar with Back Button and Title -->
     <LinearLayout
         android:id="@+id/toolbar_faq"
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="30dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:padding="16dp"
+        android:gravity="center_vertical"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
@@ -24,183 +23,44 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:paddingVertical="8dp"
-            android:paddingHorizontal="20dp"
-            android:src="@drawable/arrow_back_icon" />
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="Back" />
 
         <TextView
-            style="@style/H1"
-            android:layout_width="match_parent"
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_weight="1"
+            android:text="FAQs"
+            android:textStyle="bold"
+            android:textSize="20sp"
             android:gravity="center"
-            android:text="FAQs" />
-
-        <ImageButton
-            android:id="@+id/btnEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:paddingVertical="8dp"
-            android:paddingHorizontal="20dp"
-            android:src="@drawable/edit_icon"
-            android:visibility="invisible" />
+            android:textColor="@color/black" />
     </LinearLayout>
 
-    <ScrollView
+    <!-- Description -->
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Selamat datang di halaman Frequently Asked Questions (FAQs). Di sini, kami telah mengumpulkan pertanyaan-pertanyaan yang sering diajukan untuk membantu Anda mendapatkan jawaban dengan cepat dan mudah. Jika Anda memiliki pertanyaan lain yang tidak tercantum di sini atau membutuhkan informasi lebih lanjut, jangan ragu untuk menghubungi kami melalui email di srl@ut.ac.id."
+        android:textSize="14sp"
+        android:justificationMode="inter_word"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_faq"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/faq_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_faq"
-        app:layout_constraintBottom_toTopOf="@id/guideline2"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/tvDescription"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:clipToPadding="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
-
-            <TextView
-                style="@style/B1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:justificationMode="inter_word"
-                android:text="Selamat datang di halaman Frequently Asked Questions (FAQs). Di sini, kami telah mengumpulkan pertanyaan-pertanyaan yang sering diajukan untuk membantu Anda mendapatkan jawaban dengan cepat dan mudah. Jika Anda memiliki pertanyaan lain yang tidak tercantum di sini atau membutuhkan informasi lebih lanjut, jangan ragu untuk menghubungi kami melalui email di srl@ut.ac.id."/>
-
-            <TextView
-                style="@style/H2"
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:justificationMode="inter_word"
-                android:text="Apa itu kuesioner Self-Regulated Learning?"/>
-
-            <TextView
-                style="@style/B1"
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:justificationMode="inter_word"
-                android:text="Kuesioner SRL adalah alat untuk menilai kemampuan seseorang dalam mengatur dan mengelola proses belajarnya secara mandiri, termasuk strategi dan motivasi belajar."
-                />
-
-            <TextView
-                style="@style/H2"
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:justificationMode="inter_word"
-                android:text="Apa tujuan dari kuesioner SRL ini?"/>
-
-            <TextView
-                style="@style/B1"
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:justificationMode="inter_word"
-                android:text="Kuesioner ini bertujuan untuk mengukur bagaimana seseorang mengatur tujuan, waktu, dan sumber daya belajarnya untuk meningkatkan efektivitas belajar."
-                />
-            <TextView
-                style="@style/H2"
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:justificationMode="inter_word"
-                android:text="Apakah hasil kuesioner ini bersifat rahasia?"/>
-
-            <TextView
-                style="@style/B1"
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:justificationMode="inter_word"
-                android:text="Ya, semua jawaban dijaga kerahasiaannya dan hanya digunakan untuk analisis dan pengembangan pembelajaran."
-                />
-
-            <TextView
-                style="@style/H2"
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:justificationMode="inter_word"
-                android:text="Bagaimana cara menafsirkan hasil kuesioner SRL?"/>
-
-            <TextView
-                style="@style/B1"
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:justificationMode="inter_word"
-                android:text="Hasilnya berupa skor yang mencerminkan seberapa efektif strategi dan pengelolaan belajar seseorang, dengan skor lebih tinggi menunjukkan kemampuan lebih baik."/>
-            />
-
-            <TextView
-                style="@style/H2"
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:justificationMode="inter_word"
-                android:text="Bagaimana cara menafsirkan hasil kuesioner SRL?"/>
-
-            <TextView
-                style="@style/B1"
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:justificationMode="inter_word"
-                android:text="Hasilnya berupa skor yang mencerminkan seberapa efektif strategi dan pengelolaan belajar seseorang, dengan skor lebih tinggi menunjukkan kemampuan lebih baik."/>
-            />
-            <TextView
-                style="@style/H2"
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:justificationMode="inter_word"
-                android:text="Bagaimana cara menafsirkan hasil kuesioner SRL?"/>
-
-            <TextView
-                style="@style/B1"
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:justificationMode="inter_word"
-                android:text="Hasilnya berupa skor yang mencerminkan seberapa efektif strategi dan pengelolaan belajar seseorang, dengan skor lebih tinggi menunjukkan kemampuan lebih baik."/>
-            />
-            <TextView
-                style="@style/H2"
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:justificationMode="inter_word"
-                android:text="Bagaimana cara menafsirkan hasil kuesioner SRL?"/>
-
-            <TextView
-                style="@style/B1"
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:justificationMode="inter_word"
-                android:text="Hasilnya berupa skor yang mencerminkan seberapa efektif strategi dan pengelolaan belajar seseorang, dengan skor lebih tinggi menunjukkan kemampuan lebih baik."/>
-
-            <androidx.constraintlayout.widget.Barrier
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:barrierDirection="top" />
-            />
-        </LinearLayout>
-    </ScrollView>
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="658dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:listitem="@layout/item_faq" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
