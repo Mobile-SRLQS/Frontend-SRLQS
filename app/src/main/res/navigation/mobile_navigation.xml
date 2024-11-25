@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.dl2lab.srolqs.ui.home.home.HomeFragment"
+        app:labelVisibilityMode="labeled"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_notificationFragment"
+            app:destination="@id/notificationFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_joinClassFragment"
+            app:destination="@id/joinClassFragment">
+            <argument
+                android:name="classId"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_navigation_home_to_detailClassFragment"
+            app:destination="@id/detailClassFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_kegiatan"
+        android:name="com.dl2lab.srolqs.ui.kegiatan.KegiatanFragment"
+        app:labelVisibilityMode="labeled"
+        tools:layout="@layout/fragment_kegiatan" />
+    <action
+        android:id="@+id/action_navigation_kegiatan_to_detailKegiatanFragment"
+        app:destination="@id/detailKegiatanFragment" />
+
+
+    <fragment
+        android:id="@+id/editKegiatanFragment"
+        android:name="com.dl2lab.srolqs.ui.kegiatan.edit.EditKegiatanFragment"
+        android:label="Edit Kegiatan">
+        <argument
+            android:name="kegiatanId"
+            app:argType="integer" />
+    </fragment>
+    <action
+        android:id="@+id/action_navigation_kegiatan_to_addKegiatanFragment"
+        app:destination="@id/addKegiatanFragment" />
+    <fragment
+        android:id="@+id/addKegiatanFragment"
+        android:name="com.dl2lab.srolqs.ui.kegiatan.tambah.AddKegiatanFragment"
+        app:labelVisibilityMode="labeled"
+        tools:layout="@layout/fragment_add_kegiatan" />
+    <action
+        android:id="@+id/action_addKegiatanFragment_to_navigation_kegiatan"
+        app:destination="@id/navigation_kegiatan" />
+
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.dl2lab.srolqs.ui.profile.ProfileFragment"
+        app:labelVisibilityMode="labeled"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_navigation_profile_to_profileDetailFragment"
+            app:destination="@id/profileDetailFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_self"
+            app:destination="@id/navigation_profile" />
+        <action
+            android:id="@+id/action_navigation_profile_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_faqFragment"
+            app:destination="@id/faqFragment" />
+
+        <action
+            android:id="@+id/action_navigation_profile_to_aboutFragment2"
+            app:destination="@id/aboutFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_mata_kuliah"
+        android:name="com.dl2lab.srolqs.ui.kelas.KelasFragment"
+        app:labelVisibilityMode="labeled"
+        tools:layout="@layout/fragment_kelas">
+        <action
+            android:id="@+id/action_navigation_mata_kuliah_to_detailClassFragment"
+            app:destination="@id/detailClassFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/faqFragment"
+        android:name="com.dl2lab.srolqs.ui.profile.faq.FaqFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about">
+        <action
+            android:id="@+id/action_faqFragment_to_navigation_profile"
+            app:destination="@id/navigation_profile" />
+    </fragment>
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.dl2lab.srolqs.ui.profile.changepassword.ChangePasswordFragment"
+        android:label="fragment_change_password"
+        tools:layout="@layout/fragment_change_password">
+        <action
+            android:id="@+id/action_changePasswordFragment_to_navigation_profile"
+            app:destination="@id/navigation_profile" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileDetailFragment"
+        android:name="com.dl2lab.srolqs.ui.profile.detail.ProfileDetailFragment"
+        android:label="fragment_profile_detail"
+        tools:layout="@layout/fragment_profile_detail">
+        <action
+            android:id="@+id/action_profileDetailFragment_to_profileEditFragment"
+            app:destination="@id/profileEditFragment" />
+        <action
+            android:id="@+id/action_profileDetailFragment_to_navigation_profile"
+            app:destination="@id/navigation_profile" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileEditFragment"
+        android:name="com.dl2lab.srolqs.ui.profile.edit.ProfileEditFragment"
+        android:label="fragment_profile_edit"
+        tools:layout="@layout/fragment_profile_edit">
+        <action
+            android:id="@+id/action_profileEditFragment_to_profileDetailFragment"
+            app:destination="@id/profileDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/aboutFragment2"
+        android:name="com.dl2lab.srolqs.ui.profile.about.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about">
+        <action
+            android:id="@+id/action_aboutFragment2_to_navigation_profile"
+            app:destination="@id/navigation_profile" />
+    </fragment>
+    <fragment
+        android:id="@+id/joinClassFragment"
+        android:name="com.dl2lab.srolqs.ui.kelas.joinClass.JoinClassFragment"
+        android:label="fragment_join_class"
+        tools:layout="@layout/fragment_join_class">
+        <argument
+            android:name="classId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_joinClassFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_joinClassFragment_to_questionnaireQuestionActivity"
+            app:destination="@id/questionnaire_container" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/detailClassFragment"
+        android:name="com.dl2lab.srolqs.ui.kelas.detail.DetailClassFragment"
+        android:label="fragment_detail_class"
+        tools:layout="@layout/fragment_detail_class">
+        <argument
+            android:name="classItem"
+            app:argType="com.dl2lab.srolqs.data.remote.response.DataItem" />
+        <action
+            android:id="@+id/action_detailClassFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
+
+    <action
+        android:id="@+id/action_joinClassFragment_to_questionnaireQuestionActivity"
+        app:destination="@id/questionnaire_container" />
+
+    <fragment
+        android:id="@+id/detailKegiatanFragment"
+        android:name="com.dl2lab.srolqs.ui.kegiatan.detail.DetailKegiatanFragment"
+        android:label="Detail Kegiatan">
+        <action
+            android:id="@+id/actionNavigationDetailKegiatanToEditKegiatanFragment"
+            app:destination="@id/editKegiatanFragment" />
+
+        <argument
+            android:name="kegiatanId"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.dl2lab.srolqs.ui.notifikasi.NotificationFragment"
+     />
+
+</navigation>

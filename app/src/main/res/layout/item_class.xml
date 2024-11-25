@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/aapt"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    card_view:cardCornerRadius="10dp"
+
+>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="18dp"
+        android:background="@drawable/rounded_course_list_item"
+        >
+
+        <TextView
+            android:id="@+id/tv_classname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="e-dagang"
+            android:textColor="@color/dark_green"
+            style="@style/H2"
+           />
+
+        <TextView
+            android:id="@+id/tv_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="80%"
+            style="@style/H2"
+            android:textColor="@color/light_green"
+           />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
