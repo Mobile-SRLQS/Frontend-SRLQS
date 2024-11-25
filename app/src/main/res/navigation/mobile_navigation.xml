@@ -11,6 +11,9 @@
         app:labelVisibilityMode="labeled"
         tools:layout="@layout/fragment_home">
         <action
+            android:id="@+id/action_homeFragment_to_notificationFragment"
+            app:destination="@id/notificationFragment" />
+        <action
             android:id="@+id/action_navigation_home_to_joinClassFragment"
             app:destination="@id/joinClassFragment">
             <argument
@@ -177,5 +180,10 @@
             android:name="kegiatanId"
             app:argType="integer" />
     </fragment>
+
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.dl2lab.srolqs.ui.notifikasi.NotificationFragment"
+     />
 
 </navigation>
