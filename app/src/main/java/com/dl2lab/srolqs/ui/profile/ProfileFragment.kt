@@ -13,6 +13,7 @@ import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.home.welcome.WelcomeActivity
 import com.dl2lab.srolqs.ui.profile.viewmodel.ProfileViewModel
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
 
@@ -58,7 +59,17 @@ class ProfileFragment : Fragment() {
             binding.profileName.text = userModel.nama
             binding.profileEmail.text = userModel.email
             binding.profileInstitution.text = userModel.institution
+            Glide.with(this)
+                .load(userModel.profilePicture)
+                .circleCrop()
+                .into(binding.icon)
         })
+
+        viewModel.getDetailProfile().observe(viewLifecycleOwner) { updatedUser ->
+            updatedUser?.let {
+                viewModel.saveSession(it) // Save updated user details to session
+            }
+        }
     }
 
     private fun setupButton() {

@@ -11,8 +11,9 @@ data class User(
     val institution: String,
     val degree: String,
     val role: String,
-    val resetCode: Any,
-    val resetCodeExpiry: Any,
+    val resetCode: Any? = null,
+    val resetCodeExpiry: Any? = null,
     val token: String,
-    val isLogin: Boolean = false
+    val isLogin: Boolean = false,
+    val profilePicture: String,
 )

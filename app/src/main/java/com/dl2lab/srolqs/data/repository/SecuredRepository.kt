@@ -8,6 +8,7 @@ import com.dl2lab.srolqs.data.remote.request.SubmitQuestionnaireRequest
 import com.dl2lab.srolqs.data.remote.response.BasicResponse
 import com.dl2lab.srolqs.data.remote.response.DetailClassResponse
 import com.dl2lab.srolqs.data.remote.response.GetKegiatanResponse
+import com.dl2lab.srolqs.data.remote.response.GetProfileResponse
 import com.dl2lab.srolqs.data.remote.response.GetQuestionnaireResponse
 import com.dl2lab.srolqs.data.remote.response.ListClassResponse
 import com.dl2lab.srolqs.data.remote.response.ShowAvailablePeriodResponse
@@ -90,6 +91,10 @@ class SecuredRepository private constructor(
 
     fun checklistKegiatan(id: Int) : Call<BasicResponse>{
         return apiServiceSecured.checklistKegiatan(id)
+    }
+
+    fun getDetailProfile() : Call<GetProfileResponse>{
+        return apiServiceSecured.getProfileDetail()
     }
 
 

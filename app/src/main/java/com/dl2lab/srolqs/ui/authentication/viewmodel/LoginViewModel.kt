@@ -59,7 +59,8 @@ class LoginViewModel(private val repository: UserRepository,  private val secure
                                 resetCode = loginResponse.resetCode ?: "",
                                 resetCodeExpiry = loginResponse.resetCodeExpiry ?: "",
                                 token = loginResponse.token ?: "",
-                                isLogin = true
+                                isLogin = true,
+                                profilePicture = ""
                             )
                         )
                     }

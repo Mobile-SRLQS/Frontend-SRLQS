@@ -31,6 +31,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
             preferences[RESET_CODE] = user.resetCode.toString()
             preferences[RESET_CODE_EXPIRY] = user.resetCodeExpiry.toString()
             preferences[TOKEN] = user.token ?: ""
+            preferences[PROFILE_PICTURE] = user.profilePicture
             preferences[IS_LOGIN_KEY] = true
         }
     }
@@ -52,6 +53,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
                 resetCode = preferences[RESET_CODE] ?: "",
                 resetCodeExpiry = preferences[RESET_CODE_EXPIRY] ?: "",
                 token = preferences[TOKEN] ?: "",
+                profilePicture = preferences[PROFILE_PICTURE] ?: "",
                 isLogin = preferences[IS_LOGIN_KEY] ?: false
             )
         }
@@ -82,6 +84,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         private val TOKEN = stringPreferencesKey("token")
         private val RESET_CODE = stringPreferencesKey("reset_code")
         private val RESET_CODE_EXPIRY = stringPreferencesKey("reset_code_expiry")
+        private val PROFILE_PICTURE = stringPreferencesKey("profile_picture")
         private val IS_LOGIN_KEY = booleanPreferencesKey("is_login")
 
         // Singleton instance retrieval

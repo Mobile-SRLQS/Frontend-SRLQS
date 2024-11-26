@@ -8,22 +8,28 @@ import com.dl2lab.srolqs.data.remote.request.TambahKegiatanRequest
 import com.dl2lab.srolqs.data.remote.request.UpdateKegiatanRequest
 import com.dl2lab.srolqs.data.remote.response.BasicResponse
 import com.dl2lab.srolqs.data.remote.response.DetailClassResponse
+import com.dl2lab.srolqs.data.remote.response.EditProfileResponse
 import com.dl2lab.srolqs.data.remote.response.GetKegiatanDetailResponse
 import com.dl2lab.srolqs.data.remote.response.ListClassResponse
 import com.dl2lab.srolqs.data.remote.response.SubmitQuestionnaireResponse
 import com.dl2lab.srolqs.data.remote.response.GetKegiatanResponse
+import com.dl2lab.srolqs.data.remote.response.GetProfileResponse
 import com.dl2lab.srolqs.data.remote.response.GetQuestionnaireResponse
 import com.dl2lab.srolqs.data.remote.response.KegiatanItem
 import com.dl2lab.srolqs.data.remote.response.ShowAvailablePeriodResponse
 import com.dl2lab.srolqs.data.remote.response.StudentProgressResponse
 import com.dl2lab.srolqs.data.remote.response.TambahKegiatanResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -103,5 +109,21 @@ interface ApiServiceSecured {
         @Path("id") id: Int,
         @Body updateKegiatanRequest: UpdateKegiatanRequest
     ): Call<BasicResponse>
+
+    @Multipart
+    @PUT("user/update")
+    fun editProfile(
+        @Part("nama") nama: RequestBody,
+        @Part("birth_date") birthDate: RequestBody,
+        @Part("institution") institution: RequestBody,
+        @Part("degree") degree: RequestBody,
+        @Part("identity_number") identityNumber: RequestBody,
+        @Part("batch") batch: RequestBody,
+        @Part profilePicture: MultipartBody.Part? // Optional, if no profile picture update
+    ): Call<EditProfileResponse>
+
+    @GET("user/detail-user")
+    fun getProfileDetail(
+    ): Call<GetProfileResponse>
 
 }
