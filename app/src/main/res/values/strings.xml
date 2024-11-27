@@ -150,4 +150,5 @@
     <string name="daftar_mata_kuliah">Daftar Mata Kuliah</string>
     <string name="no_class_available">Belum ada mata kuliah terdaftar</string>
     <string name="str_mata_kuliah_kosong">Belum ada mata kuliah terdaftar</string>
+    <string name="register_next_text">Selanjutnya</string>
 </resources>
