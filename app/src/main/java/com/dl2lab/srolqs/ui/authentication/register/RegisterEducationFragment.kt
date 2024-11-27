@@ -34,6 +34,13 @@ class RegisterEducationFragment : Fragment() {
     override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        registerViewModel.academicInfo.value?.let { academicInfo ->
+            binding.inputUniversity.setText(academicInfo.university)
+            binding.inputBatch.setText(academicInfo.batch, false) // For dropdowns
+            binding.inputNpm.setText(academicInfo.npm)
+            binding.inputDegree.setText(academicInfo.degree, false) // For dropdowns
+        }
+
         setUpBatchDropdown()
         setUpDegreeDropdown()
 
@@ -50,21 +57,10 @@ class RegisterEducationFragment : Fragment() {
 
                 registerViewModel.submitRegistration()
 
-                // Observe registration response
+                // Observe the registration response for success
                 registerViewModel.registerUser.observe(viewLifecycleOwner) { response ->
-                    if (response.error) {
-                        requireContext().showCustomAlertDialog(
-                            title = "Registrasi Gagal!",
-                            subtitle = "Maaf, proses registrasi Anda tidak berhasil. Email sudah pernah digunakan.",
-                            positiveButtonText = "Coba Lagi",
-                            negativeButtonText = "",
-                            onPositiveButtonClick = {
-                                parentFragmentManager.popBackStack()
-                            },
-                            onNegativeButtonClick = {}
-                        )
-                    } else {
-                        // Show custom dialog on success
+                    if (!response.error) {
+                        // Show success dialog
                         requireContext().showCustomAlertDialog(
                             title = "Registrasi Berhasil!",
                             subtitle = "Selamat! Akun Anda telah berhasil dibuat. Anda sekarang dapat masuk dan mulai menggunakan aplikasi.",
@@ -72,6 +68,23 @@ class RegisterEducationFragment : Fragment() {
                             negativeButtonText = "",
                             onPositiveButtonClick = {
                                 (activity as RegisterActivity).navigateToLogin()
+                            },
+                            onNegativeButtonClick = {}
+                        )
+                    }
+                }
+
+                // Observe the error message for failures
+                registerViewModel.errorMessageRegister.observe(viewLifecycleOwner) { errorMessage ->
+                    if (!errorMessage.isNullOrEmpty()) {
+                        // Show failure dialog
+                        requireContext().showCustomAlertDialog(
+                            title = "Registrasi Gagal!",
+                            subtitle = "Maaf, proses registrasi Anda tidak berhasil. Email sudah pernah digunakan.",
+                            positiveButtonText = "Coba Lagi",
+                            negativeButtonText = "",
+                            onPositiveButtonClick = {
+                                parentFragmentManager.popBackStack()
                             },
                             onNegativeButtonClick = {}
                         )

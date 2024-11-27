@@ -8,6 +8,7 @@ import com.dl2lab.srolqs.data.remote.request.RegisterRequest
 import com.dl2lab.srolqs.data.remote.response.RegisterResponse
 import com.dl2lab.srolqs.data.remote.retrofit.ApiConfig
 import com.dl2lab.srolqs.data.repository.UserRepository
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,10 +27,10 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
 
     // Temporary storage for form data
     private val _personalInfo = MutableLiveData<PersonalInfo>()
-    private val personalInfo: LiveData<PersonalInfo> = _personalInfo
+    val personalInfo: LiveData<PersonalInfo> = _personalInfo
 
     private val _academicInfo = MutableLiveData<AcademicInfo>()
-    private val academicInfo: LiveData<AcademicInfo> = _academicInfo
+    val academicInfo: LiveData<AcademicInfo> = _academicInfo
 
     // Setters for fragments to update personal and academic info
     fun setPersonalInfo(
@@ -96,11 +97,18 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
                 if (response.isSuccessful) {
                     _registerUser.value = response.body()
                 } else {
-                    _errorMessageRegister.value = "Register failed: ${response.message()}"
-                    Log.e(TAG, "onFailure: ${response.message()}")
+                    try {
+                        // Parse error response
+                        val errorBody = response.errorBody()?.string()
+                        val errorMessage = JSONObject(errorBody).optString("message", "Unknown error occurred")
+                        _errorMessageRegister.value = errorMessage
+                        Log.e(TAG, "Error: $errorMessage")
+                    } catch (e: Exception) {
+                        _errorMessageRegister.value = "Failed to parse error message"
+                        Log.e(TAG, "Error parsing response: ${e.message}")
+                    }
                 }
             }
-
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
                 _isLoading.value = false
                 _errorMessageRegister.value = "Register failed: ${t.message}"

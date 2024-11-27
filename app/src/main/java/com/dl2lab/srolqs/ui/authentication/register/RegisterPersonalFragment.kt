@@ -39,6 +39,14 @@ class RegisterPersonalFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        registerViewModel.personalInfo.value?.let { personalInfo ->
+            binding.inputName.setText(personalInfo.name)
+            binding.inputEmail.setText(personalInfo.email)
+            binding.inputDob.setText(personalInfo.dob)
+            binding.inputPassword.setText(personalInfo.password)
+            binding.inputPasswordConfirm.setText(personalInfo.confirmPassword)
+        }
+
         binding.inputDob.setOnClickListener { showDatePicker() }
         binding.inputDobLayout.setEndIconOnClickListener { showDatePicker() }
 
