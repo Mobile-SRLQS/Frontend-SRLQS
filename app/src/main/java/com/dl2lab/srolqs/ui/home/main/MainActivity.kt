@@ -2,6 +2,9 @@ package com.dl2lab.srolqs.ui.home.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -9,7 +12,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
-import androidx.paging.LoadState
 import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.databinding.ActivityMainBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
@@ -34,130 +36,146 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        LoadingManager.init(this)
-        
-        setupViewModel()
-        checkUserSession()
-        observeViewModel()
 
-        val navView: BottomNavigationView = binding.navView
+        val role = intent.getStringExtra("role") ?: "Student"
+        Log.d(TAG, "Role: $role")
+        if (role == "Instructor") {
+            setupViewModel()
+            setupWebView()
+        } else {
+            LoadingManager.init(this)
+            setupViewModel()
+            checkUserSession()
+            observeViewModel()
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        AppBarConfiguration(
-            setOf(
-                R.id.navigation_home, R.id.navigation_profile, R.id.navigation_kegiatan
+            val navView: BottomNavigationView = binding.navView
+
+            val navController = findNavController(R.id.nav_host_fragment_activity_main)
+            AppBarConfiguration(
+                setOf(
+                    R.id.navigation_home, R.id.navigation_profile, R.id.navigation_kegiatan
+                )
             )
-        )
 
-        navView.setupWithNavController(navController)
-        val fragmentToOpen = intent.getStringExtra("fragmentToOpen")
-        if (fragmentToOpen == "kegiatan") {
-            navController.navigate(R.id.navigation_kegiatan)
-            navView.setOnNavigationItemSelectedListener { item ->
-                when (item.itemId) {
-                    R.id.navigation_home -> {
-                        if (navController.currentDestination?.id == R.id.navigation_kegiatan) {
-                            navController.popBackStack()
-                        } else {
-                            navController.navigate(R.id.navigation_home)
+            navView.setupWithNavController(navController)
+            val fragmentToOpen = intent.getStringExtra("fragmentToOpen")
+            if (fragmentToOpen == "kegiatan") {
+                navController.navigate(R.id.navigation_kegiatan)
+                navView.setOnNavigationItemSelectedListener { item ->
+                    when (item.itemId) {
+                        R.id.navigation_home -> {
+                            if (navController.currentDestination?.id == R.id.navigation_kegiatan) {
+                                navController.popBackStack()
+                            } else {
+                                navController.navigate(R.id.navigation_home)
+                            }
+                            true
                         }
-                        true
-                    }
 
-                    else -> {
-                        NavigationUI.onNavDestinationSelected(item, navController)
+                        else -> {
+                            NavigationUI.onNavDestinationSelected(item, navController)
+                        }
+                    }
+                }
+            } else if (fragmentToOpen == "profile") {
+                navController.navigate(R.id.navigation_profile)
+                navView.setOnNavigationItemSelectedListener { item ->
+                    when (item.itemId) {
+                        R.id.navigation_home -> {
+                            if (navController.currentDestination?.id == R.id.navigation_profile) {
+                                navController.popBackStack()
+                            } else {
+                                navController.navigate(R.id.navigation_home)
+                            }
+                            true
+                        }
+
+                        else -> {
+                            NavigationUI.onNavDestinationSelected(item, navController)
+                        }
+                    }
+                }
+            } else if (fragmentToOpen == "mata_kuliah") {
+                navController.navigate(R.id.navigation_mata_kuliah)
+                navView.setOnNavigationItemSelectedListener { item ->
+                    when (item.itemId) {
+                        R.id.navigation_home -> {
+                            if (navController.currentDestination?.id == R.id.navigation_mata_kuliah) {
+                                navController.popBackStack()
+                            } else {
+                                navController.navigate(R.id.navigation_home)
+                            }
+                            true
+                        }
+
+                        else -> {
+                            NavigationUI.onNavDestinationSelected(item, navController)
+                        }
                     }
                 }
             }
-        } else if (fragmentToOpen == "profile") {
-            navController.navigate(R.id.navigation_profile)
-            navView.setOnNavigationItemSelectedListener { item ->
-                when (item.itemId) {
-                    R.id.navigation_home -> {
-                        if (navController.currentDestination?.id == R.id.navigation_profile) {
-                            navController.popBackStack()
-                        } else {
-                            navController.navigate(R.id.navigation_home)
-                        }
-                        true
-                    }
 
-                    else -> {
-                        NavigationUI.onNavDestinationSelected(item, navController)
-                    }
-                }
-            }
-        } else if (fragmentToOpen == "mata_kuliah") {
-            navController.navigate(R.id.navigation_mata_kuliah)
-            navView.setOnNavigationItemSelectedListener { item ->
-                when (item.itemId) {
-                    R.id.navigation_home -> {
-                        if (navController.currentDestination?.id == R.id.navigation_mata_kuliah) {
-                            navController.popBackStack()
-                        } else {
-                            navController.navigate(R.id.navigation_home)
-                        }
-                        true
-                    }
-
-                    else -> {
-                        NavigationUI.onNavDestinationSelected(item, navController)
-                    }
-                }
-            }
+            setupViewModel()
+            checkUserSession()
         }
-
-        setupViewModel()
-        checkUserSession()
     }
 
-    private fun observeViewModel(){
-        viewModel.isLoading.observe(this){
-            if(it){
+    private fun observeViewModel() {
+        viewModel.isLoading.observe(this) {
+            if (it) {
                 LoadingManager.show()
-            } else{
+            } else {
                 LoadingManager.hide()
             }
         }
     }
 
-    private fun setupViewModel(){
+    private fun setupViewModel() {
         viewModel = ViewModelProvider(
-            this,
-            ViewModelFactory.getInstance(this)
+            this, ViewModelFactory.getInstance(this)
         ).get(MainViewModel::class.java)
     }
 
     private fun checkUserSession() {
-        viewModel.getSession().observe(this, Observer  { userModel ->
-            if(userModel.token != null) {
+        viewModel.getSession().observe(this, Observer { userModel ->
+            if (userModel.token != null) {
                 if (JwtUtils.isTokenExpired(userModel.token)) {
                     viewModel.logout()
                     startActivity(Intent(this, WelcomeActivity::class.java))
-                    this.finish()
-                    this.showCustomAlertDialog(
-                        "",
-                        "Session Expired. Please login again!",
-                        "Login",
-                        "",
-                        {},
-                        {},
-                    )
+                    finish()  // Ensure the activity is finished before starting a new one
+                    // Check if the activity is finishing or destroyed before showing the dialog
+                    if (!isFinishing && !isDestroyed) {
+                        this.showCustomAlertDialog(
+                            "",
+                            "Session Expired. Please login again!",
+                            "Login",
+                            "",
+                            {},
+                            {},
+                        )
+                    }
                 }
-            } else{
+            } else {
                 startActivity(Intent(this, WelcomeActivity::class.java))
-                this.finish()
+                finish()
             }
         })
     }
 
+    private fun setupWebView() {
+        val webView: WebView = binding.webView
+        webView.webViewClient = WebViewClient()
+        webView.settings.javaScriptEnabled = true
+        binding.webView.visibility = android.view.View.VISIBLE
+        webView.loadUrl("https://main.srolqs.me")
+    }
+
     override fun onStart() {
         super.onStart()
-        checkUserSession()
+
     }
 
-    companion object{
+    companion object {
         private const val TAG = "MainActivity"
     }
-
 }

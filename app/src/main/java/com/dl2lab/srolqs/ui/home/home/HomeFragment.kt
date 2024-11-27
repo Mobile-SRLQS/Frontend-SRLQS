@@ -65,21 +65,22 @@ class HomeFragment : Fragment(), OnClassItemClickListener,
     }
 
     private fun checkUserSession() {
-
         viewModel.getSession().observe(viewLifecycleOwner, Observer { userModel ->
             if (userModel.token != null) {
                 if (JwtUtils.isTokenExpired(userModel.token)) {
                     viewModel.logout()
                     startActivity(Intent(requireActivity(), WelcomeActivity::class.java))
                     requireActivity().finish()
-                    requireContext().showCustomAlertDialog(
-                        "",
-                        "Session Expired. Please login again!",
-                        "Login",
-                        "",
-                        {},
-                        {},
-                    )
+                    if (!requireActivity().isFinishing && !requireActivity().isDestroyed) {
+                        requireContext().showCustomAlertDialog(
+                            "",
+                            "Session Expired. Please login again!",
+                            "Login",
+                            "",
+                            {},
+                            {},
+                        )
+                    }
                 }
             } else {
                 startActivity(Intent(requireActivity(), WelcomeActivity::class.java))

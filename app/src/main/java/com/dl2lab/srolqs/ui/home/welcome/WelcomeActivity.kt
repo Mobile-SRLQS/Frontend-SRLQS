@@ -2,20 +2,15 @@ package com.dl2lab.srolqs.ui.home.welcome
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.dl2lab.srolqs.R
-import com.dl2lab.srolqs.databinding.ActivityMainBinding
 import com.dl2lab.srolqs.databinding.ActivityWelcomeBinding
 import com.dl2lab.srolqs.ui.authentication.login.LoginActivity
-import com.dl2lab.srolqs.ui.authentication.register.RegisterActivity
-import com.dl2lab.srolqs.ui.kuesioner.question.QuestionnaireQuestionActivity
-import com.dl2lab.srolqs.ui.kuesioner.result.ChartActivity
+import com.dl2lab.srolqs.ui.home.dosen.WebViewActivity
+import com.dl2lab.srolqs.ui.home.main.MainActivity
 
 class WelcomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWelcomeBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
@@ -28,22 +23,16 @@ class WelcomeActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.buttonStudent.setOnClickListener { navToLoginPage("Student") }
         binding.buttonTeacher.setOnClickListener { navToLoginPage("Instructor") }
-        setContentView(binding.root)
     }
-
-    private fun navToResultPage() {
-        val intent = Intent(this, ChartActivity::class.java)
-        startActivity(intent)    }
 
     private fun navToLoginPage(role: String) {
-        val intent = Intent(this, LoginActivity::class.java)
-        intent.putExtra("role", role)
-        startActivity(intent)
-    }
-
-    private fun navToRegisterPage(role: String) {
-        val intent = Intent(this, RegisterActivity::class.java)
-        intent.putExtra("role", role)
-        startActivity(intent)
+        if (role == "Instructor") {
+            val intent = Intent(this, WebViewActivity::class.java)
+            startActivity(intent)
+        } else {
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.putExtra("role", role)
+            startActivity(intent)
+        }
     }
 }

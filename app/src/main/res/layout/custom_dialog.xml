@@ -2,12 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/rounded_corner_card"
+    android:layout_margin="20dp"
+    android:background="@drawable/rounded_dialog_background"
     android:backgroundTint="@color/white"
     android:elevation="8dp"
-    android:layout_margin="20dp"
     android:orientation="vertical"
     android:padding="20dp">
+
+    <ImageView
+        android:id="@+id/dialog_icon"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:gravity="center" />
 
     <TextView
         android:id="@+id/dialog_title"
@@ -15,9 +23,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:text="Apakah Anda yakin ingin keluar?"
-        />
+        android:text="Apakah Anda yakin ingin keluar?" />
+
     <TextView
         android:id="@+id/dialog_subtitle"
         style="@style/B1"
@@ -26,23 +35,25 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:text="Apakah Anda yakin ingin keluar?"
-       />
+        android:textSize="16sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:orientation="vertical">
+
         <Button
             android:id="@+id/dialog_negative_button"
             style="@style/OutlinedButtonLightGreen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
 
             android:text="test"
 
             />
+
         <Button
             android:id="@+id/dialog_positive_button"
             style="@style/BasicButtonLightGreen"
@@ -50,9 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
 
-            android:text="Logout"
-          />
-
+            android:text="Logout" />
 
 
     </LinearLayout>
