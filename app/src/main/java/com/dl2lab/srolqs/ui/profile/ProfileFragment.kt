@@ -61,6 +61,7 @@ class ProfileFragment : Fragment() {
             binding.profileInstitution.text = userModel.institution
             Glide.with(this)
                 .load(userModel.profilePicture)
+                .placeholder(R.drawable.ic_launcher_background)
                 .circleCrop()
                 .into(binding.icon)
         })
