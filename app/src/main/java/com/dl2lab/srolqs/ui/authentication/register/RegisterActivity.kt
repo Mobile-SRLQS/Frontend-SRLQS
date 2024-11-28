@@ -27,7 +27,6 @@ class RegisterActivity : AppCompatActivity() {
 
     private lateinit var role: String
 
-    // Shared ViewModel
     private val registerViewModel: RegisterViewModel by viewModels {
         ViewModelFactory.getInstance(applicationContext)
     }
@@ -35,7 +34,6 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Set up fullscreen and hide the action bar
         requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
         this.window.setFlags(
             android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -43,16 +41,12 @@ class RegisterActivity : AppCompatActivity() {
         )
         supportActionBar?.hide()
 
-        // Set the layout
         setContentView(R.layout.activity_register)
 
-        // Get the role from intent
         role = intent.getStringExtra("role") ?: "Student"
 
-        // Initialize the loading manager
         LoadingManager.init(this)
 
-        // Load the first fragment (PersonalInfoFragment) with role argument
         val personalInfoFragment = RegisterPersonalFragment().apply {
             arguments = Bundle().apply {
                 putString("role", role)
@@ -64,7 +58,6 @@ class RegisterActivity : AppCompatActivity() {
             .commit()
     }
 
-    // Method to navigate to LoginActivity
     fun navigateToLogin() {
         val intent = Intent(this, LoginActivity::class.java)
         intent.putExtra("role", role)

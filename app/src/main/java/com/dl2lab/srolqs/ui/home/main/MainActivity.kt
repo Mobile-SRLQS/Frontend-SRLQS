@@ -39,85 +39,81 @@ class MainActivity : AppCompatActivity() {
 
         val role = intent.getStringExtra("role") ?: "Student"
         Log.d(TAG, "Role: $role")
-        if (role == "Instructor") {
-            setupViewModel()
-            setupWebView()
-        } else {
-            LoadingManager.init(this)
-            setupViewModel()
-            checkUserSession()
-            observeViewModel()
 
-            val navView: BottomNavigationView = binding.navView
+        LoadingManager.init(this)
+        setupViewModel()
+        checkUserSession()
+        observeViewModel()
 
-            val navController = findNavController(R.id.nav_host_fragment_activity_main)
-            AppBarConfiguration(
-                setOf(
-                    R.id.navigation_home, R.id.navigation_profile, R.id.navigation_kegiatan
-                )
+        val navView: BottomNavigationView = binding.navView
+
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        AppBarConfiguration(
+            setOf(
+                R.id.navigation_home, R.id.navigation_profile, R.id.navigation_kegiatan
             )
+        )
 
-            navView.setupWithNavController(navController)
-            val fragmentToOpen = intent.getStringExtra("fragmentToOpen")
-            if (fragmentToOpen == "kegiatan") {
-                navController.navigate(R.id.navigation_kegiatan)
-                navView.setOnNavigationItemSelectedListener { item ->
-                    when (item.itemId) {
-                        R.id.navigation_home -> {
-                            if (navController.currentDestination?.id == R.id.navigation_kegiatan) {
-                                navController.popBackStack()
-                            } else {
-                                navController.navigate(R.id.navigation_home)
-                            }
-                            true
+        navView.setupWithNavController(navController)
+        val fragmentToOpen = intent.getStringExtra("fragmentToOpen")
+        if (fragmentToOpen == "kegiatan") {
+            navController.navigate(R.id.navigation_kegiatan)
+            navView.setOnNavigationItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.navigation_home -> {
+                        if (navController.currentDestination?.id == R.id.navigation_kegiatan) {
+                            navController.popBackStack()
+                        } else {
+                            navController.navigate(R.id.navigation_home)
                         }
-
-                        else -> {
-                            NavigationUI.onNavDestinationSelected(item, navController)
-                        }
+                        true
                     }
-                }
-            } else if (fragmentToOpen == "profile") {
-                navController.navigate(R.id.navigation_profile)
-                navView.setOnNavigationItemSelectedListener { item ->
-                    when (item.itemId) {
-                        R.id.navigation_home -> {
-                            if (navController.currentDestination?.id == R.id.navigation_profile) {
-                                navController.popBackStack()
-                            } else {
-                                navController.navigate(R.id.navigation_home)
-                            }
-                            true
-                        }
 
-                        else -> {
-                            NavigationUI.onNavDestinationSelected(item, navController)
-                        }
-                    }
-                }
-            } else if (fragmentToOpen == "mata_kuliah") {
-                navController.navigate(R.id.navigation_mata_kuliah)
-                navView.setOnNavigationItemSelectedListener { item ->
-                    when (item.itemId) {
-                        R.id.navigation_home -> {
-                            if (navController.currentDestination?.id == R.id.navigation_mata_kuliah) {
-                                navController.popBackStack()
-                            } else {
-                                navController.navigate(R.id.navigation_home)
-                            }
-                            true
-                        }
-
-                        else -> {
-                            NavigationUI.onNavDestinationSelected(item, navController)
-                        }
+                    else -> {
+                        NavigationUI.onNavDestinationSelected(item, navController)
                     }
                 }
             }
+        } else if (fragmentToOpen == "profile") {
+            navController.navigate(R.id.navigation_profile)
+            navView.setOnNavigationItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.navigation_home -> {
+                        if (navController.currentDestination?.id == R.id.navigation_profile) {
+                            navController.popBackStack()
+                        } else {
+                            navController.navigate(R.id.navigation_home)
+                        }
+                        true
+                    }
 
-            setupViewModel()
-            checkUserSession()
+                    else -> {
+                        NavigationUI.onNavDestinationSelected(item, navController)
+                    }
+                }
+            }
+        } else if (fragmentToOpen == "mata_kuliah") {
+            navController.navigate(R.id.navigation_mata_kuliah)
+            navView.setOnNavigationItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.navigation_home -> {
+                        if (navController.currentDestination?.id == R.id.navigation_mata_kuliah) {
+                            navController.popBackStack()
+                        } else {
+                            navController.navigate(R.id.navigation_home)
+                        }
+                        true
+                    }
+
+                    else -> {
+                        NavigationUI.onNavDestinationSelected(item, navController)
+                    }
+                }
+            }
         }
+
+        setupViewModel()
+        checkUserSession()
     }
 
     private fun observeViewModel() {

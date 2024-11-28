@@ -2,8 +2,6 @@ package com.dl2lab.srolqs.ui.home.dosen
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
-import android.webkit.ConsoleMessage
 import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
@@ -12,6 +10,7 @@ import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.databinding.ActivityWebViewBinding
+
 class WebViewActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWebViewBinding
     @SuppressLint("SetJavaScriptEnabled")

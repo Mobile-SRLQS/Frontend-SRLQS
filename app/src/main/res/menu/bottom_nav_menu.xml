@@ -2,26 +2,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/home"
         android:textColor="@color/black"
         android:title="@string/title_home" />
 
     <item
         android:id="@+id/navigation_mata_kuliah"
         style="@style/B2"
-        android:icon="@drawable/ic_mata_kuliah"
+        android:icon="@drawable/matkul"
         android:title="@string/title_mata_kuliah" />
 
     <item
         android:id="@+id/navigation_kegiatan"
         style="@style/B2"
-        android:icon="@drawable/ic_calendar"
+        android:icon="@drawable/kegiatan"
         android:title="@string/title_nav_kegiatan" />
 
     <item
         android:id="@+id/navigation_profile"
         style="@style/B2"
-        android:icon="@drawable/ic_profile"
+        android:icon="@drawable/profile"
         android:title="@string/title_profile" />
 
 </menu>

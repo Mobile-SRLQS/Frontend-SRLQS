@@ -10,19 +10,40 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_view"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/nav_view_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:elevation="10dp"
-        app:itemActiveIndicatorStyle="@color/light_green"
-        app:itemIconTint="@color/dark_green"
-        app:itemTextColor="@color/dark_green"
+        app:cardElevation="20dp"
+        app:cardMaxElevation="20dp"
+        android:paddingTop="10dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="-10dp"
+        android:background="@drawable/bg_bottom_nav"
+        app:cardCornerRadius="20dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
+   >
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:paddingTop="10dp"
+            android:id="@+id/nav_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/B1"
+            android:paddingBottom="5dp"
+            app:itemActiveIndicatorStyle="@color/light_green"
+            app:itemIconTint="@drawable/nav_item_color"
+            app:itemPaddingTop="10dp"
+            android:background="@color/white"
+            android:elevation="10dp"
+            app:menu="@menu/bottom_nav_menu"
+            app:labelVisibilityMode="labeled"
+            app:itemTextColor="@drawable/nav_item_color"
+             />
+
+    </androidx.cardview.widget.CardView>
 
     <LinearLayout
         android:id="@+id/divider"
@@ -30,7 +51,7 @@
         android:layout_height="1dp"
         android:background="@color/black"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/nav_view"
+        app:layout_constraintBottom_toTopOf="@+id/nav_view_card"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 

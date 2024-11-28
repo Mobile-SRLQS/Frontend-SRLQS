@@ -125,7 +125,7 @@ class RegisterEducationFragment : Fragment() {
     }
 
     private fun setUpDegreeDropdown() {
-        val degreeOptions = arrayOf("Bachelor (S1)", "Magister (S2)", "Doctorate (S3)", "Diploma (D3)", "Associate (D4)")
+        val degreeOptions = arrayOf("Sarjana (S1)", "Magister (S2)", "Doktor (S3)", "Ahli Madya (D3)", "Sarjana Terapan (D4)")
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, degreeOptions)
         binding.inputDegree.setAdapter(adapter)
     }

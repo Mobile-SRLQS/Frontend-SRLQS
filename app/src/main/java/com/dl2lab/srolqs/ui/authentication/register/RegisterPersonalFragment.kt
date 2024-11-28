@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.dl2lab.srolqs.R
@@ -47,6 +49,8 @@ class RegisterPersonalFragment : Fragment() {
             binding.inputPasswordConfirm.setText(personalInfo.confirmPassword)
         }
 
+        setupPasswordInputListener()
+
         binding.inputDob.setOnClickListener { showDatePicker() }
         binding.inputDobLayout.setEndIconOnClickListener { showDatePicker() }
 
@@ -76,6 +80,52 @@ class RegisterPersonalFragment : Fragment() {
             }
         }
     }
+
+    private fun setupPasswordInputListener() {
+        val passwordLayout = binding.inputPasswordLayout
+        val passwordInput = binding.inputPassword
+        val passwordRecommendation = binding.tvPasswordReccomendation
+
+        passwordInput.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                showPasswordRecommendation(passwordRecommendation)
+            } else {
+                hidePasswordRecommendation(passwordRecommendation)
+            }
+        }
+
+        passwordInput.setOnClickListener {
+            showPasswordRecommendation(passwordRecommendation)
+        }
+    }
+
+    private fun showPasswordRecommendation(view: View) {
+        view.apply {
+            alpha = 0f
+            visibility = View.VISIBLE
+            translationY = -20f // Mulai sedikit ke atas
+            animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(300)
+                .setInterpolator(DecelerateInterpolator())
+                .start()
+        }
+    }
+
+    private fun hidePasswordRecommendation(view: View) {
+        view.animate()
+            .alpha(0f)
+            .translationY(-20f)
+            .setDuration(200)
+            .setInterpolator(AccelerateInterpolator())
+            .withEndAction {
+                view.visibility = View.GONE
+            }
+            .start()
+    }
+
+
 
     private fun validateFields(): Boolean {
         val name = binding.inputName.text.toString()

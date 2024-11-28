@@ -31,6 +31,7 @@ android {
     }
     buildFeatures{
         viewBinding = true
+        dataBinding = true
         buildConfig = true
     }
     compileOptions {
@@ -49,6 +50,9 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.material)
+
+//    data binding
+    implementation(libs.databinding)
 
     //View Pager
     implementation(libs.androidx.viewpager2)
@@ -105,5 +109,8 @@ dependencies {
 
     // shimmer
     implementation(libs.shimmer)
+
+     // airysnackbar
+    implementation(libs.airysnackbar)
 
 }
