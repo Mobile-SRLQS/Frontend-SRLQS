@@ -16,6 +16,7 @@
             android:text="@string/self_evaluation_indicator"
             android:textColor="#2F4F4F"
             android:textSize="16sp"
+            style="@style/H2"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="16dp" />
 
@@ -33,6 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/self_evaluation_title"
+                style="@style/H2"
                 android:textColor="#2F4F4F"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -54,6 +56,7 @@
             android:layout_height="wrap_content"
             android:text="@string/self_evaluation_q21"
             android:textSize="16sp"
+            style="@style/H2"
             android:textColor="#2F4F4F"
             android:layout_marginBottom="8dp" />
 
@@ -91,6 +94,7 @@
             android:layout_height="wrap_content"
             android:text="@string/self_evaluation_q22"
             android:textSize="16sp"
+            style="@style/H2"
             android:textColor="#2F4F4F"
             android:layout_marginBottom="8dp" />
 
@@ -131,6 +135,7 @@
             android:layout_height="wrap_content"
             android:text="@string/self_evaluation_q23"
             android:textSize="16sp"
+            style="@style/H2"
             android:textColor="#2F4F4F"
             android:layout_marginBottom="8dp" />
 
@@ -168,6 +173,7 @@
             android:layout_height="wrap_content"
             android:text="@string/self_evaluation_q24"
             android:textSize="16sp"
+            style="@style/H2"
             android:textColor="#2F4F4F"
             android:layout_marginBottom="8dp" />
 
@@ -206,6 +212,7 @@
             android:layout_height="wrap_content"
             android:text="@string/self_evaluation_progress_indicator"
             android:textSize="16sp"
+            style="@style/H2"
             android:textColor="#2F4F4F"
             android:layout_marginTop="16dp"
             android:layout_gravity="center_horizontal" />

@@ -11,7 +11,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.databinding.FragmentGoalSettingQuestionBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
+import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
 import com.dl2lab.srolqs.ui.kuesioner.viewmodel.QuestionnaireViewModel
+
 
 class GoalSettingQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment() {
     private lateinit var binding: FragmentGoalSettingQuestionBinding
@@ -28,6 +30,7 @@ class GoalSettingQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViewModel()
+        showInformation()
         setupAction()
         setupRadioGroups()
         restoreAnswers()
@@ -39,16 +42,44 @@ class GoalSettingQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment(
         ).get(QuestionnaireViewModel::class.java)
     }
 
+    private fun showInformation(){
+        requireContext().showCustomAlertDialog("Informasi Pengisian Kuesioner",
+            "Kuesioner SRL ini terdiri dari 6 bagian yang dikelompokkan berdasarkan 6 dimensi SRL. Masing-masing bagian terdiri empat soal dengan  jawaban dalam bentuk skala 1 sampai 6 yang menunjukkan pilihan sangat tidak setuju dan sangat setuju.",
+            "Mulai",
+            "",
+            {},
+            {})
+    }
+
     private fun setupAction() {
         binding.nextButton.setOnClickListener {
-            viewModel.logAnswers() // Log answers before navigating
-            parentFragmentManager.commit {
-                addToBackStack(null)
-                replace(R.id.questionnaire_container, EnvironmentStructuringQuestionFragment(
-                    viewModel
-                ), EnvironmentStructuringQuestionFragment::class.java.simpleName)
+            if (isAllQuestionsAnswered()) {
+                viewModel.logAnswers() // Log answers before navigating
+                parentFragmentManager.commit {
+                    addToBackStack(null)
+                    replace(R.id.questionnaire_container, EnvironmentStructuringQuestionFragment(
+                        viewModel
+                    ), EnvironmentStructuringQuestionFragment::class.java.simpleName)
+                }
+            } else {
+                requireContext().showCustomAlertDialog(
+                    "Peringatan",
+                    "Mohon jawab semua pertanyaan sebelum melanjutkan",
+                    "OK",
+                    "",
+                    {},
+                    {}
+                )
             }
         }
+    }
+
+
+    private fun isAllQuestionsAnswered(): Boolean {
+        return binding.radioGroup1.checkedRadioButtonId != -1 &&
+                binding.radioGroup2.checkedRadioButtonId != -1 &&
+                binding.radioGroup3.checkedRadioButtonId != -1 &&
+                binding.radioGroup4.checkedRadioButtonId != -1
     }
 
     private fun setupRadioGroups() {

@@ -27,8 +27,10 @@ import com.dl2lab.srolqs.ui.authentication.viewmodel.LoginViewModel
 import com.dl2lab.srolqs.ui.customview.LoadingManager
 import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
 import com.dl2lab.srolqs.ui.home.main.MainActivity
+import com.dl2lab.srolqs.utils.ExtractErrorMessage.extractErrorMessage
+import com.dl2lab.srolqs.validator.BaseActivity
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var role: String
 
@@ -114,11 +116,43 @@ class LoginActivity : AppCompatActivity() {
         }
 
         try {
-            // Trigger the registration process
-            loginViewModel.login(
-                email = email,
-                password = password,
-            )
+            loginViewModel.login(email, password).observe(this) { response ->
+                if (response.isSuccessful) {
+                    val body = response.body()
+                    if (body != null) {
+                        AirySnackbar.make(
+                            source = AirySnackbarSource.ActivitySource(activity = this),
+                            type = Type.Default,
+                            attributes = listOf(
+                                TextAttribute.Text(text = "Berhasil masuk dengan akun ${body.loginResult.nama}!"),
+                                TextAttribute.TextColor(textColor = R.color.black),
+                                SizeAttribute.Margin(left = 24, right = 24, unit = SizeUnit.DP),
+                                SizeAttribute.Padding(top = 12, bottom = 12, unit = SizeUnit.DP),
+                                RadiusAttribute.Radius(radius = 8f),
+                                GravityAttribute.Top,
+                                AnimationAttribute.FadeInOut
+                            )
+                        ).show()
+
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            navToMainActivity(this)
+                        }, 3000)
+
+
+                    }
+                } else {
+                    this.showCustomAlertDialog(
+                        "",
+                        extractErrorMessage(response),
+                        "OK",
+                        "",
+                        {},
+                        {
+                        },
+                    )
+                }
+
+            }
 
 
         } catch (e: Exception) {
@@ -128,46 +162,15 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        loginViewModel.loginUser.observe(this) { response ->
-            if (response.error == true) {
-                showCustomAlertDialog("Login Gagal", subtitle = response.message, "OK", "", {}, {})
+
+
+        loginViewModel.isLoading.observe(this) { isLoading ->
+            if (isLoading) {
+                LoadingManager.show()
             } else {
-                AirySnackbar.make(
-                    source = AirySnackbarSource.ActivitySource(activity = this),
-                    type = Type.Success,
-                    attributes = listOf(
-                        TextAttribute.Text(text = "Berhasil masuk sebagai ${response.loginResult.nama}!"),
-                        TextAttribute.TextColor(textColor = R.color.white),
-                        IconAttribute.Icon(iconRes = R.drawable.ic_delete),
-                        IconAttribute.IconColor(iconTint = R.color.white),
-                        SizeAttribute.Margin(left = 24, right = 24, unit = SizeUnit.DP),
-                        SizeAttribute.Padding(top = 12, bottom = 12, unit = SizeUnit.DP),
-                        RadiusAttribute.Radius(radius = 8f),
-                        GravityAttribute.Top,
-                        AnimationAttribute.FadeInOut
-                    )
-                ).show()
-
-                Handler(Looper.getMainLooper()).postDelayed({
-                    navToMainActivity(this)
-                }, 1500)
+                LoadingManager.hide()
             }
-
-            loginViewModel.isLoading.observe(this) { isLoading ->
-                // Show loading indicator if needed
-                if (isLoading) {
-                    LoadingManager.show()
-                } else {
-                    LoadingManager.hide()
-                }
-            }
-
-            loginViewModel.errorMessageLogin.observe(this) { errorMessage ->
-                if (errorMessage.isNotEmpty()) {
-                    Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
-                }
-            }
-
         }
+
     }
 }

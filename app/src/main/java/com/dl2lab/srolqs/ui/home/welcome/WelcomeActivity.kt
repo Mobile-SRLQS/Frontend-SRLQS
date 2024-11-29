@@ -7,8 +7,9 @@ import com.dl2lab.srolqs.databinding.ActivityWelcomeBinding
 import com.dl2lab.srolqs.ui.authentication.login.LoginActivity
 import com.dl2lab.srolqs.ui.home.dosen.WebViewActivity
 import com.dl2lab.srolqs.ui.home.main.MainActivity
+import com.dl2lab.srolqs.validator.BaseActivity
 
-class WelcomeActivity : AppCompatActivity() {
+class WelcomeActivity : BaseActivity() {
     private lateinit var binding: ActivityWelcomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

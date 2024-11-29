@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp">
+
+    <!-- Tombol Close di pojok kanan atas -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_dialog_background"
+        android:backgroundTint="@color/white"
+        android:elevation="8dp"
+        android:orientation="vertical"
+        android:padding="20dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/dialog_title"
+                style="@style/H1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Goal Setting" />
+
+            <ImageButton
+                android:id="@+id/btn_close"
+                android:layout_width="24dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_height="24dp"
+                android:src="@drawable/baseline_close_24" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/dialog_subtitle"
+            style="@style/B1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="20dp"
+            android:text="Menetapkan tujuan yang spesifik dan terukur untuk memberikan arah dan motivasi dalam belajar. Tujuan ini membantu individu untuk fokus pada hasil yang ingin dicapai."
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+
+
+</FrameLayout>

@@ -36,6 +36,12 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         }
     }
 
+    fun getToken(): Flow<String?> {
+        return dataStore.data.map { preferences ->
+            preferences[TOKEN]
+        }
+    }
+
     // Function to retrieve user session data
     fun getSession(): Flow<User> {
         return dataStore.data.map { preferences ->

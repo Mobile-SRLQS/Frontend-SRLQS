@@ -1,12 +1,18 @@
 package com.dl2lab.srolqs.ui.kuesioner.question
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
+import android.widget.EditText
 import android.widget.RadioGroup
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
@@ -164,6 +170,32 @@ class SelfEvaluationQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
         if (radioButtonId != View.NO_ID) {
             radioGroup.check(radioButtonId)
         }
+    }
+
+    private fun showFeedbackDialog() {
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_feedback)
+
+        dialog.window?.apply {
+            setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
+
+        // Handle button clicks
+        dialog.findViewById<Button>(R.id.btn_back).setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.findViewById<Button>(R.id.btn_submit).setOnClickListener {
+            val feedback = dialog.findViewById<EditText>(R.id.et_feedback).text.toString()
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     companion object {

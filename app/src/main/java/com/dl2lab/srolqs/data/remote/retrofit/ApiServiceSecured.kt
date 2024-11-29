@@ -56,7 +56,7 @@ interface ApiServiceSecured {
     @GET("class/list")
     fun getListClass(): Call<ListClassResponse>
 
-    @GET("class/detail/{id}")
+    @GET("class/detail/{id}/1")
     fun getClassDetail(
         @Path("id") id: String
     ): Call<DetailClassResponse>

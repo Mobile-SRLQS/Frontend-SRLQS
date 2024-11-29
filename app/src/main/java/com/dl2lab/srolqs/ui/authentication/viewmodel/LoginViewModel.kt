@@ -21,7 +21,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginViewModel(private val repository: UserRepository,  private val securedRepository: SecuredRepository) : ViewModel() {
+class LoginViewModel(
+    private val repository: UserRepository,
+    private val securedRepository: SecuredRepository
+) : ViewModel() {
     private val _loginUser = MutableLiveData<LoginResponse>()
     val loginUser: LiveData<LoginResponse> = _loginUser
 
@@ -32,54 +35,65 @@ class LoginViewModel(private val repository: UserRepository,  private val secure
     private val _errorMessageLogin = MutableLiveData<String>()
     val errorMessageLogin: LiveData<String> = _errorMessageLogin
 
-    fun login(email: String, password: String) {
+    fun login(email: String, password: String): LiveData<Response<LoginResponse>> = liveData {
+        val responseLiveData = MutableLiveData<Response<LoginResponse>>()
         _isLoading.value = true
+
         val request = LoginRequest(email, password)
         val client = ApiConfig.getApiService().login(request)
+
         client.enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-
                 _isLoading.value = false
-                _loginUser.value = response.body()
-                val loginResponse = response.body()?.loginResult
-                if (loginResponse != null) {
-                    viewModelScope.launch {
-                        securedRepository.saveSession(
-                            User(
-                                id = loginResponse.id ?: 0,
-                                nama = loginResponse.nama ?: "",
-                                birthDate = loginResponse.birthDate ?: "",
-                                email = loginResponse.email ?: "",
-                                password = "",
-                                identityNumber = loginResponse.identityNumber ?: "",
-                                batch = loginResponse.batch ?: "",
-                                institution = loginResponse.institution ?: "",
-                                degree = loginResponse.degree ?: "",
-                                role = loginResponse.role ?: "",
-                                resetCode = loginResponse.resetCode ?: "",
-                                resetCodeExpiry = loginResponse.resetCodeExpiry ?: "",
-                                token = loginResponse.token ?: "",
-                                isLogin = true,
-                                profilePicture = ""
+                responseLiveData.value = response
+
+                if (response.isSuccessful) {
+                    val loginResponse = response.body()?.loginResult
+                    if (loginResponse != null) {
+                        viewModelScope.launch {
+                            securedRepository.saveSession(
+                                User(
+                                    id = loginResponse.id,
+                                    nama = loginResponse.nama,
+                                    birthDate = loginResponse.birthDate,
+                                    email = loginResponse.email,
+                                    password = "",
+                                    identityNumber = loginResponse.identityNumber,
+                                    batch = loginResponse.batch,
+                                    institution = loginResponse.institution,
+                                    degree = loginResponse.degree,
+                                    role = loginResponse.role,
+                                    resetCode = loginResponse.resetCode,
+                                    resetCodeExpiry = loginResponse.resetCodeExpiry,
+                                    token = loginResponse.token,
+                                    isLogin = true,
+                                    profilePicture = ""
+                                )
                             )
-                        )
+                        }
+                    } else {
+                        _errorMessageLogin.value = "Login failed: Invalid response data"
                     }
                 } else {
-                    _errorMessageLogin.value = "Login failed: Invalid response data"
+                    _errorMessageLogin.value = "Login failed: ${response.message()}"
                 }
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 _isLoading.value = false
-                _errorMessageLogin.value = "Login failed: ${t.message}"
+                val errorBody = (t.message ?: "Unknown error").toResponseBody(null)
+                val errorResponse = Response.error<LoginResponse>(500, errorBody)
+                responseLiveData.value = errorResponse
+                _errorMessageLogin.value = t.message
             }
         })
+
+        emitSource(responseLiveData)
     }
 
 
-
     fun requestResetCode(
-       email:String
+        email: String
     ): LiveData<Response<BasicResponse>> = liveData {
         val responseLiveData = MutableLiveData<Response<BasicResponse>>()
         _isLoading.value = true
@@ -87,8 +101,7 @@ class LoginViewModel(private val repository: UserRepository,  private val secure
         val client = ApiConfig.getApiService().sendResetPasswordCode(request)
         client.enqueue(object : Callback<BasicResponse> {
             override fun onResponse(
-                call: Call<BasicResponse>,
-                response: Response<BasicResponse>
+                call: Call<BasicResponse>, response: Response<BasicResponse>
             ) {
                 _isLoading.value = false
                 responseLiveData.value = response
@@ -106,18 +119,17 @@ class LoginViewModel(private val repository: UserRepository,  private val secure
     }
 
     fun createNewPassword(
-        email:String,
-        newPassword:String,
-        code:String,
+        email: String,
+        newPassword: String,
+        code: String,
     ): LiveData<Response<BasicResponse>> = liveData {
         val responseLiveData = MutableLiveData<Response<BasicResponse>>()
         _isLoading.value = true
-        val request = CreateNewPasswordRequest(email, newPassword,code)
+        val request = CreateNewPasswordRequest(email, newPassword, code)
         val client = ApiConfig.getApiService().createNewPassword(request)
         client.enqueue(object : Callback<BasicResponse> {
             override fun onResponse(
-                call: Call<BasicResponse>,
-                response: Response<BasicResponse>
+                call: Call<BasicResponse>, response: Response<BasicResponse>
             ) {
                 _isLoading.value = false
                 responseLiveData.value = response

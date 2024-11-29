@@ -73,13 +73,14 @@
 
         <Button
             android:id="@+id/btn_join_class"
-            style="@style/B1"
+            style="@style/BasicButtonLightGreen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/et_course_code"
             android:layout_marginHorizontal="15dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="15dp"
+            android:background="@drawable/button_selector"
             android:backgroundTint="@color/light_green"
             android:text="Masukkan Kode"
             android:textAllCaps="false"

@@ -51,6 +51,7 @@ class HomeFragment : Fragment(), OnClassItemClickListener,
         binding.btnNotification.setOnClickListener {
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToNotificationFragment())
         }
+        configureButton()
         getClassList()
         getActivityList()
         checkNotificationPermission(requireContext())
@@ -89,9 +90,27 @@ class HomeFragment : Fragment(), OnClassItemClickListener,
         })
     }
 
+    private fun configureButton() {
+        val textWatcher = object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: android.text.Editable?) {
+                val classId = binding.etCourseCode.text.toString()
+                binding.btnJoinClass.isEnabled = classId.isNotEmpty()
+            }
+        }
+
+        binding.etCourseCode.addTextChangedListener(textWatcher)
+
+        val classId = binding.etCourseCode.text.toString()
+        binding.btnJoinClass.isEnabled = classId.isNotEmpty()
+    }
+
     fun setupJoinClass() {
         binding.btnJoinClass.setOnClickListener {
-            val classId = binding.etCourseCode.text.toString()
+            val classId = binding.etCourseCode.text.toString().toUpperCase()
             if (classId.isEmpty()) {
                 requireContext().showCustomAlertDialog(
                     "",
@@ -121,9 +140,9 @@ class HomeFragment : Fragment(), OnClassItemClickListener,
                         }
                     } else {
                         requireContext().showCustomAlertDialog(
-                            "",
+                            "Kelas dengan id $classId tidak ditemukan",
                             "Pastikan kode kelas yang anda masukkan benar",
-                            "OK",
+                            "Ulang",
                             "",
                             {},
                             {},
