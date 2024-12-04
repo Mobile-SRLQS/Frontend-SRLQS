@@ -4,6 +4,7 @@ plugins {
     id("kotlin-parcelize")
     id("com.google.devtools.ksp")
     id("androidx.navigation.safeargs.kotlin")
+
 }
 
 android {
@@ -112,5 +113,10 @@ dependencies {
 
      // airysnackbar
     implementation(libs.airysnackbar)
+
+    //      okhttp
+    implementation(libs.okhttp)
+    implementation(libs.workManager)
+
 
 }

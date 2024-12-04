@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/change_password_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:fitsSystemWindows="true"
-    tools:context=".ui.kelas.detail.DetailClassFragment">
+    android:background="@color/white">
 
     <LinearLayout
-        android:id="@+id/toolbar_change_password"
+        android:id="@+id/toolbar_detail_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -38,170 +34,144 @@
             android:text="Detail Kegiatan" />
 
         <ImageButton
-            android:id="@+id/btnEdit"
+            android:id="@+id/btn_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:paddingHorizontal="20dp"
             android:paddingVertical="8dp"
-            android:src="@drawable/edit_icon"
-            android:visibility="visible" />
+            android:src="@drawable/ic_delete" />
     </LinearLayout>
 
-
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/ll_detail_kegiatan"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:clipToPadding="false"
-        android:paddingBottom="120dp"
+        android:orientation="vertical"
+        android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_change_password"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@id/toolbar_detail_profile">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <TextView
+            style="@style/H2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nama Kegiatan"
+            android:textColor="@color/dark_green" />
+
+        <TextView
+            android:id="@+id/tv_nama_kegiatan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            style="@style/H2"
+
+            android:fontFamily="@font/inter_medium"
+            android:text="Forum Diskusi Komas"
+            android:textColor="@color/dark_green" />
+
+        <TextView
+            style="@style/H2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Tipe Kegiatan"
+            android:textColor="@color/dark_green" />
+
+        <TextView
+            android:id="@+id/tv_tipe_kegiatan"
+            style="@style/H2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/rounded_dialog_background"
+            android:backgroundTint="@color/light_green"
+            android:fontFamily="@font/inter_medium"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="4dp"
+            android:text="Belajar"
+            android:textColor="@color/white" />
+
+        <TextView
+            style="@style/H2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Tanggal Tenggat"
+            android:textColor="@color/dark_green" />
+
+        <TextView
+            android:id="@+id/tv_tanggal"
+            style="@style/H2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/inter_medium"
+            android:text="18 September 2024"
+
+            android:textColor="@color/dark_green" />
+
+        <TextView
+            style="@style/H2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Catatan"
+            android:textColor="@color/dark_green" />
+
+        <TextView
+            android:id="@+id/tv_catatan"
+            style="@style/H2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/inter_medium"
+            android:text="Forum diskusi tentang aspek isu dan tantangan dalam implementasi UU PDP"
+            android:textColor="@color/dark_green"
+
+            />
+
+        <TextView
+            style="@style/H2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Link"
+            android:textColor="@color/dark_green" />
+
+        <TextView
+            android:id="@+id/tv_link"
+            style="@style/H2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/inter_medium"
+            android:text="www.dummylink.com"
+
+            android:textColor="@color/dark_green" />
+
+
+
+        <Button
+            android:layout_marginTop="20dp"
+            android:id="@+id/btn_mark_as_done"
+            style="@style/OutlinedButtonLightGreen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp">
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/white"
+            android:text="Mark as Done" />
 
-            <TextView
-                android:id="@+id/heading_kegiatan_title"
-                style="@style/H1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:text="Mengerjakan tugas komas"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/btn_edit"
+            style="@style/BasicButtonLightGreen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:text="Edit Kegiatan" />
 
-            <LinearLayout
-                android:id="@+id/ll_tenggat_kegiatan"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/heading_kegiatan_title">
-
-
-                <ImageView
-                    android:id="@+id/myIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:src="@drawable/ic_deadline"
-
-                    />
-
-                <TextView
-                    android:id="@+id/tv_tenggat_kegiatan"
-                    style="@style/B1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="12 Desember 2024"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_tag_kegiatan"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:orientation="horizontal"
-                android:layout_marginVertical="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ll_tenggat_kegiatan">
-
-
-                <ImageView
-                    android:id="@+id/tag_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:src="@drawable/ic_tag"
-
-                    />
-
-                <TextView
-                    android:id="@+id/tv_tag_kegiatan"
-                    style="@style/B1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/rounded_corner_card"
-                    android:backgroundTint="@color/light_green"
-                    android:paddingHorizontal="10dp"
-                    android:text="Belajar"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_link_kegiatan"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginVertical="10dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ll_tag_kegiatan">
-
-
-                <ImageView
-                    android:id="@+id/link_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:src="@drawable/ic_link"
-
-                    />
-
-                <TextView
-                    android:id="@+id/tv_link_kegiatan"
-                    style="@style/B1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="www.dummy.com"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/heading_deskripsi_kegiatan"
-                style="@style/H2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="20dp"
-                android:text="Deskripsi :"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ll_link_kegiatan" />
-
-
-            <TextView
-                style="@style/B1"
-                android:id="@+id/tv_deskripsi_kegiatan"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="4dp"
-                android:text="Belajar komas untuk bla bla bla"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/heading_deskripsi_kegiatan" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
-
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

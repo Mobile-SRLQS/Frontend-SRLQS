@@ -12,6 +12,7 @@ import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.databinding.FragmentGoalSettingQuestionBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
+import com.dl2lab.srolqs.ui.customview.showCustomInformation
 import com.dl2lab.srolqs.ui.kuesioner.viewmodel.QuestionnaireViewModel
 
 
@@ -30,7 +31,9 @@ class GoalSettingQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViewModel()
-        showInformation()
+       if(!isAllQuestionsAnswered()){
+            showInformation()
+       }
         setupAction()
         setupRadioGroups()
         restoreAnswers()
@@ -42,13 +45,19 @@ class GoalSettingQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment(
         ).get(QuestionnaireViewModel::class.java)
     }
 
+    private fun showDimensionInformation(){
+        requireContext().showCustomInformation("Goal Setting", "Menetapkan tujuan yang spesifik dan terukur untuk memberikan arah dan motivasi dalam belajar. Tujuan ini membantu individu untuk fokus pada hasil yang ingin dicapai.")
+
+    }
+
     private fun showInformation(){
         requireContext().showCustomAlertDialog("Informasi Pengisian Kuesioner",
             "Kuesioner SRL ini terdiri dari 6 bagian yang dikelompokkan berdasarkan 6 dimensi SRL. Masing-masing bagian terdiri empat soal dengan  jawaban dalam bentuk skala 1 sampai 6 yang menunjukkan pilihan sangat tidak setuju dan sangat setuju.",
             "Mulai",
             "",
             {},
-            {})
+            {},
+            showIcon = false)
     }
 
     private fun setupAction() {
@@ -71,6 +80,10 @@ class GoalSettingQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment(
                     {}
                 )
             }
+        }
+
+        binding.infoIcon.setOnClickListener {
+            showDimensionInformation()
         }
     }
 

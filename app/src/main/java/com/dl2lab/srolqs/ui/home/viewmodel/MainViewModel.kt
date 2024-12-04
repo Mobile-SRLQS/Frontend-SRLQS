@@ -10,6 +10,7 @@ import com.dl2lab.srolqs.data.remote.request.JoinClassRequest
 import com.dl2lab.srolqs.data.remote.response.BasicResponse
 import com.dl2lab.srolqs.data.remote.response.DetailClassResponse
 import com.dl2lab.srolqs.data.remote.response.GetKegiatanResponse
+import com.dl2lab.srolqs.data.remote.response.JoinDetailClassResponse
 import com.dl2lab.srolqs.data.remote.response.ListClassResponse
 import com.dl2lab.srolqs.data.remote.retrofit.ApiConfig
 import com.dl2lab.srolqs.data.repository.SecuredRepository
@@ -33,6 +34,8 @@ class MainViewModel(
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> = _errorMessage
 
+    private val _loadingDetailClass = MutableLiveData<Boolean>()
+    val loadingDetailClass: LiveData<Boolean> = _loadingDetailClass
 
     fun getSession(): LiveData<User> {
         return repository.getSession().asLiveData()
@@ -155,24 +158,24 @@ class MainViewModel(
         emitSource(responseLiveData)
     }
 
-    fun getClassDetail(class_id: String): LiveData<Response<DetailClassResponse>> = liveData {
-        val responseLiveData = MutableLiveData<Response<DetailClassResponse>>()
-        _isLoading.value = true
+    fun getClassDetail(class_id: String): LiveData<Response<JoinDetailClassResponse>> = liveData {
+        val responseLiveData = MutableLiveData<Response<JoinDetailClassResponse>>()
+        _loadingDetailClass.value = true
         val token = _token.value ?: ""
         val client = repository.getDetailClass(class_id)
-        client.enqueue(object : Callback<DetailClassResponse> {
+        client.enqueue(object : Callback<JoinDetailClassResponse> {
             override fun onResponse(
-                call: Call<DetailClassResponse>,
-                response: Response<DetailClassResponse>
+                call: Call<JoinDetailClassResponse>,
+                response: Response<JoinDetailClassResponse>
             ) {
-                _isLoading.value = false
+                _loadingDetailClass.value = false
                 responseLiveData.value = response
             }
 
-            override fun onFailure(call: Call<DetailClassResponse>, t: Throwable) {
-                _isLoading.value = false
+            override fun onFailure(call: Call<JoinDetailClassResponse>, t: Throwable) {
+                _loadingDetailClass.value = false
                 val errorBody = (t.message ?: "Unknown error").toResponseBody(null)
-                val errorResponse = Response.error<DetailClassResponse>(500, errorBody)
+                val errorResponse = Response.error<JoinDetailClassResponse>(500, errorBody)
                 responseLiveData.value = errorResponse
                 _errorMessage.value = t.message
             }

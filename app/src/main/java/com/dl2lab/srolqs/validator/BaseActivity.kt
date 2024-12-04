@@ -5,8 +5,10 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.dl2lab.srolqs.R
@@ -15,13 +17,14 @@ import com.dl2lab.srolqs.data.preference.user.dataStore
 import com.dl2lab.srolqs.ui.authentication.login.LoginActivity
 import com.dl2lab.srolqs.ui.authentication.register.RegisterActivity
 import com.dl2lab.srolqs.ui.home.welcome.WelcomeActivity
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 abstract class BaseActivity : AppCompatActivity() {
     private lateinit var networkConnectivityObserver: NetworkConnectivityObserver
     private var snackbar: Snackbar? = null
-
+    private var noInternetView: View? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         networkConnectivityObserver = NetworkConnectivityObserver(applicationContext)
@@ -34,18 +37,73 @@ abstract class BaseActivity : AppCompatActivity() {
     private fun observeNetworkConnectivity() {
         lifecycleScope.launch {
             networkConnectivityObserver.observe().collect { status ->
+                Log.d("NetworkStatus", "Current status: $status")
                 NetworkStateManager.updateNetworkState(status)
                 when (status) {
                     ConnectivityObserver.Status.Available -> {
-                        hideNoInternetSnackbar()
+                        Log.d("NetworkStatus", "Connection Available")
+                        hideNoInternetLayout()
                     }
-                    ConnectivityObserver.Status.Unavailable,
+
+                    ConnectivityObserver.Status.Unavailable -> {
+                        showNoInternetLayout()
+                    }
                     ConnectivityObserver.Status.Lost -> {
-                        showNoInternetSnackbar()
+                        showNoInternetLayout()
                     }
-                    else -> {}
+                    ConnectivityObserver.Status.Losing -> {
+                        showNoInternetLayout()
+                    }
                 }
             }
+        }
+    }
+
+    private fun showNoInternetLayout() {
+        try {
+            // Pastikan view utama masih ada
+            val rootView = findViewById<ViewGroup>(android.R.id.content)
+            if (rootView != null) {
+                // Hide semua child views dari root
+                for (i in 0 until rootView.childCount) {
+                    rootView.getChildAt(i).visibility = View.GONE
+                }
+
+                // Tampilkan layout no internet
+                if (noInternetView == null) {
+                    noInternetView = layoutInflater.inflate(R.layout.layout_no_internet, rootView, false)
+                    rootView.addView(noInternetView)
+
+                    // Setup retry button
+                    noInternetView?.findViewById<MaterialButton>(R.id.btnRetry)?.setOnClickListener {
+                        if (isNetworkAvailable()) {
+                            hideNoInternetLayout()
+                        }
+                    }
+                }
+                noInternetView?.visibility = View.VISIBLE
+            }
+        } catch (e: Exception) {
+            Log.e("BaseActivity", "Error showing no internet layout: ${e.message}")
+        }
+    }
+
+
+    private fun hideNoInternetLayout() {
+        try {
+            val rootView = findViewById<ViewGroup>(android.R.id.content)
+            if (rootView != null) {
+                // Show semua child views dari root kecuali noInternetView
+                for (i in 0 until rootView.childCount) {
+                    val child = rootView.getChildAt(i)
+                    if (child != noInternetView) {
+                        child.visibility = View.VISIBLE
+                    }
+                }
+            }
+            noInternetView?.visibility = View.GONE
+        } catch (e: Exception) {
+            Log.e("BaseActivity", "Error hiding no internet layout: ${e.message}")
         }
     }
 
@@ -69,9 +127,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private fun shouldSkipTokenValidation(): Boolean {
         val currentActivity = this::class.java
-        return currentActivity == LoginActivity::class.java ||
-                currentActivity == RegisterActivity::class.java ||
-                currentActivity == WelcomeActivity::class.java
+        return currentActivity == LoginActivity::class.java || currentActivity == RegisterActivity::class.java || currentActivity == WelcomeActivity::class.java
     }
 
     override fun onResume() {
@@ -79,10 +135,10 @@ abstract class BaseActivity : AppCompatActivity() {
         lifecycleScope.launch {
             NetworkStateManager.networkState.collect { status ->
                 when (status) {
-                    ConnectivityObserver.Status.Unavailable,
-                    ConnectivityObserver.Status.Lost -> {
-                        showNoInternetSnackbar()
+                    ConnectivityObserver.Status.Unavailable, ConnectivityObserver.Status.Lost -> {
+                      showNoInternetLayout()
                     }
+
                     else -> {}
                 }
             }
@@ -92,9 +148,7 @@ abstract class BaseActivity : AppCompatActivity() {
     private fun showInvalidTokenSnackbar() {
         val rootView = findViewById<View>(android.R.id.content)
         Snackbar.make(
-            rootView,
-            "Token tidak valid, silakan login kembali",
-            Snackbar.LENGTH_LONG
+            rootView, "Token tidak valid, silakan login kembali", Snackbar.LENGTH_LONG
         ).apply {
             setBackgroundTint(getColor(R.color.red)) // Adjust color as needed
             setTextColor(getColor(R.color.black))
@@ -112,27 +166,6 @@ abstract class BaseActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun showNoInternetSnackbar() {
-        // Dismiss existing Snackbar if any
-        snackbar?.dismiss()
-
-        val rootView = findViewById<View>(android.R.id.content)
-        Log.d("Snackbar", "Showing no internet snackbar")
-        snackbar = Snackbar.make(
-            rootView,
-            "Tidak ada koneksi internet",
-            Snackbar.LENGTH_INDEFINITE
-        ).apply {
-            setBackgroundTint(getColor(R.color.red))
-            setTextColor(getColor(R.color.black))
-            show()
-        }
-    }
-
-    private fun hideNoInternetSnackbar() {
-        snackbar?.dismiss()
-        snackbar = null
-    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -141,9 +174,11 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     private fun isNetworkAvailable(): Boolean {
-        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val network = connectivityManager.activeNetwork ?: return false
-        val networkCapabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        val networkCapabilities =
+            connectivityManager.getNetworkCapabilities(network) ?: return false
         return networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 }

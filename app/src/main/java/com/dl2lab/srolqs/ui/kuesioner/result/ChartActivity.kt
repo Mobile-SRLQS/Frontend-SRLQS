@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.databinding.ActivityChartBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
+import com.dl2lab.srolqs.ui.customview.LoadingManager
 import com.dl2lab.srolqs.ui.kuesioner.viewmodel.QuestionnaireViewModel
 import java.util.Locale
 
@@ -51,7 +52,7 @@ class ChartActivity : AppCompatActivity() {
         periodSpinner = findViewById(R.id.spinner_dropdown)
         toggleChartButton.setOnClickListener { toggleChart() }
         toggleAverageDataButton.setOnClickListener { toggleAverageData() }
-
+        LoadingManager.init(this)
         addReccomendation()
         setupPeriodSpinner()
         setupDimensionSpinner()
@@ -59,7 +60,15 @@ class ChartActivity : AppCompatActivity() {
         classId = intent.getStringExtra("CLASSID")
         period = intent.getStringExtra("PERIOD")
         if (classId != null && period != null) {
-            viewModel.fetchScoreResult(classId!!, period!!)
+            fetchDataForPeriod(period!!)
+        }
+
+        viewModel.isLoading.observe(this) { isLoading ->
+            if (isLoading) {
+                LoadingManager.show()
+            } else {
+                LoadingManager.hide()
+            }
         }
 
         // Observe scoreResult data and set initial fragment when data is available
@@ -72,7 +81,11 @@ class ChartActivity : AppCompatActivity() {
                 Log.e("ChartActivity", "No scores available to display.")
             }
         }
+        binding.btnBack.setOnClickListener{
+            finish()
+        }
     }
+
 
     private fun showPeriodData(isShow: Boolean) {
         if (isShow) {
@@ -92,19 +105,23 @@ class ChartActivity : AppCompatActivity() {
 
     private fun setupPeriodSpinner() {
         classId = intent.getStringExtra("CLASSID")
+        // Ambil period dari intent
+        val intentPeriod = intent.getStringExtra("PERIOD")?.toIntOrNull() ?: 1
 
         var periodString = arrayOf("")
         classId?.let { viewModel.fetchAvailablePeriod(it) }
         viewModel.periods.observe(this) { periods ->
             periodString = periods.toTypedArray()
-            // Update adapter dan notify data changed
             val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, periodString)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             periodSpinner.adapter = adapter
-            // Set initial selection
 
-            periodSpinner.setSelection(0)
-
+            // Set selection berdasarkan period dari intent
+            // Karena array dimulai dari 0, kurangi intentPeriod dengan 1
+            val selectionIndex = intentPeriod - 1
+            if (selectionIndex in periodString.indices) {
+                periodSpinner.setSelection(selectionIndex)
+            }
         }
 
         periodSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -118,6 +135,7 @@ class ChartActivity : AppCompatActivity() {
                 if (selectedPeriod != period) {
                     period = selectedPeriod
                     if (selectedPeriod != "Progress Anda") {
+                        // Gunakan position + 1 untuk mendapatkan nomor period yang benar
                         fetchDataForPeriod((position + 1).toString())
                     } else {
                         fetchDataForPeriod("Progress Anda")
@@ -129,8 +147,6 @@ class ChartActivity : AppCompatActivity() {
                 // Do nothing
             }
         }
-
-
     }
 
     private fun setupDimensionSpinner() {

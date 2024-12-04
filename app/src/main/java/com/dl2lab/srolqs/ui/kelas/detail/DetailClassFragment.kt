@@ -2,33 +2,26 @@ package com.dl2lab.srolqs.ui.kelas.detail
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dl2lab.srolqs.R
-import com.dl2lab.srolqs.data.remote.response.BasicResponse
 import com.dl2lab.srolqs.data.remote.response.PeriodDataItem
-import com.dl2lab.srolqs.databinding.FragmentChangePasswordBinding
 import com.dl2lab.srolqs.databinding.FragmentDetailClassBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
+import com.dl2lab.srolqs.ui.customview.LoadingManager
 import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
-import com.dl2lab.srolqs.ui.home.adapter.ClassAdapter
-import com.dl2lab.srolqs.ui.home.adapter.OnClassItemClickListener
 import com.dl2lab.srolqs.ui.home.adapter.OnPeriodItemClickListener
 import com.dl2lab.srolqs.ui.home.adapter.PeriodAdapter
 import com.dl2lab.srolqs.ui.home.viewmodel.MainViewModel
 import com.dl2lab.srolqs.ui.home.welcome.WelcomeActivity
-import com.dl2lab.srolqs.ui.profile.viewmodel.ProfileViewModel
 import com.dl2lab.srolqs.utils.ExtractErrorMessage
 import com.dl2lab.srolqs.utils.JwtUtils
-import org.json.JSONObject
-import retrofit2.Response
 
 
 class DetailClassFragment : Fragment(), OnPeriodItemClickListener {
@@ -44,8 +37,11 @@ class DetailClassFragment : Fragment(), OnPeriodItemClickListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetailClassBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        val root: View = binding.root
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupViewModel()
         checkUserSession()
         setupDetailClass()
@@ -53,52 +49,63 @@ class DetailClassFragment : Fragment(), OnPeriodItemClickListener {
         binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
-
-        return root
     }
 
-    private fun setupDetailClass(){
+    private fun setupDetailClass() {
         val classItem = args.classItem
         classItem.classId?.let {
+            showLoading(true)
             viewModel.getClassInformation(it).observe(viewLifecycleOwner, Observer { response ->
-                if(response.isSuccessful){
-                    val body = response.body()
-                    if(body != null){
-                        binding.headingCourseTitle.text = body.data?.className
-                        binding.courseSemesterInformation.text = body.data?.classSemester
-                        binding.courseDescription.text = body.data?.classDescription
-
+                try {
+                    if (response.isSuccessful) {
+                        val body = response.body()
+                        if (body != null) {
+                            binding.headingCourseTitle.text = body.data?.className
+                            binding.courseSemesterInformation.text = body.data?.classSemester
+                            binding.courseDescription.text = body.data?.classDescription
+                        }
+                        val periodList = response.body()?.data?.periodData
+                        val adapter = periodList?.let { it1 -> PeriodAdapter(it1, this) }
+                        binding.rvPeriodList.layoutManager = LinearLayoutManager(requireContext())
+                        binding.rvPeriodList.adapter = adapter
+                    } else {
+                        requireContext().showCustomAlertDialog(
+                            "",
+                            ExtractErrorMessage.extractErrorMessage(response),
+                            "OK",
+                            "",
+                            {},
+                            {
+                                binding.btnBack.performClick()
+                            },
+                        )
                     }
-                    val periodList = response.body()?.data?.periodData
-                    val adapter = periodList?.let { it1 -> PeriodAdapter(it1, this) }
-                    binding.rvPeriodList.layoutManager = LinearLayoutManager(requireContext())
-                    binding.rvPeriodList.adapter = adapter
-                } else {
+                } catch (e: Exception) {
+                    // Handle any unexpected errors
                     requireContext().showCustomAlertDialog(
-                        "",
-                        ExtractErrorMessage.extractErrorMessage(response),
+                        "Error",
+                        "An unexpected error occurred.",
                         "OK",
                         "",
                         {},
-                        {
-                            binding.btnBack.performClick()
-                        },
+                        {}
                     )
+                } finally {
+                    showLoading(false)
                 }
             })
-        }
-
+        } ?: showLoading(false) // Ensure loading is stopped if classId is null
     }
 
     private fun setupViewModel() {
-
         viewModel = ViewModelProvider(
             requireActivity(), ViewModelFactory.getInstance(requireContext())
         ).get(MainViewModel::class.java)
     }
+
     private fun checkUserSession() {
         viewModel.getSession().observe(viewLifecycleOwner, Observer { userModel ->
-            if(userModel.token != null) {
+            if (userModel.token != null) {
                 if (JwtUtils.isTokenExpired(userModel.token)) {
                     viewModel.logout()
                     startActivity(Intent(requireActivity(), WelcomeActivity::class.java))
@@ -112,15 +119,20 @@ class DetailClassFragment : Fragment(), OnPeriodItemClickListener {
                         {},
                     )
                 }
-            } else{
+            } else {
                 startActivity(Intent(requireActivity(), WelcomeActivity::class.java))
                 requireActivity().finish()
             }
         })
+
     }
 
 
 
+    private fun showLoading(isLoading: Boolean) {
+        binding.contentLayout.visibility = if (isLoading) View.GONE else View.VISIBLE
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -128,6 +140,6 @@ class DetailClassFragment : Fragment(), OnPeriodItemClickListener {
     }
 
     override fun onItemClick(periodItem: PeriodDataItem) {
-
+        // Handle item click
     }
 }

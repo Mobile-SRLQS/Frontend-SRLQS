@@ -20,6 +20,7 @@ import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.databinding.FragmentSelfEvaluationQuestionBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
+import com.dl2lab.srolqs.ui.customview.showCustomInformation
 import com.dl2lab.srolqs.ui.home.main.MainActivity
 import com.dl2lab.srolqs.ui.home.viewmodel.MainViewModel
 import com.dl2lab.srolqs.ui.home.welcome.WelcomeActivity
@@ -33,8 +34,7 @@ class SelfEvaluationQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
     private lateinit var viewModel: QuestionnaireViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentSelfEvaluationQuestionBinding.inflate(layoutInflater)
 
@@ -50,47 +50,101 @@ class SelfEvaluationQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
         restoreAnswers()
     }
 
+    fun observeError(){
+        viewModel.errorMessage.observe(viewLifecycleOwner) { error ->
+            error?.let {
+                requireContext().showCustomAlertDialog(
+                    title = "Gagal Mengirim Kuesioner",
+                    subtitle = "Terjadi kesalahan saat mengirim kuesioner. " + error,
+                    positiveButtonText = "Coba Lagi",
+                    negativeButtonText = "Keluar",
+                    onPositiveButtonClick = {showFeedbackDialog()},
+                    onNegativeButtonClick = {
+                        val intent = Intent(requireContext(), MainActivity::class.java)
+                        startActivity(intent)
+                        requireActivity().finish()
+                    }
+                )
+            }
+        }
+    }
+
     fun setupViewModel() {
         viewModel = ViewModelProvider(
             requireActivity(), ViewModelFactory.getInstance(requireContext())
         ).get(QuestionnaireViewModel::class.java)
     }
 
-    private fun setupAction() {
-        binding.submitButton.setOnClickListener {
-            viewModel.logAnswers() // Log answers before navigating
-            val sortedAnswersArray = viewModel.getAnswersArray()
-            Log.d("FinalQuestionnaireFragment", "Sorted Answers Array: ${sortedAnswersArray.contentToString()}")
-            val answer = viewModel.getAnswerList()
-            var period = viewModel.getPeriod().value ?: "1"
-            var classId = viewModel.getClassId().value ?: ""
-            viewModel.submitQuestionnaire(period, classId, answer).observe(viewLifecycleOwner){ response ->
-                if(response.isSuccessful()){
-                    val intent = Intent(requireContext(), ChartActivity::class.java)
-                    intent.putExtra("CLASSID", classId)
-                    intent.putExtra("PERIOD", period)
-                    startActivity(intent)
-                    requireActivity().finish()
+    private fun isAllAnswered(): Boolean {
+        return binding.radioGroup21.checkedRadioButtonId != -1 && binding.radioGroup22.checkedRadioButtonId != -1 && binding.radioGroup23.checkedRadioButtonId != -1 && binding.radioGroup24.checkedRadioButtonId != -1
+    }
 
-                } else {
-//                    requireContext().showCustomAlertDialog(ExtractErrorMessage.extractErrorMessage(response),"ok", "",{},{})
-                    val intent = Intent(requireContext(), ChartActivity::class.java)
-                    intent.putExtra("CLASSID", classId)
-                    intent.putExtra("PERIOD", period)
-                    startActivity(intent)
-                    requireActivity().finish()
+    private fun submitQS(feedback: String = ""){
+        viewModel.logAnswers()
+        val sortedAnswersArray = viewModel.getAnswersArray()
+        Log.d(
+            "FinalQuestionnaireFragment",
+            "Sorted Answers Array: ${sortedAnswersArray.contentToString()}"
+        )
+        val answer = viewModel.getAnswerList()
+        var period = viewModel.getPeriod().value ?: "1"
+        var classId = viewModel.getClassId().value ?: ""
+        viewModel.submitQuestionnaire(period, classId, answer, feedback) // Add feedback parameter to your API call
+            .observe(viewLifecycleOwner) { response ->
+                if (response.isSuccessful) {
+
+                    requireContext().showCustomAlertDialog(title ="Berhasil mengisi kuesioner",
+                       subtitle =  "Selamat, jawaban Anda berhasil disimpan. Terima kasih telah mengisi kuesioner. Anda dapat melihat hasil kuesioner Anda dengan menekan tombol dibawah ini",
+                      positiveButtonText =   "Lihat Hasil Kuesioner",
+                       negativeButtonText =  "",
+                        error=false,
+                        onPositiveButtonClick = {
+
+                            val intent = Intent(requireContext(), ChartActivity::class.java)
+                            intent.putExtra("CLASSID", classId)
+                            intent.putExtra("PERIOD", period)
+                            startActivity(intent)
+                            requireActivity().finish()
+                        },
+                        onNegativeButtonClick = {})
 
 
                 }
             }
+    }
 
+
+    private fun setupAction() {
+        binding.submitButton.setOnClickListener {
+            if(isAllAnswered()){
+                showFeedbackDialog()
+            } else{
+                requireContext().showCustomAlertDialog("Peringatan",
+                    "Mohon jawab semua pertanyaan sebelum melanjutkan",
+                    "OK",
+                    "",
+                    {},
+                    {})
+            }
         }
         binding.prevButton.setOnClickListener {
             viewModel.logAnswers() // Log answers before navigating
             parentFragmentManager.commit {
                 addToBackStack(null)
-                replace(R.id.questionnaire_container, HelpSeekingQuestionFragment(viewModel), HelpSeekingQuestionFragment::class.java.simpleName)
-            } }
+                replace(
+                    R.id.questionnaire_container,
+                    HelpSeekingQuestionFragment(viewModel),
+                    HelpSeekingQuestionFragment::class.java.simpleName
+                )
+            }
+        }
+
+        binding.infoIcon.setOnClickListener {
+            requireContext().showCustomInformation(
+                "Self Evaluation",
+                "Mengevaluasi kinerja belajar dengan mengukur hasil yang telah dicapai dibandingkan dengan tujuan awal. Ini mencakup refleksi terhadap apa yang sudah dikuasai dan apa yang masih perlu diperbaiki.",
+            )
+        }
     }
 
     private fun setupRadioGroups() {
@@ -185,18 +239,23 @@ class SelfEvaluationQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
             setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
 
-        // Handle button clicks
-        dialog.findViewById<Button>(R.id.btn_back).setOnClickListener {
+        val btnBack = dialog.findViewById<Button>(R.id.btn_back)
+        val btnSubmit = dialog.findViewById<Button>(R.id.btn_submit)
+        val etFeedback = dialog.findViewById<EditText>(R.id.et_feedback)
+
+        btnBack.setOnClickListener {
             dialog.dismiss()
         }
 
-        dialog.findViewById<Button>(R.id.btn_submit).setOnClickListener {
-            val feedback = dialog.findViewById<EditText>(R.id.et_feedback).text.toString()
+        btnSubmit.setOnClickListener {
+            val feedback = etFeedback.text.toString()
             dialog.dismiss()
+            submitQS(feedback)
         }
 
         dialog.show()
     }
+
 
     companion object {
         fun newInstance(viewModel: QuestionnaireViewModel) = SelfEvaluationQuestionFragment(

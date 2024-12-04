@@ -9,19 +9,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.data.remote.request.UpdateKegiatanRequest
 import com.dl2lab.srolqs.data.remote.response.KegiatanItem
 import com.dl2lab.srolqs.data.repository.KegiatanRepository
 import com.dl2lab.srolqs.databinding.FragmentEditKegiatanBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
+import com.dl2lab.srolqs.ui.customview.LoadingManager
+import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
 import com.dl2lab.srolqs.ui.home.viewmodel.MainViewModel
 import com.dl2lab.srolqs.ui.kegiatan.detail.DetailKegiatanFragmentDirections
 import com.dl2lab.srolqs.ui.kegiatan.viewmodel.KegiatanViewModel
+import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
@@ -41,6 +43,7 @@ class EditKegiatanFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        LoadingManager.init(this)
         _binding = FragmentEditKegiatanBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -50,6 +53,7 @@ class EditKegiatanFragment : Fragment() {
         arguments?.let {
             kegiatanId = it.getInt("kegiatanId")
         }
+        LoadingManager.init(this)
 
         binding.inputTanggalKegiatan.setOnClickListener { showDatePicker() }
         binding.inputTanggalKegiatanLayout.setEndIconOnClickListener { showDatePicker() }
@@ -61,21 +65,91 @@ class EditKegiatanFragment : Fragment() {
             binding.inputName.setText(item.namaKegiatan)
             binding.inputTipeKegiatan.setText(item.tipeKegiatan, false)
             binding.inputLinkKegiatan.setText(item.link)
-            binding.inputTanggalKegiatan.setText(item.tenggat)
+            binding.inputTanggalKegiatan.setText(item.tenggat.formatDateFromApi())
             binding.inputCatatanKegiatan.setText(item.catatan)
             Log.d("EditKegiatanFragment", "Kegiatan Item: $item")
         })
         getKegiatanDetail()
+        observeViewModel()
         binding.btnTambahKegiatan.setOnClickListener {
             updateKegiatan()
-            Toast.makeText(context, "Kegiatan berhasil diubah", Toast.LENGTH_SHORT).show()
-            findNavController().popBackStack()
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        LoadingManager.cleanup()
+    }
+    fun String.formatDateFromApi(): String {
+        return try {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'z'", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("dd MMMM yyyy", Locale("id")) // Format Indonesia
+
+            val date = inputFormat.parse(this)
+            date?.let { outputFormat.format(it) } ?: this
+        } catch (e: Exception) {
+            this // Return original string if parsing fails
+        }
+    }
+
+
+    private fun observeViewModel() {
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
+            if (isLoading) {
+                LoadingManager.show()
+            } else {
+                LoadingManager.hide()
+            }
+        })
+
+        viewModel.updateResult.observe(viewLifecycleOwner, Observer { result ->
+            result.fold(
+                onSuccess = {
+                    requireContext().showCustomAlertDialog(
+                        title = "Edit Kegiatan Berhasil",
+                        subtitle = "Kegiatan \'${it.data.namaKegiatan}\' berhasil diubah",
+                        positiveButtonText = "OK",
+                        negativeButtonText = "",
+                        onPositiveButtonClick ={
+                            Navigation.findNavController(requireView()).popBackStack()
+                        },
+                        onNegativeButtonClick = {},
+                        error =false,
+                    )
+
+
+                },
+                onFailure = {
+                    requireContext().showCustomAlertDialog(
+                        title = "Edit Kegiatan Gagal",
+                        subtitle = it.message ?: "Terjadi kesalahan saat mengubah kegiatan",
+                        positiveButtonText = "OK",
+                        negativeButtonText = "",
+                        onPositiveButtonClick ={},
+                        onNegativeButtonClick = {},
+                        error =true,
+                    )
+                }
+            )
+        })
+
+        viewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMessage ->
+            errorMessage?.let {
+
+                requireContext().showCustomAlertDialog(
+                    title = "Edit Kegiatan Gagal",
+                    subtitle = it ?: "Terjadi kesalahan saat menambah kegiatan",
+                    positiveButtonText = "Kembali",
+                    negativeButtonText = "",
+                    onPositiveButtonClick ={
+                        findNavController().popBackStack()
+                    },
+                    onNegativeButtonClick = {},
+                    error =true,
+                )
+            }
+        })
     }
 
     private fun getKegiatanDetail() {
@@ -84,7 +158,6 @@ class EditKegiatanFragment : Fragment() {
                 viewModel.fetchDetailKegiatan(kegiatanId!!, token)
             }
         })
-        Log.d("EditKegiatanFragment", "Kegiatan ID: $kegiatanId")
     }
 
     private fun showDatePicker() {
@@ -103,6 +176,8 @@ class EditKegiatanFragment : Fragment() {
         )
         datePickerDialog.show()
     }
+
+
 
     private fun setUpTipeKegiatanDropdown() {
         val tipeKegiatanOptions = arrayOf("Tugas", "Belajar", "Meeting", "Presentasi")

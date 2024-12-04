@@ -42,8 +42,8 @@
             <!-- Information Icon -->
             <ImageView
                 android:id="@+id/infoIcon"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/ic_info"
                 android:contentDescription="@string/info_icon"
                 android:clickable="true"

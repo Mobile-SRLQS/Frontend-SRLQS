@@ -299,29 +299,24 @@ class HomeFragment : Fragment(), OnClassItemClickListener,
         findNavController().navigate(action)
     }
 
+    override fun onMarkAsDoneClick(idKegiatan: Int) {
+        viewModel.checklistKegiatan(idKegiatan).observe(viewLifecycleOwner, Observer { response ->
+            if (response.isSuccessful) {
+                getActivityList()
+            } else {
+                requireContext().showCustomAlertDialog(
+                    "Gagal menandai kegiatan selesai",
+                    response.message(),
+                    "Ulang",
+                    "",
+                    {this.onMarkAsDoneClick(idKegiatan)},
+                    {},
+                )
+            }
+        })
 
-    override fun onItemChecked(kegiatanItem: KegiatanItem, isChecked: Boolean) {
-        if (isChecked) {
-            viewModel.checklistKegiatan(kegiatanItem.id)
-                .observe(viewLifecycleOwner, Observer { result ->
-                    if (result.isSuccessful) {
-                        this.getActivityList()
-                    } else {
-                        // Handle error
-                    }
-                })
-        } else {
-            viewModel.checklistKegiatan(kegiatanItem.id)
-                .observe(viewLifecycleOwner, Observer { result ->
-                    if (result.isSuccessful) {
-                        this.getActivityList()
-                    } else {
-                        // Handle error
-                    }
-                })
-
-        }
     }
+
 
     private suspend fun getToken(): String? {
         return viewModel.getSession().value?.token

@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.databinding.FragmentEnvironmentStructuringQuestionBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
+import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
+import com.dl2lab.srolqs.ui.customview.showCustomInformation
 import com.dl2lab.srolqs.ui.kuesioner.viewmodel.QuestionnaireViewModel
 
 class EnvironmentStructuringQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment() {
@@ -41,14 +43,34 @@ class EnvironmentStructuringQuestionFragment(viewModel: QuestionnaireViewModel) 
         ).get(QuestionnaireViewModel::class.java)
     }
 
+    private fun isAllQuestionsAnswered(): Boolean {
+        return binding.radioGroup5.checkedRadioButtonId != -1 &&
+                binding.radioGroup6.checkedRadioButtonId != -1 &&
+                binding.radioGroup7.checkedRadioButtonId != -1 &&
+                binding.radioGroup8.checkedRadioButtonId != -1
+    }
+
+
 
 
     private fun setupAction() {
         binding.nextButton.setOnClickListener {
-            viewModel.logAnswers() // Log answers before navigating
-            parentFragmentManager.commit {
-                addToBackStack(null)
-                replace(R.id.questionnaire_container, TaskStrategyQuestionFragment(viewModel), TaskStrategyQuestionFragment::class.java.simpleName)
+            if (isAllQuestionsAnswered()) {
+                viewModel.logAnswers() // Log answers before navigating
+                parentFragmentManager.commit {
+                    addToBackStack(null)
+                    replace(R.id.questionnaire_container, TaskStrategyQuestionFragment(viewModel), TaskStrategyQuestionFragment::class.java.simpleName)
+                }
+
+            } else {
+                requireContext().showCustomAlertDialog(
+                    "Peringatan",
+                    "Mohon jawab semua pertanyaan sebelum melanjutkan",
+                    "OK",
+                    "",
+                    {},
+                    {}
+                )
             }
         }
         binding.prevButton.setOnClickListener {
@@ -57,6 +79,11 @@ class EnvironmentStructuringQuestionFragment(viewModel: QuestionnaireViewModel) 
             addToBackStack(null)
             replace(R.id.questionnaire_container, GoalSettingQuestionFragment(viewModel), GoalSettingQuestionFragment::class.java.simpleName)
         } }
+
+        binding.infoIcon.setOnClickListener {
+            requireContext().showCustomInformation("Environment Structuring", "Mengatur lingkungan belajar untuk meminimalkan gangguan dan menciptakan kondisi yang mendukung konsentrasi. Ini termasuk pemilihan tempat belajar, penataan alat bantu, dan pengurangan hal-hal yang bisa mengganggu.")
+
+        }
 
     }
 

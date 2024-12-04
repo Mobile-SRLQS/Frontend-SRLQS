@@ -12,6 +12,7 @@ import com.dl2lab.srolqs.databinding.ActivityForgotPasswordBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.authentication.createNewPassword.CreateNewPasswordActivity
 import com.dl2lab.srolqs.ui.authentication.viewmodel.LoginViewModel
+import com.dl2lab.srolqs.ui.customview.LoadingManager
 import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
 import org.json.JSONObject
 import retrofit2.Response
@@ -40,6 +41,9 @@ class ForgotPasswordActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.buttonSubmit.setOnClickListener { changePassword() }
         observeViewModel()
+        setupTextWatcher()
+        updateButtonState()
+        LoadingManager.init(this)
 
     }
 
@@ -53,19 +57,6 @@ class ForgotPasswordActivity : AppCompatActivity() {
     private fun changePassword(){
         val email = binding.inputText.text.toString()
 
-        if(email.isEmpty() ){
-            this.showCustomAlertDialog(
-                "",
-                "Please input all fields",
-                "OK",
-                "Cancel",
-                {},
-                {
-                },
-            )
-            return
-        }
-
 
 
         loginViewModel.requestResetCode(email).observe(this) { response ->
@@ -73,8 +64,8 @@ class ForgotPasswordActivity : AppCompatActivity() {
                 val body = response.body()
                 if (body != null) {
                     this.showCustomAlertDialog(
-                        "",
-                        body.message ?: "Code sent successfully",
+                        "Verifikasi Email Sukses",
+                        "Kode verifikasi telah dikirim ke email Anda. Silakan cek email Anda untuk melanjutkan proses reset password.",
                         "OK",
                         "",
                         {
@@ -82,12 +73,13 @@ class ForgotPasswordActivity : AppCompatActivity() {
                         },
                         {
                         },
+                        error = false
                     )
 
                 }
             } else {
                 this.showCustomAlertDialog(
-                    "",
+                    "Verifikasi Email Gagal",
                     extractErrorMessage(response),
                     "OK",
                     "",
@@ -96,11 +88,28 @@ class ForgotPasswordActivity : AppCompatActivity() {
                     },
                 )
             }
-
         }
 
 
 
+    }
+
+    private fun setupTextWatcher() {
+        val textWatcher = object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) {
+                updateButtonState()
+            }
+        }
+
+        binding.inputText.addTextChangedListener(textWatcher)
+    }
+
+    private fun updateButtonState() {
+        val isEmailFilled = binding.inputText.text.toString().isNotEmpty()
+        binding.buttonSubmit.isEnabled = isEmailFilled
+        binding.buttonSubmit.alpha = if (isEmailFilled) 1.0f else 0.5f
     }
 
     private fun extractErrorMessage(response: Response<BasicResponse>): String {
@@ -121,15 +130,23 @@ class ForgotPasswordActivity : AppCompatActivity() {
         loginViewModel.isLoading.observe(this) { isLoading ->
             // Show loading indicator if needed
             if (isLoading) {
-                // Show a loading spinner or some UI feedback for loading
+                LoadingManager.show()
             } else {
-                // Hide loading spinner
+                LoadingManager.hide()
             }
         }
 
         loginViewModel.errorMessageLogin.observe(this) { errorMessage ->
             if (errorMessage.isNotEmpty()) {
-                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+                this.showCustomAlertDialog(
+                    "Verifikasi Email Gagal",
+                    errorMessage ?: "Terjadi kesalahan saat mengirim kode verifikasi",
+                    "OK",
+                    "",
+                    {},
+                    {
+                    },
+                )
             }
         }
 

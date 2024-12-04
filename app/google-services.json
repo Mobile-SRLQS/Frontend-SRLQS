@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1012026024813",
+    "project_id": "srolqs-mobile",
+    "storage_bucket": "srolqs-mobile.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1012026024813:android:9b5843fc4f74a7379db064",
+        "android_client_info": {
+          "package_name": "com.dl2lab.srolqs"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBExquzfuhPfqFbC26nO7WCG0b82it7a2E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

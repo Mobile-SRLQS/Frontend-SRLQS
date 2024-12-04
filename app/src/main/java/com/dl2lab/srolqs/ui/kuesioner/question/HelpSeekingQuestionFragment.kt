@@ -12,6 +12,8 @@ import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.databinding.FragmentHelpSeekingQuestionBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.kuesioner.viewmodel.QuestionnaireViewModel
+import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
+import com.dl2lab.srolqs.ui.customview.showCustomInformation
 
 class HelpSeekingQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment() {
     private lateinit var binding: FragmentHelpSeekingQuestionBinding
@@ -19,8 +21,7 @@ class HelpSeekingQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment(
 
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentHelpSeekingQuestionBinding.inflate(layoutInflater)
         return binding.root
@@ -42,18 +43,49 @@ class HelpSeekingQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment(
 
     private fun setupAction() {
         binding.nextButton.setOnClickListener {
-            viewModel.logAnswers() // Log answers before navigating
-            parentFragmentManager.commit {
-                addToBackStack(null)
-                replace(R.id.questionnaire_container, SelfEvaluationQuestionFragment(viewModel), SelfEvaluationQuestionFragment::class.java.simpleName)
+            if (isAllAnswered()) {
+                viewModel.logAnswers() // Log answers before navigating
+                parentFragmentManager.commit {
+                    addToBackStack(null)
+                    replace(
+                        R.id.questionnaire_container,
+                        SelfEvaluationQuestionFragment(viewModel),
+                        SelfEvaluationQuestionFragment::class.java.simpleName
+                    )
+                }
+            } else {
+                requireContext().showCustomAlertDialog("Peringatan",
+                    "Mohon jawab semua pertanyaan sebelum melanjutkan",
+                    "OK",
+                    "",
+                    {},
+                    {})
+
             }
+
+
         }
         binding.prevButton.setOnClickListener {
             viewModel.logAnswers() // Log answers before navigating
             parentFragmentManager.commit {
                 addToBackStack(null)
-                replace(R.id.questionnaire_container, TimeManagementQuestionFragment(viewModel), TimeManagementQuestionFragment::class.java.simpleName)
-            } }
+                replace(
+                    R.id.questionnaire_container,
+                    TimeManagementQuestionFragment(viewModel),
+                    TimeManagementQuestionFragment::class.java.simpleName
+                )
+            }
+        }
+        binding.infoIcon.setOnClickListener {
+            requireContext().showCustomInformation(
+                "Help Seeking",
+                "Mencari bantuan ketika menghadapi kesulitan, baik dari teman, guru, atau sumber belajar lainnya. Ini penting untuk memperbaiki pemahaman dan mengatasi hambatan dalam belajar.",
+            )
+        }
+    }
+
+    private fun isAllAnswered(): Boolean {
+        return binding.radioGroup17.checkedRadioButtonId != -1 && binding.radioGroup18.checkedRadioButtonId != -1 && binding.radioGroup19.checkedRadioButtonId != -1 && binding.radioGroup20.checkedRadioButtonId != -1
     }
 
     private fun setupRadioGroups() {

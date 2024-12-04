@@ -2,6 +2,7 @@ package com.dl2lab.srolqs.ui.kelas.joinClass
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,18 +14,28 @@ import com.dl2lab.srolqs.databinding.FragmentJoinClassBinding
 import com.dl2lab.srolqs.ui.home.viewmodel.MainViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkerParameters
+import androidx.work.workDataOf
+import com.dl2lab.srolqs.data.remote.response.JoinDetailClassResponse
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
+import com.dl2lab.srolqs.ui.customview.LoadingManager
 import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
 import com.dl2lab.srolqs.ui.home.welcome.WelcomeActivity
 import com.dl2lab.srolqs.ui.kuesioner.question.QuestionnaireQuestionActivity
 import com.dl2lab.srolqs.utils.ExtractErrorMessage.extractErrorMessage
 import com.dl2lab.srolqs.utils.JwtUtils
+import com.dl2lab.srolqs.worker.QuestionnaireNotificationWorker
+import java.util.UUID
 
 class JoinClassFragment : Fragment() {
 
     private var _binding: FragmentJoinClassBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: MainViewModel
+
+    private lateinit var classData: JoinDetailClassResponse
     private val args: JoinClassFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -38,8 +49,6 @@ class JoinClassFragment : Fragment() {
         setupClassDetail()
         setupButton()
 
-
-
         return root
     }
 
@@ -49,7 +58,30 @@ class JoinClassFragment : Fragment() {
         }
         binding.btnDoQuesionnaire.setOnClickListener {
             doQuestionnaire()
+        }
+    }
 
+    private fun setupNotificationWorker() {
+        Log.d("JoinClassFragment", "setupNotificationWorker: ${classData}")
+
+        if (::classData.isInitialized && classData.data?.periods != null) {
+            val periods = classData.data?.periods
+            for (i in periods!!.indices) {
+                val periodName = periods[i]?.periodName
+                val endDate = periods[i]?.endDate
+                if (periodName != null && endDate != null) {
+                    val workRequest = OneTimeWorkRequestBuilder<QuestionnaireNotificationWorker>()
+                        .setInputData(
+                            workDataOf(
+                                "class_name" to classData.data?.className,
+                                "period_name" to periodName,
+                                "end_date" to endDate
+                            )
+                        )
+                        .build()
+                    WorkManager.getInstance(requireContext()).enqueue(workRequest)
+                }
+            }
         }
     }
 
@@ -63,8 +95,7 @@ class JoinClassFragment : Fragment() {
                     intent.putExtra("classId", classId)
                     intent.putExtra("period", "1")
                     startActivity(intent)
-
-
+                    setupNotificationWorker()
                 } else {
                     requireContext().showCustomAlertDialog(
                         "",
@@ -81,12 +112,7 @@ class JoinClassFragment : Fragment() {
         }
     }
 
-    private fun navigateToQuestionnaire() {
-
-    }
-
     private fun setupViewModel() {
-
         viewModel = ViewModelProvider(
             requireActivity(), ViewModelFactory.getInstance(requireContext())
         ).get(MainViewModel::class.java)
@@ -96,7 +122,6 @@ class JoinClassFragment : Fragment() {
         viewModel.getSession().observe(viewLifecycleOwner, Observer { userModel ->
             if (userModel.token != null) {
                 if (JwtUtils.isTokenExpired(userModel.token)) {
-
                     startActivity(Intent(requireActivity(), WelcomeActivity::class.java))
                     requireActivity().finish()
                     requireContext().showCustomAlertDialog(
@@ -107,11 +132,8 @@ class JoinClassFragment : Fragment() {
                         { viewModel.logout() },
                         { },
                     )
-
                     viewModel.logout()
-
                 }
-
             } else {
                 startActivity(Intent(requireActivity(), WelcomeActivity::class.java))
                 requireActivity().finish()
@@ -126,6 +148,9 @@ class JoinClassFragment : Fragment() {
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body != null) {
+                        classData = body
+
+                        Log.d("JoinClassFragment", "setupClassDetail: ${classData}")
                         binding.headingCourseTitle.text = body.data?.className
                         binding.courseSemesterInformation.text = body.data?.classSemester
                         binding.courseDescription.text = body.data?.classDescription
@@ -149,8 +174,7 @@ class JoinClassFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        LoadingManager.cleanup()
         _binding = null
     }
-
-
 }

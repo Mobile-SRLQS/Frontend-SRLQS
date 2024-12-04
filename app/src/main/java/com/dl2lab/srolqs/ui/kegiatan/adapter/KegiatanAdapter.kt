@@ -13,7 +13,7 @@ class KegiatanAdapter(private var listKegiatan: List<KegiatanItem?>, private val
 
     interface OnKegiatanItemClickListener {
         fun onItemClick(kegiatanItem: KegiatanItem)
-        fun onItemChecked(kegiatanItem: KegiatanItem, isChecked: Boolean)
+        fun onMarkAsDoneClick(idKegiatan: Int)
     }
 
     inner class KegiatanViewHolder(private val binding: ItemKegiatanBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -21,10 +21,24 @@ class KegiatanAdapter(private var listKegiatan: List<KegiatanItem?>, private val
             binding.tvNamaKegiatan.text = item.namaKegiatan
             val tenggat = formatTanggal(item.tenggat)
             binding.tvTenggatKegiatan.text = tenggat
-            binding.checkBoxKegiatan.isChecked = item.isDone
-            binding.checkBoxKegiatan.setOnCheckedChangeListener { _, isChecked ->
-                itemClickListener.onItemChecked(item, isChecked)
+            binding.tvJenisTugas.text = item.tipeKegiatan
+            binding.tvCatatan.text = item.catatan
+            binding
+
+            if (item.isDone) {
+                binding.btnMarkAsDone.text = "Diselesaikan"
+                binding.btnMarkAsDone.isEnabled = false
+
+            } else {
+                binding.btnMarkAsDone.text = "Tandai Selesai"
+                binding.btnMarkAsDone.isEnabled = true
+                binding.btnMarkAsDone.setOnClickListener {
+                    itemClickListener.onMarkAsDoneClick(item.id)
+                }
+
             }
+
+
             binding.root.setOnClickListener {
                 itemClickListener.onItemClick(item)
             }

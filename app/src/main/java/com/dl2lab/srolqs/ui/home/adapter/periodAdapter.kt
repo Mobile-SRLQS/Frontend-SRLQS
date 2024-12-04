@@ -29,17 +29,21 @@ class PeriodAdapter(
                     seeGraphic(binding.periodButton.context, periodItem)
                 }
             } else{
-                binding.periodButton.setOnClickListener {
-                    doQuestionnaire(binding.periodButton.context, periodItem)
-                }
+               periodItem.isAvailable?.let {
+                   if (it) {
+                       binding.periodButton.setOnClickListener{
+                           doQuestionnaire(binding.periodButton.context, periodItem)
+                       }
+                   } else{
+                       buttonText = "Belum Tersedia"
+                       binding.periodButton.setBackgroundColor(
+                           ContextCompat.getColor(binding.periodButton.context, R.color.grey)
+                       )
+                       binding.periodButton.isEnabled = false
+                   }
+               }
             }
-            if (periodItem.isAvailable == false) {
-                buttonText = "Belum Tersedia"
-                binding.periodButton.setBackgroundColor(
-                    ContextCompat.getColor(binding.periodButton.context, R.color.grey)
-                )
-                binding.periodButton.isEnabled = false
-            }
+
 
             if (periodItem.isDone == true && periodItem.isAvailable == false) {
                 buttonText = "Lihat Hasil"
@@ -48,7 +52,7 @@ class PeriodAdapter(
                 }
                 binding.periodButton.isEnabled = true
                 binding.periodButton.setBackgroundColor(
-                    ContextCompat.getColor(binding.periodButton.context, R.color.light_green)
+                    ContextCompat.getColor(binding.periodButton.context, R.color.dark_green)
                 )
             }
             binding.periodButton.text = buttonText
@@ -59,7 +63,7 @@ class PeriodAdapter(
     private fun doQuestionnaire(context: Context, periodItem: PeriodDataItem) {
         val intent = Intent(context, QuestionnaireQuestionActivity::class.java)
         intent.putExtra("classId", periodItem.classId)
-        intent.putExtra("period", periodItem.periodName)
+        intent.putExtra("period", periodItem.periodName.toString())
         context.startActivity(intent)
     }
 

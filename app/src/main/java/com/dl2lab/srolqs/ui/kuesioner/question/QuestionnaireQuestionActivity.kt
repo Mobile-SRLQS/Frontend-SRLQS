@@ -1,6 +1,7 @@
 package com.dl2lab.srolqs.ui.kuesioner.question
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -28,7 +29,7 @@ class QuestionnaireQuestionActivity : AppCompatActivity() {
         classId?.let { viewModel.setClassId(it) }
         val period = intent.getStringExtra("period")
         period?.let { viewModel.setPeriod(it) }
-        period?.let { viewModel.setPeriod(it) }
+        Toast.makeText(this, "classId: $classId, period: $period", Toast.LENGTH_SHORT).show()
 
         setContentView(binding.root)
 

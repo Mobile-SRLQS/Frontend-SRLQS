@@ -20,37 +20,49 @@ class NetworkConnectivityObserver(
 
     override fun observe(): Flow<ConnectivityObserver.Status> {
         return callbackFlow {
+            val initialStatus = if (isNetworkAvailable()) {
+                ConnectivityObserver.Status.Available
+            } else {
+                ConnectivityObserver.Status.Unavailable
+            }
+            trySend(initialStatus)
+
             val callback = object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
                     super.onAvailable(network)
-                    launch { send(ConnectivityObserver.Status.Available) }
+                    trySend(ConnectivityObserver.Status.Available)
                 }
 
                 override fun onLosing(network: Network, maxMsToLive: Int) {
                     super.onLosing(network, maxMsToLive)
-                    launch { send(ConnectivityObserver.Status.Losing) }
+                    trySend(ConnectivityObserver.Status.Losing)
                 }
 
                 override fun onLost(network: Network) {
                     super.onLost(network)
-                    launch { send(ConnectivityObserver.Status.Lost) }
+                    trySend(ConnectivityObserver.Status.Lost)
                 }
 
                 override fun onUnavailable() {
                     super.onUnavailable()
-                    launch { send(ConnectivityObserver.Status.Unavailable) }
+                    trySend(ConnectivityObserver.Status.Unavailable)
                 }
             }
 
-            val networkRequest = NetworkRequest.Builder()
+            val request = NetworkRequest.Builder()
                 .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
                 .build()
-
-            connectivityManager.registerNetworkCallback(networkRequest, callback)
+            connectivityManager.registerNetworkCallback(request, callback)
 
             awaitClose {
                 connectivityManager.unregisterNetworkCallback(callback)
             }
         }.distinctUntilChanged()
+    }
+
+    private fun isNetworkAvailable(): Boolean {
+        val network = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 }

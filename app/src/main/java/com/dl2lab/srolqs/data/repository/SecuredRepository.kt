@@ -10,6 +10,7 @@ import com.dl2lab.srolqs.data.remote.response.DetailClassResponse
 import com.dl2lab.srolqs.data.remote.response.GetKegiatanResponse
 import com.dl2lab.srolqs.data.remote.response.GetProfileResponse
 import com.dl2lab.srolqs.data.remote.response.GetQuestionnaireResponse
+import com.dl2lab.srolqs.data.remote.response.JoinDetailClassResponse
 import com.dl2lab.srolqs.data.remote.response.ListClassResponse
 import com.dl2lab.srolqs.data.remote.response.ShowAvailablePeriodResponse
 import com.dl2lab.srolqs.data.remote.response.StudentProgressResponse
@@ -57,7 +58,7 @@ class SecuredRepository private constructor(
 
     }
 
-    fun getDetailClass(id: String) : Call<DetailClassResponse>{
+    fun getDetailClass(id: String) : Call<JoinDetailClassResponse>{
         return apiServiceSecured.getClassDetail(id)
     }
 
@@ -91,6 +92,10 @@ class SecuredRepository private constructor(
 
     fun checklistKegiatan(id: Int) : Call<BasicResponse>{
         return apiServiceSecured.checklistKegiatan(id)
+    }
+
+    fun deleteKegiatan(id: Int) : Call<BasicResponse>{
+        return apiServiceSecured.deleteKegaiatan(id)
     }
 
     fun getDetailProfile() : Call<GetProfileResponse>{

@@ -25,10 +25,11 @@
     <ViewStub
         android:id="@+id/viewstub_empty_kelas_state"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:layout_gravity="center"
         app:layout_constraintTop_toBottomOf="@id/tv_kelas_title"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:inflatedId="@+id/empty_kelas_state_layout"
@@ -46,7 +47,7 @@
         android:clipToPadding="false"
         android:overScrollMode="never"
         android:scrollbars="vertical"
-        app:layout_constraintTop_toBottomOf="@id/viewstub_empty_kelas_state"
+        app:layout_constraintTop_toBottomOf="@id/tv_kelas_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -63,11 +64,16 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/viewstub_empty_kelas_state">
+        app:layout_constraintTop_toBottomOf="@id/tv_kelas_title">
 
         <include layout="@layout/item_shimmer_class" />
 
         <include layout="@layout/item_shimmer_class" />
+        <include layout="@layout/item_shimmer_class" />
+        <include layout="@layout/item_shimmer_class" />
+        <include layout="@layout/item_shimmer_class" />
+        <include layout="@layout/item_shimmer_class" />
+
         <include layout="@layout/item_shimmer_class" />
         <include layout="@layout/item_shimmer_class" />
         <include layout="@layout/item_shimmer_class" />

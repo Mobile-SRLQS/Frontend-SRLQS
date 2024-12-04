@@ -64,6 +64,41 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:inflatedId="@+id/empty_state_layout"
         android:layout="@layout/layout_empty_state" />
+<!--    shimmer-->
+    <LinearLayout
+        android:id="@+id/shimmer_activity_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="top"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="24dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchView">
+
+        <include layout="@layout/item_shimmer_activity" />
+        <include layout="@layout/item_shimmer_activity" />
+        <include layout="@layout/item_shimmer_activity" />
+        <include layout="@layout/item_shimmer_activity" />
+        <include layout="@layout/item_shimmer_activity" />
+
+
+    </LinearLayout>
+<!--    viewStub-->
+    <ViewStub
+        android:id="@+id/viewstub_empty_kegiatan_state"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/searchView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:inflatedId="@+id/empty_kelas_state_layout"
+        android:layout="@layout/layout_empty_kelas_state" />
 
     <!-- RecyclerView for Kegiatan List -->
     <androidx.recyclerview.widget.RecyclerView
@@ -75,21 +110,15 @@
         app:layout_constraintTop_toBottomOf="@id/searchView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guideline2"
         tools:listitem="@layout/item_kegiatan"
         tools:itemCount="10" />
 
-    <!-- Progress Bar for Loading -->
-    <ProgressBar
-        android:id="@+id/progress_bar"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/tv_susun_kegiatan_title"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

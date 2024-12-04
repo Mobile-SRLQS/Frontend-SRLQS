@@ -12,6 +12,8 @@ import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.databinding.FragmentTimeManagementQuestionBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.kuesioner.viewmodel.QuestionnaireViewModel
+import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
+import com.dl2lab.srolqs.ui.customview.showCustomInformation
 
 class TimeManagementQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment() {
     private lateinit var binding: FragmentTimeManagementQuestionBinding
@@ -19,8 +21,7 @@ class TimeManagementQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
 
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentTimeManagementQuestionBinding.inflate(layoutInflater)
         return binding.root
@@ -41,21 +42,49 @@ class TimeManagementQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
     }
 
 
-
     private fun setupAction() {
         binding.nextButton.setOnClickListener {
-            viewModel.logAnswers()
-            parentFragmentManager.commit {
-                addToBackStack(null)
-                replace(R.id.questionnaire_container, HelpSeekingQuestionFragment(viewModel), HelpSeekingQuestionFragment::class.java.simpleName)
+            if (isAllAnswered()) {
+                viewModel.logAnswers()
+                parentFragmentManager.commit {
+                    addToBackStack(null)
+                    replace(
+                        R.id.questionnaire_container, HelpSeekingQuestionFragment(viewModel)
+                    )
+                }
+            } else {
+
+                requireContext().showCustomAlertDialog("Peringatan",
+                    "Mohon jawab semua pertanyaan sebelum melanjutkan",
+                    "OK",
+                    "",
+                    {},
+                    {})
+
             }
         }
         binding.prevButton.setOnClickListener {
             viewModel.logAnswers()
             parentFragmentManager.commit {
                 addToBackStack(null)
-                replace(R.id.questionnaire_container, TaskStrategyQuestionFragment(viewModel), TaskStrategyQuestionFragment::class.java.simpleName)
-            } }
+                replace(
+                    R.id.questionnaire_container,
+                    TaskStrategyQuestionFragment(viewModel),
+                    TaskStrategyQuestionFragment::class.java.simpleName
+                )
+            }
+        }
+
+        binding.infoIcon.setOnClickListener {
+            requireContext().showCustomInformation(
+                "Time Management",
+                "Mengatur waktu dengan baik untuk menyelesaikan tugas belajar, termasuk membagi waktu untuk belajar dan istirahat, serta membuat jadwal yang realistis dan terstruktur.",
+            )
+        }
+    }
+
+    private fun isAllAnswered(): Boolean {
+        return binding.radioGroup13.checkedRadioButtonId != -1 && binding.radioGroup14.checkedRadioButtonId != -1 && binding.radioGroup15.checkedRadioButtonId != -1 && binding.radioGroup16.checkedRadioButtonId != -1
     }
 
     private fun setupRadioGroups() {
@@ -139,7 +168,7 @@ class TimeManagementQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
 
 
     companion object {
-        fun newInstance(viewModel: QuestionnaireViewModel) =TimeManagementQuestionFragment(
+        fun newInstance(viewModel: QuestionnaireViewModel) = TimeManagementQuestionFragment(
             viewModel
         ).apply {
             this.viewModel = viewModel

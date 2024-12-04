@@ -59,7 +59,7 @@ class RadarChartFragment : Fragment() {
             override fun getFormattedValue(value: Float): String {
                 return when {
                     value % 1 == 0f -> value.toInt().toString()
-                    else -> String.format("%.1f", value)
+                    else -> String.format("%.2f", value)
                 }
             }
         }
@@ -78,7 +78,7 @@ class RadarChartFragment : Fragment() {
                 override fun getFormattedValue(value: Float): String {
                     return when {
                         value % 1 == 0f -> value.toInt().toString()
-                        else -> String.format("%.1f", value)
+                        else -> String.format("%.2f", value)
                     }
                 }
             }

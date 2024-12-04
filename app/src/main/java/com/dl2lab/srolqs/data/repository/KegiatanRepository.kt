@@ -79,6 +79,28 @@ class KegiatanRepository {
         })
     }
 
+    fun deleteKegiatan(token: String, id:Int, onResult: (Result<BasicResponse>) -> Unit) {
+        val apiServiceSecured = ApiConfig.getApiServiceSecured(token)
+        apiServiceSecured.deleteKegaiatan(id).enqueue(object : Callback<BasicResponse> {
+            override fun onResponse(
+                call: Call<BasicResponse>,
+                response: Response<BasicResponse>
+            ) {
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        onResult(Result.success(it))
+                    } ?: onResult(Result.failure(Throwable("Response body is null")))
+                } else {
+                    onResult(Result.failure(Throwable("Gagal mendapatkan list kegiatan: ${response.message()}")))
+                }
+            }
+
+            override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+                onResult(Result.failure(t))
+            }
+        })
+    }
+
     fun checklistKegiatan(token: String, id:Int, onResult: (Result<BasicResponse>) -> Unit) {
         val apiServiceSecured = ApiConfig.getApiServiceSecured(token)
         apiServiceSecured.checklistKegiatan(id).enqueue(object : Callback<BasicResponse> {
@@ -123,12 +145,12 @@ class KegiatanRepository {
         })
     }
 
-    fun updateKegiatan(token: String, id:Int, objectDTO:UpdateKegiatanRequest, onResult: (Result<BasicResponse>) -> Unit) {
+    fun updateKegiatan(token: String, id:Int, objectDTO:UpdateKegiatanRequest, onResult: (Result<TambahKegiatanResponse>) -> Unit) {
         val apiServiceSecured = ApiConfig.getApiServiceSecured(token)
-        apiServiceSecured.updateKegiatan(id, objectDTO).enqueue(object : Callback<BasicResponse> {
+        apiServiceSecured.updateKegiatan(id, objectDTO).enqueue(object : Callback<TambahKegiatanResponse> {
             override fun onResponse(
-                call: Call<BasicResponse>,
-                response: Response<BasicResponse>
+                call: Call<TambahKegiatanResponse>,
+                response: Response<TambahKegiatanResponse>
             ) {
                 if (response.isSuccessful) {
                     response.body()?.let {
@@ -139,7 +161,7 @@ class KegiatanRepository {
                 }
             }
 
-            override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+            override fun onFailure(call: Call<TambahKegiatanResponse>, t: Throwable) {
                 onResult(Result.failure(t))
             }
         })

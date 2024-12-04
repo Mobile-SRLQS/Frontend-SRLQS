@@ -4,12 +4,12 @@ import com.google.gson.annotations.SerializedName
 
 data class SubmitQuestionnaireRequest(
 
-	@field:SerializedName("period")
-	val period: String? = null,
+    @field:SerializedName("period") val period: String? = null,
 
-	@field:SerializedName("class_id")
-	val classId: String? = null,
+    @field:SerializedName("class_id") val classId: String? = null,
 
-	@field:SerializedName("questions")
-	val questions: List<Int?>? = null
-)
+    @field:SerializedName("questions") val questions: List<Int?>? = null,
+
+    @field:SerializedName("feedback") val feedback: String? = null,
+
+    )

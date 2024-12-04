@@ -43,7 +43,7 @@ class LineChartFragment : Fragment() {
                 override fun getFormattedValue(value: Float): String {
                     return when {
                         value % 1 == 0f -> value.toInt().toString()
-                        else -> String.format("%.1f", value)
+                        else -> String.format("%.2f", value)
                     }
                 }
             }
@@ -52,7 +52,16 @@ class LineChartFragment : Fragment() {
         val lineData = LineData(lineDataSet)
         lineChart.data = lineData
         lineChart.description = Description().apply { isEnabled = false }
-
+        val xAxisFormatter = object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return when (value.toInt()) {
+                    0 -> "Periode 1"
+                    1 -> "Periode 2"
+                    2 -> "Periode 3"
+                    else -> ""
+                }
+            }
+        }
         lineChart.xAxis.apply {
             position = XAxis.XAxisPosition.BOTTOM
             setDrawGridLines(true)
@@ -61,7 +70,13 @@ class LineChartFragment : Fragment() {
             granularity = 1f
             axisMinimum = 0f
             axisMaximum = scores.size.toFloat() - 1
+            valueFormatter = xAxisFormatter
         }
+
+        lineChart.apply {
+            setExtraOffsets(20f, 10f, 30f, 20f) // left, top, right, bottom margins
+        }
+
 
         lineChart.axisLeft.apply {
             textColor = Color.DKGRAY

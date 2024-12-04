@@ -99,19 +99,18 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
                 } else {
                     try {
                         // Parse error response
-                        val errorBody = response.errorBody()?.string()
-                        val errorMessage = JSONObject(errorBody).optString("message", "Unknown error occurred")
+                        val errorMessage = response.body()?.message ?: JSONObject(response.errorBody()?.string()).getString("message")
                         _errorMessageRegister.value = errorMessage
                         Log.e(TAG, "Error: $errorMessage")
                     } catch (e: Exception) {
-                        _errorMessageRegister.value = "Failed to parse error message"
+                        _errorMessageRegister.value = "Gagal melakukan registrasi. ${e.message}."
                         Log.e(TAG, "Error parsing response: ${e.message}")
                     }
                 }
             }
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
                 _isLoading.value = false
-                _errorMessageRegister.value = "Register failed: ${t.message}"
+                _errorMessageRegister.value = "Gagal melakukan registrasi.${t.message}"
                 Log.e(TAG, "onFailure: ${t.message.toString()}")
             }
         })

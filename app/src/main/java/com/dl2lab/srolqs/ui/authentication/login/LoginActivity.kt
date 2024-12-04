@@ -40,11 +40,6 @@ class LoginActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
-//        this.window.setFlags(
-//            android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//            android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
-//        )
         supportActionBar?.hide()
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -122,14 +117,14 @@ class LoginActivity : BaseActivity() {
                     if (body != null) {
                         AirySnackbar.make(
                             source = AirySnackbarSource.ActivitySource(activity = this),
-                            type = Type.Default,
+                            type = Type.Success,
                             attributes = listOf(
                                 TextAttribute.Text(text = "Berhasil masuk dengan akun ${body.loginResult.nama}!"),
-                                TextAttribute.TextColor(textColor = R.color.black),
+                                TextAttribute.TextColor(textColor = R.color.white),
                                 SizeAttribute.Margin(left = 24, right = 24, unit = SizeUnit.DP),
                                 SizeAttribute.Padding(top = 12, bottom = 12, unit = SizeUnit.DP),
                                 RadiusAttribute.Radius(radius = 8f),
-                                GravityAttribute.Top,
+                                GravityAttribute.Bottom,
                                 AnimationAttribute.FadeInOut
                             )
                         ).show()
@@ -142,7 +137,7 @@ class LoginActivity : BaseActivity() {
                     }
                 } else {
                     this.showCustomAlertDialog(
-                        "",
+                        "Login Gagal",
                         extractErrorMessage(response),
                         "OK",
                         "",

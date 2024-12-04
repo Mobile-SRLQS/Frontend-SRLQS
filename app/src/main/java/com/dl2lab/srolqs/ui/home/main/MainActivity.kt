@@ -1,10 +1,9 @@
 package com.dl2lab.srolqs.ui.home.main
 
+
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +11,10 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.databinding.ActivityMainBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
@@ -20,7 +23,10 @@ import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
 import com.dl2lab.srolqs.ui.home.viewmodel.MainViewModel
 import com.dl2lab.srolqs.ui.home.welcome.WelcomeActivity
 import com.dl2lab.srolqs.utils.JwtUtils
+import com.dl2lab.srolqs.worker.TodoNotificationWorker
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.util.concurrent.TimeUnit
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -36,11 +42,11 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        LoadingManager.init(this)
+
 
         val role = intent.getStringExtra("role") ?: "Student"
-        Log.d(TAG, "Role: $role")
 
-        LoadingManager.init(this)
         setupViewModel()
         checkUserSession()
         observeViewModel()
@@ -53,6 +59,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home, R.id.navigation_profile, R.id.navigation_kegiatan
             )
         )
+
+
 
         navView.setupWithNavController(navController)
         val fragmentToOpen = intent.getStringExtra("fragmentToOpen")
@@ -116,6 +124,39 @@ class MainActivity : AppCompatActivity() {
         checkUserSession()
     }
 
+    private fun testTodoNotification() {
+        // Create work request directly
+        val workRequest = OneTimeWorkRequestBuilder<TodoNotificationWorker>()
+            .setInputData(
+                workDataOf(
+                    "nama_kegiatan" to "Test Kegiatan",
+                    "tenggat" to "2024-12-05" // tomorrow's date
+                )
+            )
+            .setInitialDelay(10, TimeUnit.SECONDS) // 10 seconds delay
+            .build()
+
+        // Enqueue the work
+        WorkManager.getInstance(this).enqueue(workRequest)
+
+        // Optional: Observe the work status
+        WorkManager.getInstance(this)
+            .getWorkInfoByIdLiveData(workRequest.id)
+            .observe(this) { workInfo ->
+                when (workInfo.state) {
+                    WorkInfo.State.SUCCEEDED -> {
+                        Log.d("TodoNotification", "Work completed successfully")
+                    }
+                    WorkInfo.State.FAILED -> {
+                        Log.d("TodoNotification", "Work failed")
+                    }
+                    else -> {
+                        Log.d("TodoNotification", "Work state: ${workInfo.state}")
+                    }
+                }
+            }
+    }
+
     private fun observeViewModel() {
         viewModel.isLoading.observe(this) {
             if (it) {
@@ -158,13 +199,6 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun setupWebView() {
-        val webView: WebView = binding.webView
-        webView.webViewClient = WebViewClient()
-        webView.settings.javaScriptEnabled = true
-        binding.webView.visibility = android.view.View.VISIBLE
-        webView.loadUrl("https://main.srolqs.me")
-    }
 
     override fun onStart() {
         super.onStart()

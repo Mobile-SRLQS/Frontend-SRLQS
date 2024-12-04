@@ -8,7 +8,9 @@ import androidx.fragment.app.activityViewModels
 import com.dl2lab.srolqs.databinding.FragmentRegisterEducationBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.authentication.viewmodel.RegisterViewModel
+import com.dl2lab.srolqs.ui.customview.LoadingManager
 import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
+import com.dl2lab.srolqs.validator.BaseFragment
 
 class RegisterEducationFragment : Fragment() {
 
@@ -34,6 +36,8 @@ class RegisterEducationFragment : Fragment() {
     override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        LoadingManager.init(this)
+
         registerViewModel.academicInfo.value?.let { academicInfo ->
             binding.inputUniversity.setText(academicInfo.university)
             binding.inputBatch.setText(academicInfo.batch, false) // For dropdowns
@@ -43,6 +47,8 @@ class RegisterEducationFragment : Fragment() {
 
         setUpBatchDropdown()
         setUpDegreeDropdown()
+        setupTextWatchers()
+        updateButtonState()
 
         if (role == "Instructor") hideInputFields()
 
@@ -80,14 +86,20 @@ class RegisterEducationFragment : Fragment() {
                         // Show failure dialog
                         requireContext().showCustomAlertDialog(
                             title = "Registrasi Gagal!",
-                            subtitle = "Maaf, proses registrasi Anda tidak berhasil. Email sudah pernah digunakan.",
+                            subtitle = errorMessage,
                             positiveButtonText = "Coba Lagi",
                             negativeButtonText = "",
                             onPositiveButtonClick = {
-                                parentFragmentManager.popBackStack()
                             },
                             onNegativeButtonClick = {}
                         )
+                    }
+                }
+                registerViewModel.isLoading.observe(viewLifecycleOwner){
+                    if (it){
+                        LoadingManager.show()
+                    } else {
+                        LoadingManager.hide()
                     }
                 }
             }
@@ -128,5 +140,33 @@ class RegisterEducationFragment : Fragment() {
         val degreeOptions = arrayOf("Sarjana (S1)", "Magister (S2)", "Doktor (S3)", "Ahli Madya (D3)", "Sarjana Terapan (D4)")
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, degreeOptions)
         binding.inputDegree.setAdapter(adapter)
+    }
+
+    private fun setupTextWatchers() {
+        val textWatcher = object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) {
+                updateButtonState()
+            }
+        }
+
+        binding.inputUniversity.addTextChangedListener(textWatcher)
+        binding.inputBatch.addTextChangedListener(textWatcher)
+        binding.inputNpm.addTextChangedListener(textWatcher)
+        binding.inputDegree.addTextChangedListener(textWatcher)
+    }
+
+    private fun updateButtonState() {
+        val isFormFilled = if (role == "Instructor") {
+            binding.inputUniversity.text.toString().isNotEmpty()
+        } else {
+            binding.inputUniversity.text.toString().isNotEmpty() &&
+                    binding.inputBatch.text.toString().isNotEmpty() &&
+                    binding.inputNpm.text.toString().isNotEmpty() &&
+                    binding.inputDegree.text.toString().isNotEmpty()
+        }
+
+        binding.btnRegister.isEnabled = isFormFilled
     }
 }

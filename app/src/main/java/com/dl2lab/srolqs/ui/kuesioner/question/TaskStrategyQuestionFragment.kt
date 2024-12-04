@@ -9,25 +9,28 @@ import android.widget.RadioGroup
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import com.dl2lab.srolqs.R
-import com.dl2lab.srolqs.databinding.ActivityQuestionnaireQuestionBinding
-import com.dl2lab.srolqs.databinding.FragmentHelpSeekingQuestionBinding
 import com.dl2lab.srolqs.databinding.FragmentTaskStrategyQuestionBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.kuesioner.viewmodel.QuestionnaireViewModel
+import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
+import com.dl2lab.srolqs.ui.customview.showCustomInformation
 
 class TaskStrategyQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment() {
     private lateinit var binding: FragmentTaskStrategyQuestionBinding
     private lateinit var viewModel: QuestionnaireViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentTaskStrategyQuestionBinding.inflate(layoutInflater)
 
 
         viewModel = ViewModelProvider(requireActivity()).get(QuestionnaireViewModel::class.java)
         return binding.root
+    }
+
+    private fun isAllQuestionsAnswered(): Boolean {
+        return binding.radioGroup9.checkedRadioButtonId != -1 && binding.radioGroup10.checkedRadioButtonId != -1 && binding.radioGroup11.checkedRadioButtonId != -1 && binding.radioGroup12.checkedRadioButtonId != -1
     }
 
 
@@ -47,20 +50,45 @@ class TaskStrategyQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment
 
     private fun setupAction() {
         binding.nextButton.setOnClickListener {
-            viewModel.logAnswers() // Log answers before navigating
-            parentFragmentManager.commit {
-                addToBackStack(null)
-                replace(R.id.questionnaire_container, TimeManagementQuestionFragment(viewModel), TimeManagementQuestionFragment::class.java.simpleName)
+            if (isAllQuestionsAnswered()) {
+                viewModel.logAnswers() // Log answers before navigating
+                parentFragmentManager.commit {
+                    addToBackStack(null)
+                    replace(
+                        R.id.questionnaire_container,
+                        TimeManagementQuestionFragment(viewModel),
+                        TimeManagementQuestionFragment::class.java.simpleName
+                    )
+                }
+            } else {
+                requireContext().showCustomAlertDialog("Peringatan",
+                    "Mohon jawab semua pertanyaan sebelum melanjutkan",
+                    "OK",
+                    "",
+                    {},
+                    {})
+
             }
         }
+
         binding.prevButton.setOnClickListener {
             viewModel.logAnswers() // Log answers before navigating
             parentFragmentManager.commit {
                 addToBackStack(null)
-                replace(R.id.questionnaire_container, EnvironmentStructuringQuestionFragment(
-                    viewModel
-                ), EnvironmentStructuringQuestionFragment::class.java.simpleName)
-            } }
+                replace(
+                    R.id.questionnaire_container, EnvironmentStructuringQuestionFragment(
+                        viewModel
+                    ), EnvironmentStructuringQuestionFragment::class.java.simpleName
+                )
+            }
+        }
+
+        binding.infoIcon.setOnClickListener {
+            requireContext().showCustomInformation(
+                "Task Strategies",
+                "Menerapkan teknik atau strategi tertentu untuk menyelesaikan tugas, seperti membuat ringkasan, mencatat, atau menggunakan peta konsep. Strategi ini membantu memproses informasi secara efektif.",
+            )
+        }
 
     }
 

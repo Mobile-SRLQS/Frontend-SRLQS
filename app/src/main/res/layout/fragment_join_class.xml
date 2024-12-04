@@ -52,41 +52,41 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         android:paddingBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_change_password">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_marginTop="30dp"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_marginTop="30dp">
 
             <TextView
                 android:id="@+id/heading_course_title"
+                style="@style/H1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/heading_course_title"
                 android:layout_marginHorizontal="20dp"
-                style="@style/H1"
+                android:text="@string/heading_course_title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
 
             <TextView
                 android:id="@+id/course_semester_information"
+                style="@style/H2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/course_semester_information"
-                android:background="@drawable/rounded_corner_card"
-                android:layout_marginTop="10dp"
                 android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_corner_card"
 
                 android:backgroundTint="@color/light_green"
                 android:padding="10dp"
+                android:text="@string/course_semester_information"
                 android:textColor="@color/white"
-                style="@style/H2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/heading_course_title" />
 
@@ -95,31 +95,28 @@
                 android:id="@+id/img_course_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:cropToPadding="true"
-                android:adjustViewBounds="true"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/course_semester_information"
-                android:layout_marginTop="20dp"
                 android:layout_marginHorizontal="20dp"
-
+                android:layout_marginTop="20dp"
+                android:adjustViewBounds="true"
+                android:cropToPadding="true"
                 android:src="@drawable/img_course_detail"
-                />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+
+                app:layout_constraintTop_toBottomOf="@id/course_semester_information" />
 
             <TextView
                 android:id="@+id/course_description"
+                style="@style/B1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/course_description"
-                android:layout_marginTop="20dp"
                 android:layout_marginHorizontal="20dp"
-                style="@style/B1"
+                android:layout_marginTop="20dp"
+                android:text="@string/course_description"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/img_course_detail"
-                app:layout_constraintEnd_toEndOf="parent"
-
                 />
-
 
 
             <Button
@@ -127,19 +124,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
                 android:backgroundTint="@color/light_green"
                 android:text="@string/btn_do_quesionnaire"
                 android:textColor="@android:color/white"
-                app:layout_constraintTop_toBottomOf="@id/course_description"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                />
+                app:layout_constraintTop_toBottomOf="@id/course_description" />
 
-         
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintGuide_end="562dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,6 +15,7 @@ import com.dl2lab.srolqs.data.remote.response.SubmitQuestionnaireResponse
 import com.dl2lab.srolqs.data.remote.response.GetKegiatanResponse
 import com.dl2lab.srolqs.data.remote.response.GetProfileResponse
 import com.dl2lab.srolqs.data.remote.response.GetQuestionnaireResponse
+import com.dl2lab.srolqs.data.remote.response.JoinDetailClassResponse
 import com.dl2lab.srolqs.data.remote.response.KegiatanItem
 import com.dl2lab.srolqs.data.remote.response.ShowAvailablePeriodResponse
 import com.dl2lab.srolqs.data.remote.response.StudentProgressResponse
@@ -59,7 +60,7 @@ interface ApiServiceSecured {
     @GET("class/detail/{id}/1")
     fun getClassDetail(
         @Path("id") id: String
-    ): Call<DetailClassResponse>
+    ): Call<JoinDetailClassResponse>
 
 
     @GET("class/detail-class/{id}")
@@ -89,8 +90,14 @@ interface ApiServiceSecured {
         @Query("period") period: String
     ): Call<GetQuestionnaireResponse>
 
-    @DELETE("todo/{id}")
+    @PUT("todo/mark/{id}")
     fun checklistKegiatan(
+        @Path("id") id: Int
+    ): Call<BasicResponse>
+
+
+    @DELETE("todo/{id}")
+    fun deleteKegaiatan(
         @Path("id") id: Int
     ): Call<BasicResponse>
 
@@ -108,7 +115,7 @@ interface ApiServiceSecured {
     fun updateKegiatan(
         @Path("id") id: Int,
         @Body updateKegiatanRequest: UpdateKegiatanRequest
-    ): Call<BasicResponse>
+    ): Call<TambahKegiatanResponse>
 
     @Multipart
     @PUT("user/update")

@@ -18,6 +18,7 @@ import com.dl2lab.srolqs.data.remote.response.StudentProgressResponse
 import com.dl2lab.srolqs.data.remote.response.SubmitQuestionnaireResponse
 import com.dl2lab.srolqs.data.repository.SecuredRepository
 import okhttp3.ResponseBody.Companion.toResponseBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -93,11 +94,16 @@ class QuestionnaireViewModel(private val repository: SecuredRepository) : ViewMo
     fun submitQuestionnaire(
         period: String,
         classId: String,
-        questions: List<Int>
+        questions: List<Int>,
+        feedback: String
     ): LiveData<Response<SubmitQuestionnaireResponse>> = liveData {
         val responseLiveData = MutableLiveData<Response<SubmitQuestionnaireResponse>>()
         _isLoading.value = true
-        val request = SubmitQuestionnaireRequest(period, classId, questions)
+        var cFeedback = feedback;
+        if(feedback.isEmpty()){
+            cFeedback = "Tidak ada umpan balik dari mahasiswa."
+        }
+        val request = SubmitQuestionnaireRequest(period, classId, questions, cFeedback)
         val client = repository.submitQuestionnaire(request)
         client.enqueue(object : Callback<SubmitQuestionnaireResponse> {
             override fun onResponse(
@@ -105,6 +111,17 @@ class QuestionnaireViewModel(private val repository: SecuredRepository) : ViewMo
                 response: Response<SubmitQuestionnaireResponse>
             ) {
                 _isLoading.value = false
+                if (!response.isSuccessful) {
+                    // Handle error response
+                    try {
+                        val errorBody = response.errorBody()?.string()
+                        val errorJson = JSONObject(errorBody)
+                        val errorMessage = errorJson.getString("message")
+                        _errorMessage.value = errorMessage
+                    } catch (e: Exception) {
+                        _errorMessage.value = "Terjadi kesalahan pada server"
+                    }
+                }
                 responseLiveData.value = response
             }
 
@@ -113,11 +130,12 @@ class QuestionnaireViewModel(private val repository: SecuredRepository) : ViewMo
                 val errorBody = (t.message ?: "Unknown error").toResponseBody(null)
                 val errorResponse = Response.error<SubmitQuestionnaireResponse>(500, errorBody)
                 responseLiveData.value = errorResponse
-                _errorMessage.value = t.message
+                _errorMessage.value = t.message ?: "Terjadi kesalahan pada koneksi"
             }
         })
         emitSource(responseLiveData)
     }
+
 
     fun fetchScoreResult(classId: String, period: String) {
         _isLoading.value = true

@@ -46,7 +46,7 @@ fun Context.showCustomAlertDialog(
     if(error){
         dialogIcon.setBackgroundResource(R.drawable.ic_error_icon)
     } else{
-        dialogView.setBackgroundResource(R.drawable.ic_success_icon)
+        dialogIcon.setBackgroundResource(R.drawable.ic_success_icon)
     }
     if(showIcon){
         dialogIcon.visibility = View.VISIBLE
@@ -57,16 +57,16 @@ fun Context.showCustomAlertDialog(
     val dialog = dialogBuilder.create()
 
     positiveButton.setOnClickListener {
-        onPositiveButtonClick()
         dialog.dismiss()
+        onPositiveButtonClick()
     }
     if(negativeButtonText == ""){
         negativeButton.visibility = View.GONE
     } else{
         negativeButton.text = negativeButtonText
         negativeButton.setOnClickListener {
-            onNegativeButtonClick()
             dialog.dismiss()
+            onNegativeButtonClick()
         }
     }
 

@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="12dp"
         android:background="@drawable/rounded_corner_card"
         android:elevation="5dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +49,7 @@
 
         <TextView
             android:id="@+id/text"
-            style="@style/H1"
+            style="@style/H2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -82,6 +82,7 @@
             android:layout_marginBottom="15dp"
             android:background="@drawable/button_selector"
             android:backgroundTint="@color/light_green"
+            android:textSize="12sp"
             android:text="Masukkan Kode"
             android:textAllCaps="false"
             android:textColor="@color/white" />
@@ -241,14 +242,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top"
+                android:layout_marginTop="19dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_title_activity_list">
 
-                <include layout="@layout/item_shimmer_class" />
-                <include layout="@layout/item_shimmer_class" />
-                <include layout="@layout/item_shimmer_class" />
+                <include layout="@layout/item_shimmer_activity" />
+                <include layout="@layout/item_shimmer_activity" />
+                <include layout="@layout/item_shimmer_activity" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView

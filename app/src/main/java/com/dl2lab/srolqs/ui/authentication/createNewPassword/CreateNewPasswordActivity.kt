@@ -2,12 +2,24 @@ package com.dl2lab.srolqs.ui.authentication.createNewPassword
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.akndmr.library.AirySnackbar
+import com.akndmr.library.AirySnackbarSource
+import com.akndmr.library.AnimationAttribute
+import com.akndmr.library.GravityAttribute
+import com.akndmr.library.RadiusAttribute
+import com.akndmr.library.SizeAttribute
+import com.akndmr.library.SizeUnit
+import com.akndmr.library.TextAttribute
+import com.akndmr.library.Type
 import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.data.remote.response.BasicResponse
 import com.dl2lab.srolqs.databinding.ActivityCreateNewPasswordBinding
@@ -40,17 +52,76 @@ class CreateNewPasswordActivity : AppCompatActivity() {
         binding = ActivityCreateNewPasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
         email = intent.getStringExtra("email") ?: ""
-
+        setupTextWatchers()
+        updateButtonState()
         setContentView(binding.root)
+        setupPasswordInputListener()
         binding.btnSaveChanges.setOnClickListener { changePassword() }
         observeViewModel()
 
+    }
+
+    private fun setupPasswordInputListener() {
+        val passwordLayout = binding.inputNewPasswordLayout
+        val passwordInput = binding.inputNewPassword
+        val passwordRecommendation = binding.tvPasswordReccomendation
+
+        passwordInput.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                showPasswordRecommendation(passwordRecommendation)
+            } else {
+                hidePasswordRecommendation(passwordRecommendation)
+            }
+        }
+
+        passwordInput.setOnClickListener {
+            showPasswordRecommendation(passwordRecommendation)
+        }
+    }
+
+    private fun showPasswordRecommendation(view: View) {
+        view.apply {
+            alpha = 0f
+            visibility = View.VISIBLE
+            translationY = -20f // Mulai sedikit ke atas
+            animate().alpha(1f).translationY(0f).setDuration(300)
+                .setInterpolator(DecelerateInterpolator()).start()
+        }
+    }
+
+    private fun hidePasswordRecommendation(view: View) {
+        view.animate().alpha(0f).translationY(-20f).setDuration(200)
+            .setInterpolator(AccelerateInterpolator()).withEndAction {
+                view.visibility = View.GONE
+            }.start()
     }
 
 
     private fun navToWelcomeActivity() {
         val intent = Intent(this, WelcomeActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun setupTextWatchers() {
+        val textWatcher = object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) {
+                updateButtonState()
+            }
+        }
+
+        binding.inputNewPassword.addTextChangedListener(textWatcher)
+        binding.inputConfirmNewPassword.addTextChangedListener(textWatcher)
+        binding.inputVerificationCode.addTextChangedListener(textWatcher)
+    }
+
+    private fun updateButtonState() {
+        val isFormFilled = binding.inputNewPassword.text.toString().isNotEmpty() &&
+                binding.inputConfirmNewPassword.text.toString().isNotEmpty() &&
+                binding.inputVerificationCode.text.toString().isNotEmpty()
+
+        binding.btnSaveChanges.isEnabled = isFormFilled
     }
 
     private fun changePassword(){
@@ -72,15 +143,19 @@ class CreateNewPasswordActivity : AppCompatActivity() {
         }
 
         if (newPassword != confirmNewPassword) {
-            this.showCustomAlertDialog(
-                "",
-                "Password and Confirm Password must be the same",
-                "OK",
-                "",
-                {},
-                {
-                },
-            )
+            AirySnackbar.make(
+                source = AirySnackbarSource.ViewSource(binding.root),
+                type = Type.Error,
+                attributes = listOf(
+                    TextAttribute.Text(text = "Kata sandi yang Anda masukkan tidak cocok!"),
+                    TextAttribute.TextColor(textColor = R.color.white),
+                    SizeAttribute.Margin(left = 24, right = 24, unit = SizeUnit.DP),
+                    SizeAttribute.Padding(top = 12, bottom = 12, unit = SizeUnit.DP),
+                    RadiusAttribute.Radius(radius = 8f),
+                    GravityAttribute.Bottom,
+                    AnimationAttribute.FadeInOut
+                )
+            ).show()
             return
         }
 
@@ -91,8 +166,8 @@ class CreateNewPasswordActivity : AppCompatActivity() {
                 val body = response.body()
                 if (body != null) {
                     this.showCustomAlertDialog(
-                        "",
-                        body.message ?: "Password changed successfully",
+                        "Kata Sandi Berhasil Diubah",
+                        "Kata sandi Anda berhasil diubah. Silakan login kembali.",
                         "OK",
                         "",
                         {
@@ -100,21 +175,11 @@ class CreateNewPasswordActivity : AppCompatActivity() {
                         },
                         {
                         },
+                        error = false
                     )
 
                 }
-            } else {
-                this.showCustomAlertDialog(
-                    "",
-                    extractErrorMessage(response),
-                    "OK",
-                    "",
-                    {},
-                    {
-                    },
-                )
             }
-
         }
 
 
@@ -147,7 +212,15 @@ class CreateNewPasswordActivity : AppCompatActivity() {
 
         loginViewModel.errorMessageLogin.observe(this) { errorMessage ->
             if (errorMessage.isNotEmpty()) {
-                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+                this.showCustomAlertDialog(
+                    "Kata Sandi Gagal Diubah",
+                    errorMessage ?: "Terjadi kesalahan saat mengubah kata sandi",
+                    "OK",
+                    "",
+                    {},
+                    {
+                    },
+                )
             }
         }
 

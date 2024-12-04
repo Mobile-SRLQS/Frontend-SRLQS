@@ -19,8 +19,8 @@
 
     <TextView
         android:id="@+id/dialog_title"
-        style="@style/H1"
-        android:layout_width="wrap_content"
+        style="@style/H2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
@@ -30,12 +30,13 @@
     <TextView
         android:id="@+id/dialog_subtitle"
         style="@style/B1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="center"
+        android:justificationMode="inter_word"
+        android:gravity="left"
         android:text="Apakah Anda yakin ingin keluar?"
-        android:textSize="16sp" />
+      />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,8 +50,9 @@
             style="@style/OutlinedButtonLightGreen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:text="test"
+
+            android:textSize="12sp"
 
             />
 
@@ -60,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-
+            android:textSize="12sp"
             android:text="Logout" />
 
 

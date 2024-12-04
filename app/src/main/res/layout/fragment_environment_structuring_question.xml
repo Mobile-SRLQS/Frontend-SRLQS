@@ -1,7 +1,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/white"
+    android:background="@color/white"
     android:padding="16dp">
 
     <LinearLayout
@@ -38,8 +38,8 @@
             <!-- Information Icon -->
             <ImageView
                 android:id="@+id/infoIcon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:clickable="true"
                 android:contentDescription="@string/info_icon"
                 android:focusable="true"
@@ -67,50 +67,50 @@
             android:orientation="vertical">
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio5_1"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_1" />
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio5_2"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_2_scale" />
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio5_3"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_3_scale" />
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio5_4"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_4_scale" />
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio5_5"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_5_scale" />
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio5_6"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_6_scale" />
         </RadioGroup>
 
         <TextView
-            style="@"
+            style="@style/B1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -138,50 +138,50 @@
             android:orientation="vertical">
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio6_1"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_1" />
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio6_2"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_2_scale" />
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio6_3"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_3_scale" />
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio6_4"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_4_scale" />
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio6_5"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_5_scale" />
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio6_6"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_6_scale" />
         </RadioGroup>
 
         <TextView
-            style="@"
+            style="@style/B1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -209,50 +209,50 @@
             android:orientation="vertical">
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio7_1"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_1" />
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio7_2"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_2_scale" />
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio7_3"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_3_scale" />
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio7_4"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_4_scale" />
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio7_5"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_5_scale" />
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio7_6"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_6_scale" />
         </RadioGroup>
 
         <TextView
-            style="@"
+            style="@style/B1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -280,43 +280,43 @@
             android:orientation="vertical">
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio8_1"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_1" />
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio8_2"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_2_scale" />
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio8_3"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_3_scale" />
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio8_4"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_4_scale" />
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio8_5"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_5_scale" />
 
             <RadioButton
-                style="@style/B1"
                 android:id="@+id/radio8_6"
+                style="@style/B1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_6_scale" />
@@ -342,30 +342,37 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-
-            android:layout_marginBottom="40dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp">
 
             <Button
                 android:id="@+id/prevButton"
+                style="@style/BasicButtonLightGreen"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="16dp"
+                android:background="@drawable/button_selector"
                 android:backgroundTint="#4CAF50"
-                android:text="@string/str_prev_button" />
+                android:drawableLeft="@drawable/arrow_back"
+                android:text="@string/str_prev_button"
+                android:textColor="#FFFFFF" />
 
             <Button
                 android:id="@+id/nextButton"
+                style="@style/BasicButtonLightGreen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="16dp"
+                android:background="@drawable/button_selector"
                 android:backgroundTint="#4CAF50"
-                android:text="@string/str_next_button" />
+                android:drawableEnd="@drawable/arrow_next"
+
+                android:text="@string/str_next_button"
+                android:textColor="#FFFFFF" />
         </RelativeLayout>
-
-
 
 
     </LinearLayout>

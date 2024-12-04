@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:backgroundTint="@color/white"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/ic_no_internet"
+        android:contentDescription="No Internet Icon" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Koneksi internetmu terganggu!"
+        style="@style/H1"
+        android:textSize="18sp"
+        android:textStyle="bold"
+     />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Yuk, pastikan internetmu lancar dengan cek ulang\npaket data, WiFi, atau jaringan di tempatmu."
+        android:textAlignment="center"
+        style="@style/B1"
+        android:textColor="@color/grey" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRetry"
+        android:layout_width="match_parent"
+        style="@style/BasicButtonLightGreen"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Coba Lagi"
+        android:padding="12dp" />
+
+</LinearLayout>

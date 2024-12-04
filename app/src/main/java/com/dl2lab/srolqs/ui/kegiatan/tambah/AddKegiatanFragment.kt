@@ -31,7 +31,15 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
+import com.dl2lab.srolqs.ui.customview.LoadingManager
+import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
+import com.dl2lab.srolqs.worker.QuestionnaireNotificationWorker
+import com.dl2lab.srolqs.worker.TodoNotificationWorker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.util.concurrent.TimeUnit
 
 class AddKegiatanFragment : Fragment() {
     private val REQUEST_CODE_SCHEDULE_EXACT_ALARM = 1001
@@ -67,8 +75,11 @@ class AddKegiatanFragment : Fragment() {
                 ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.SCHEDULE_EXACT_ALARM), REQUEST_CODE_SCHEDULE_EXACT_ALARM)
             }
         }
+        LoadingManager.init(this)
         setUpTipeKegiatanDropdown()
         setupReminderDropdown()
+        setupTextWatchers()
+        validateInputs()
 
         profileViewModel.getSession().observe(viewLifecycleOwner, Observer { user ->
             user.token?.let { token ->
@@ -91,27 +102,93 @@ class AddKegiatanFragment : Fragment() {
         kegiatanViewModel.addKegiatanResult.observe(viewLifecycleOwner, Observer { result ->
             result.fold(
                 onSuccess = {
-                    Toast.makeText(requireContext(), "Kegiatan berhasil ditambah", Toast.LENGTH_SHORT).show()
-                    saveActivity()
-                    findNavController().navigate(R.id.action_addKegiatanFragment_to_navigation_kegiatan)
+                    requireContext().showCustomAlertDialog(
+                        title = "Tambah Kegiatan Berhasil",
+                        subtitle = "Kegiatan \'${it.data.namaKegiatan}\' berhasil ditambah",
+                        positiveButtonText = "OK",
+                        negativeButtonText = "",
+                        onPositiveButtonClick ={
+                            saveActivity()
+                            findNavController().navigate(R.id.action_addKegiatanFragment_to_navigation_kegiatan)},
+                        onNegativeButtonClick = {},
+                        error =false,
+                    )
+
+
                 },
                 onFailure = {
-                    Toast.makeText(requireContext(), "Gagal menambah kegiatan: ${it.message}", Toast.LENGTH_SHORT).show()
+                    requireContext().showCustomAlertDialog(
+                        title = "Tambah Kegiatan Gagal",
+                        subtitle = it.message ?: "Terjadi kesalahan saat menambah kegiatan",
+                        positiveButtonText = "OK",
+                        negativeButtonText = "",
+                        onPositiveButtonClick ={
+                            saveActivity()
+                            findNavController().navigate(R.id.action_addKegiatanFragment_to_navigation_kegiatan)},
+                        onNegativeButtonClick = {},
+                        error =true,
+                    )
                 }
             )
         })
 
         kegiatanViewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
-            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+           if (isLoading) {
+               LoadingManager.show()
+           } else {
+               LoadingManager.hide()
+           }
         })
 
         checkNotificationPermission()
+    }
+
+    private fun setupTextWatchers() {
+        val textWatcher = object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) {
+                validateInputs()
+            }
+        }
+
+        // Add TextWatcher to all EditText fields
+        binding.inputName.addTextChangedListener(textWatcher)
+        binding.inputTipeKegiatan.addTextChangedListener(textWatcher)
+        binding.inputTanggalKegiatan.addTextChangedListener(textWatcher)
+        binding.inputCatatanKegiatan.addTextChangedListener(textWatcher)
+        binding.inputLinkKegiatan.addTextChangedListener(textWatcher)
+        binding.inputReminder.addTextChangedListener(textWatcher)
     }
 
     private fun setupAddKegiatanListener(token: String) {
         binding.btnTambahKegiatan.setOnClickListener {
             addKegiatan(token)
         }
+        binding.btnBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun validateInputs() {
+        val namaKegiatan = binding.inputName.text.toString()
+        val tipeKegiatan = binding.inputTipeKegiatan.text.toString()
+        val tenggat = binding.inputTanggalKegiatan.text.toString()
+        val catatan = binding.inputCatatanKegiatan.text.toString()
+        val link = binding.inputLinkKegiatan.text.toString()
+        val reminder = binding.inputReminder.text.toString()
+
+        val isValid = namaKegiatan.isNotEmpty() &&
+                tipeKegiatan.isNotEmpty() &&
+                tenggat.isNotEmpty() &&
+                catatan.isNotEmpty() &&
+                link.isNotEmpty() &&
+                reminder.isNotEmpty()
+
+        binding.btnTambahKegiatan.isEnabled = isValid
+
+        // Optional: Change button appearance when disabled
+        binding.btnTambahKegiatan.alpha = if (isValid) 1.0f else 0.5f
     }
 
     private fun addKegiatan(token: String) {
@@ -121,11 +198,7 @@ class AddKegiatanFragment : Fragment() {
         val catatan = binding.inputCatatanKegiatan.text.toString()
         val link = binding.inputLinkKegiatan.text.toString()
 
-        if (namaKegiatan.isEmpty() || tipeKegiatan.isEmpty() || tenggat.isEmpty() || catatan.isEmpty() || link.isEmpty()) {
-            Toast.makeText(requireContext(), "Please fill all fields!", Toast.LENGTH_SHORT).show()
-            return
-        }
-
+        scheduleNotification()
         val request = TambahKegiatanRequest(
             namaKegiatan = namaKegiatan,
             tipeKegiatan = tipeKegiatan,
@@ -180,23 +253,37 @@ class AddKegiatanFragment : Fragment() {
 
     private fun getReminderOffsetInMillis(reminderOption: String): Long {
         return when (reminderOption) {
-            "1 hari sebelumnya" -> 24 * 60 * 60 * 1000L
-            "3 hari sebelumnya" -> 3 * 24 * 60 * 60 * 1000L
-            "1 minggu sebelumnya" -> 7 * 24 * 60 * 60 * 1000L
-            "1 bulan sebelumnya" -> 30L * 24 * 60 * 60 * 1000L
+            "1 hari sebelumnya" -> 24 * 60
+            "3 hari sebelumnya" -> 3 * 24 * 60
+            "1 minggu sebelumnya" -> 7 * 24 * 60
+            "1 bulan sebelumnya" -> 30L * 24 * 60
             else -> 60 * 60 * 1000L
         }
     }
-    private fun scheduleNotification(activityTitle: String, deadlineTime: Long) {
+    private fun scheduleNotification() {
+        val namaKegiatan = binding.inputName.text.toString()
+        var tenggat = binding.inputTanggalKegiatan.text.toString()
         val selectedReminder = binding.inputReminder.text.toString()
-        val reminderOffset = getReminderOffsetInMillis(selectedReminder)
 
-        notificationHelper.scheduleNotification(
-            title = "Activity Reminder",
-            message = "Upcoming activity: $activityTitle",
-            deadlineTime = deadlineTime,
-            reminderOffset = reminderOffset
-        )
+        val reminderOffset = getReminderOffsetInMillis(selectedReminder)
+        val tenggatMillis = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(tenggat)?.time ?: 0
+        val currentMillis = System.currentTimeMillis()
+        var delay =  tenggatMillis - reminderOffset - currentMillis
+
+        if (delay <= 0) {
+            delay = 1
+        }
+
+        val workRequest = OneTimeWorkRequestBuilder<TodoNotificationWorker>()
+            .setInputData(
+                workDataOf(
+                    "nama_kegiatan" to namaKegiatan,
+                    "tenggat" to tenggat
+                )
+            )
+            .setInitialDelay(delay, TimeUnit.MILLISECONDS)
+            .build()
+        WorkManager.getInstance(requireContext()).enqueue(workRequest)
     }
 
     private fun convertDateToMillis(dateStr: String): Long {
@@ -216,7 +303,7 @@ class AddKegiatanFragment : Fragment() {
         val deadlineMilliSeconds = convertDateToMillis(deadlineTime)
 
         if (binding.inputReminder.text.isNotEmpty()) {
-            scheduleNotification(activityTitle, deadlineMilliSeconds)
+            scheduleNotification()
         }
     }
 
@@ -260,5 +347,10 @@ class AddKegiatanFragment : Fragment() {
                 return
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LoadingManager.cleanup()
     }
 }
