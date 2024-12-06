@@ -68,14 +68,16 @@ class RegisterEducationFragment : Fragment() {
                     if (!response.error) {
                         // Show success dialog
                         requireContext().showCustomAlertDialog(
-                            title = "Registrasi Berhasil!",
-                            subtitle = "Selamat! Akun Anda telah berhasil dibuat. Anda sekarang dapat masuk dan mulai menggunakan aplikasi.",
-                            positiveButtonText = "Masuk Akun",
+                            title = "Registrasi Berhasil",
+                            subtitle = "Selamat! Akun Anda telah berhasil dibuat. Lakukan login menggunakan akun anda untuk menggunakan aplikasi lebih lanjut",
+                            positiveButtonText = "Masuk ke Akun",
                             negativeButtonText = "",
                             onPositiveButtonClick = {
                                 (activity as RegisterActivity).navigateToLogin()
                             },
-                            onNegativeButtonClick = {}
+
+                            onNegativeButtonClick = {},
+                            error = false
                         )
                     }
                 }
@@ -85,8 +87,8 @@ class RegisterEducationFragment : Fragment() {
                     if (!errorMessage.isNullOrEmpty()) {
                         // Show failure dialog
                         requireContext().showCustomAlertDialog(
-                            title = "Registrasi Gagal!",
-                            subtitle = errorMessage,
+                            title = "Registrasi Gagal",
+                            subtitle = errorMessage ?: "Maaf, proses registrasi Anda tidak berhasil. Silakan periksa kembali data yang Anda masukkan dan coba lagi",
                             positiveButtonText = "Coba Lagi",
                             negativeButtonText = "",
                             onPositiveButtonClick = {

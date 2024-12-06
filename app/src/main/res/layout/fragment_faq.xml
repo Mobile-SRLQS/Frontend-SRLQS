@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp"
+        android:padding="20dp"
         android:gravity="center_vertical"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -32,10 +32,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="FAQs"
+            style="@style/H1"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:gravity="center"
-            android:textColor="@color/black" />
+            android:gravity="center" />
     </LinearLayout>
 
     <!-- Description -->
@@ -43,9 +43,9 @@
         android:id="@+id/tvDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginHorizontal="20dp"
+        style="@style/B1"
         android:text="Selamat datang di halaman Frequently Asked Questions (FAQs). Di sini, kami telah mengumpulkan pertanyaan-pertanyaan yang sering diajukan untuk membantu Anda mendapatkan jawaban dengan cepat dan mudah. Jika Anda memiliki pertanyaan lain yang tidak tercantum di sini atau membutuhkan informasi lebih lanjut, jangan ragu untuk menghubungi kami melalui email di srl@ut.ac.id."
-        android:textSize="14sp"
         android:justificationMode="inter_word"
         app:layout_constraintTop_toBottomOf="@id/toolbar_faq"
         app:layout_constraintStart_toStartOf="parent"

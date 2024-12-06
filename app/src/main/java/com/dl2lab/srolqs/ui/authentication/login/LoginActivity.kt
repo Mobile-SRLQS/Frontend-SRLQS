@@ -101,8 +101,8 @@ class LoginActivity : BaseActivity() {
 
         if (email.isEmpty() || password.isEmpty()) {
             showCustomAlertDialog("Login Gagal",
-                "Tolong masukkan email dan password Anda!",
-                "OK",
+                "Maaf, login Anda tidak berhasil. Periksa kembali email dan password Anda, lalu coba lagi",
+                "Coba Lagi",
                 "",
                 {},
                 {})
@@ -111,23 +111,17 @@ class LoginActivity : BaseActivity() {
         }
 
         try {
-            loginViewModel.login(email, password).observe(this) { response ->
+            loginViewModel.login(email, password).observe(this) { response  ->
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body != null) {
-                        AirySnackbar.make(
-                            source = AirySnackbarSource.ActivitySource(activity = this),
-                            type = Type.Success,
-                            attributes = listOf(
-                                TextAttribute.Text(text = "Berhasil masuk dengan akun ${body.loginResult.nama}!"),
-                                TextAttribute.TextColor(textColor = R.color.white),
-                                SizeAttribute.Margin(left = 24, right = 24, unit = SizeUnit.DP),
-                                SizeAttribute.Padding(top = 12, bottom = 12, unit = SizeUnit.DP),
-                                RadiusAttribute.Radius(radius = 8f),
-                                GravityAttribute.Bottom,
-                                AnimationAttribute.FadeInOut
-                            )
-                        ).show()
+                        showCustomAlertDialog("Login Berhasil",
+                            "Selamat datang ${body.loginResult.nama}, Anda berhasil masuk ke akun Anda",
+                            "Lanjutkan",
+                            "",
+                            {},
+                            {},
+                            error = false)
 
                         Handler(Looper.getMainLooper()).postDelayed({
                             navToMainActivity(this)

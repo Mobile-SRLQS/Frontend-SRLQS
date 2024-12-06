@@ -64,8 +64,8 @@ class ForgotPasswordActivity : AppCompatActivity() {
                 val body = response.body()
                 if (body != null) {
                     this.showCustomAlertDialog(
-                        "Verifikasi Email Sukses",
-                        "Kode verifikasi telah dikirim ke email Anda. Silakan cek email Anda untuk melanjutkan proses reset password.",
+                        "Email Berhasil Diverifikasi",
+                        "Kode ubah password telah dikirimkan ke email ${email}, silahkan periksa email anda dan gunakan kode yang diterima untuk mengubah password akun anda",
                         "OK",
                         "",
                         {
@@ -79,8 +79,8 @@ class ForgotPasswordActivity : AppCompatActivity() {
                 }
             } else {
                 this.showCustomAlertDialog(
-                    "Verifikasi Email Gagal",
-                    extractErrorMessage(response),
+                    "Email Gagal Diverifikasi",
+                    "Maaf, verifikasi email gagal. Silakan gunakan email yang terdaftar atau periksa kembali tautan yang Anda gunakan",
                     "OK",
                     "",
                     {},
@@ -137,6 +137,17 @@ class ForgotPasswordActivity : AppCompatActivity() {
         }
 
         loginViewModel.errorMessageLogin.observe(this) { errorMessage ->
+            if(errorMessage === "User not found"){
+                this.showCustomAlertDialog(
+                    "Verifikasi Email Gagal",
+                    "Maaf, verifikasi email gagal. Silakan gunakan email yang terdaftar atau periksa kembali tautan yang Anda gunakan",
+                    "OK",
+                    "",
+                    {},
+                    {
+                    },
+                )
+            }
             if (errorMessage.isNotEmpty()) {
                 this.showCustomAlertDialog(
                     "Verifikasi Email Gagal",

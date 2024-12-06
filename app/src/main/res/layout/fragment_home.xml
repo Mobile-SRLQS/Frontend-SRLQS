@@ -17,22 +17,10 @@
         android:layout_marginTop="24dp"
         android:text="Halo, Sarah Tonin"
         android:textColor="@color/dark_green"
-        app:layout_constraintEnd_toStartOf="@id/btn_notification"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    <ImageButton
-        android:id="@+id/btn_notification"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="15dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/baseline_notifications_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tv_greeting"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 
 
@@ -66,7 +54,7 @@
             android:layout_marginHorizontal="15dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/rounded_small_input"
-            android:hint="Masukkan kode mata kuliah anda"
+            android:hint="Masukkan id mata kuliah anda"
             android:padding="12dp"
             android:textColor="@color/black"
             android:textColorHint="@color/grey" />
@@ -83,7 +71,7 @@
             android:background="@drawable/button_selector"
             android:backgroundTint="@color/light_green"
             android:textSize="12sp"
-            android:text="Masukkan Kode"
+            android:text="Masukkan ID"
             android:textAllCaps="false"
             android:textColor="@color/white" />
 

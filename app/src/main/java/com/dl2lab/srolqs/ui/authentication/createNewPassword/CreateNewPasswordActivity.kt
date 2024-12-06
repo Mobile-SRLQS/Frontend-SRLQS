@@ -25,6 +25,7 @@ import com.dl2lab.srolqs.data.remote.response.BasicResponse
 import com.dl2lab.srolqs.databinding.ActivityCreateNewPasswordBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.authentication.viewmodel.LoginViewModel
+import com.dl2lab.srolqs.ui.customview.LoadingManager
 import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
 import com.dl2lab.srolqs.ui.home.welcome.WelcomeActivity
 import org.json.JSONObject
@@ -49,6 +50,7 @@ class CreateNewPasswordActivity : AppCompatActivity() {
             android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
         supportActionBar?.hide()
+        LoadingManager.init(this)
         binding = ActivityCreateNewPasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
         email = intent.getStringExtra("email") ?: ""
@@ -59,6 +61,10 @@ class CreateNewPasswordActivity : AppCompatActivity() {
         binding.btnSaveChanges.setOnClickListener { changePassword() }
         observeViewModel()
 
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.loadingView.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun setupPasswordInputListener() {
@@ -160,9 +166,10 @@ class CreateNewPasswordActivity : AppCompatActivity() {
         }
 
 
-
+        showLoading(true)
         loginViewModel.createNewPassword(email, confirmNewPassword, verificationCode).observe(this) { response ->
             if (response.isSuccessful) {
+                showLoading(false)
                 val body = response.body()
                 if (body != null) {
                     this.showCustomAlertDialog(
@@ -179,6 +186,9 @@ class CreateNewPasswordActivity : AppCompatActivity() {
                     )
 
                 }
+            } else {
+                showLoading(false)
+
             }
         }
 
@@ -204,8 +214,11 @@ class CreateNewPasswordActivity : AppCompatActivity() {
         loginViewModel.isLoading.observe(this) { isLoading ->
             // Show loading indicator if needed
             if (isLoading) {
-                // Show a loading spinner or some UI feedback for loading
+                binding.loadingView.visibility = View.VISIBLE
+                binding.svChangePassword.visibility = View.GONE
             } else {
+                binding.loadingView.visibility = View.GONE
+                binding.svChangePassword.visibility = View.VISIBLE
                 // Hide loading spinner
             }
         }

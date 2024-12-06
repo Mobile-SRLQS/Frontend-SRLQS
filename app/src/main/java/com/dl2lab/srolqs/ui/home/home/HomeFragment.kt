@@ -48,9 +48,7 @@ class HomeFragment : Fragment(), OnClassItemClickListener,
         checkUserSession()
         getUserName()
         setupJoinClass()
-        binding.btnNotification.setOnClickListener {
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToNotificationFragment())
-        }
+
         configureButton()
         getClassList()
         getActivityList()

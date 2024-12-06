@@ -45,10 +45,10 @@ class FAQAdapter(private val faqList: List<FAQItem>) :
         // Handle visibility and arrow icon rotation
         if (item.isExpanded) {
             holder.tvAnswer.visibility = View.VISIBLE
-            holder.ivExpandIcon.setImageResource(R.drawable.ic_arrow_up) // Icon for expanded state
+            holder.ivExpandIcon.setImageResource(R.drawable.ic_chevron_up) // Icon for expanded state
         } else {
             holder.tvAnswer.visibility = View.GONE
-            holder.ivExpandIcon.setImageResource(R.drawable.ic_arrow_down) // Icon for collapsed state
+            holder.ivExpandIcon.setImageResource(R.drawable.ic_chevron_down) // Icon for collapsed state
         }
     }
 
