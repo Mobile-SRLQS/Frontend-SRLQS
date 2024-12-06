@@ -12,8 +12,8 @@
     <string name="register_button_text">Daftarkan Akun</string>
 
     // Welcome Activity
-    <string name="welcome_student">Pelajar</string>
-    <string name="welcome_teacher">Pengajar</string>
+    <string name="welcome_student">Mahasiswa</string>
+    <string name="welcome_teacher">Dosen</string>
     <string name="welcome_text">Selamat datang! Silahkan pilih peran Anda terlebih dahulu untuk menggunakan aplikasi</string>
 
     // Register Activity
