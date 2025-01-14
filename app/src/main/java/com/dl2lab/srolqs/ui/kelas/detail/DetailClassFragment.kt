@@ -59,6 +59,13 @@ class DetailClassFragment : Fragment(), OnPeriodItemClickListener {
                 try {
                     if (response.isSuccessful) {
                         val body = response.body()
+                        if(classItem.progress == "33%"){
+                            binding.courseProgress.text = "Progress Pengukuran 1 dari 3 Periode (${classItem.progress})"
+                        } else if(classItem.progress == "66%"){
+                            binding.courseProgress.text = "Progress Pengukuran 2 dari 3 Periode (${classItem.progress})"
+                        } else if(classItem.progress == "100%"){
+                            binding.courseProgress.text = "Progress Pengukuran 3 dari 3 Periode (${classItem.progress})"
+                        }
                         if (body != null) {
                             binding.headingCourseTitle.text = body.data?.className
                             binding.courseSemesterInformation.text = body.data?.classSemester
@@ -102,6 +109,7 @@ class DetailClassFragment : Fragment(), OnPeriodItemClickListener {
             requireActivity(), ViewModelFactory.getInstance(requireContext())
         ).get(MainViewModel::class.java)
     }
+
 
     private fun checkUserSession() {
         viewModel.getSession().observe(viewLifecycleOwner, Observer { userModel ->

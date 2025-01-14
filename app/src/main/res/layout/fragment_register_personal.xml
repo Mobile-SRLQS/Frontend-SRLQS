@@ -73,6 +73,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/input_name"
                 style="@style/B1"
+                app:hintEnabled="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/register_name_hint"
@@ -107,6 +108,8 @@
             <com.dl2lab.srolqs.ui.customview.EmailField
                 android:id="@+id/input_email"
                 style="@style/B1"
+                app:hintEnabled="false"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/register_email_hint"
@@ -150,6 +153,7 @@
                 android:clickable="true"
                 android:cursorVisible="false"
                 android:focusable="false"
+                app:hintEnabled="false"
 
                 android:hint="@string/register_dob_hint"
                 android:inputType="date"
@@ -187,6 +191,8 @@
                 android:id="@+id/input_password"
                 style="@style/B1"
                 android:layout_width="match_parent"
+                app:hintEnabled="false"
+
                 android:layout_height="wrap_content"
                 android:hint="@string/register_password_hint"
                 android:inputType="textPassword"
@@ -234,6 +240,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/input_password_confirm"
                 style="@style/B1"
+                app:hintEnabled="false"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/register_password_confirm_hint"

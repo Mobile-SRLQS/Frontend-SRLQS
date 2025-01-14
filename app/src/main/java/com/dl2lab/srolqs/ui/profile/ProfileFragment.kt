@@ -83,16 +83,18 @@ class ProfileFragment : Fragment() {
         binding.buttonLogout.setOnClickListener {
 
             requireContext().showCustomAlertDialog(
-                subtitle = "Are you sure you want to logout?",
+                title = "Apakah Anda yakin ingin logout dari aplikasi?",
+                subtitle = "",
                 positiveButtonText = "Logout",
-                negativeButtonText = "Cancel",
+                negativeButtonText = "Tidak",
                 onPositiveButtonClick = {
                     viewModel.logout()
                     startActivity(Intent(requireActivity(), WelcomeActivity::class.java))
                     requireActivity().finish()
                 },
                 onNegativeButtonClick = {
-                }
+                },
+                showIcon = false
             )
         }
 

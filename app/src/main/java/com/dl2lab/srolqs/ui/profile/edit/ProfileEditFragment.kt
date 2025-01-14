@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.dl2lab.srolqs.databinding.FragmentProfileEditBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
+import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
 import com.dl2lab.srolqs.ui.profile.viewmodel.ProfileViewModel
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -59,7 +60,8 @@ class ProfileEditFragment : Fragment() {
 
         setupViewModel()
         populateProfileFields()
-        setupDropdowns()
+        setupBatchDropdown()
+        setupDegreeDropdown()
 
         // DatePicker setup
         binding.inputDob.setOnClickListener { showDatePicker() }
@@ -70,8 +72,18 @@ class ProfileEditFragment : Fragment() {
 
         // Save changes button
         binding.btnEdit.setOnClickListener { saveChanges() }
-
+        binding.btnBack.setOnClickListener {     try {
+            findNavController().popBackStack()
+        } catch (e: IllegalStateException) {
+            // Handle navigation failure
+            activity?.onBackPressed()
+        }}
         return binding.root
+    }
+
+    private fun showLoading(isLoading : Boolean){
+        binding.loadingView.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.btnEdit.isEnabled = !isLoading
     }
 
     private fun setupViewModel() {
@@ -94,12 +106,14 @@ class ProfileEditFragment : Fragment() {
     private fun populateProfileFields() {
         viewModel.getSession().observe(viewLifecycleOwner) { userModel ->
             binding.inputName.setText(userModel.nama ?: "")
-            binding.inputEmail.setText(userModel.email ?: "")
             binding.inputDob.setText(formatTanggal(userModel.birthDate))
             binding.inputUniversity.setText(userModel.institution ?: "")
             binding.inputNpm.setText(userModel.identityNumber ?: "")
-            binding.inputBatch.setText(userModel.batch ?: "")
-            binding.inputDegree.setText(userModel.degree ?: "")
+            // Menambahkan post delayed untuk memastikan adapter sudah siap
+            binding.root.post {
+                binding.inputBatch.setText(userModel.batch ?: "", false)
+                binding.inputDegree.setText(userModel.degree ?: "", false)
+            }
 
             // Load existing profile picture
             Glide.with(this)
@@ -110,19 +124,40 @@ class ProfileEditFragment : Fragment() {
         }
     }
 
-    private fun setupDropdowns() {
-        val batchOptions = arrayOf("2024", "2023", "2022", "2021", "2020")
-        val degreeOptions = arrayOf("Bachelor (S1)", "Magister (S2)", "Doctorate (S3)", "Diploma (D3)")
-
+    private fun setupBatchDropdown() {
+        val batchOptions = listOf("2024", "2023", "2022", "2021", "2020")
         val batchAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, batchOptions)
-        val degreeAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, degreeOptions)
-
-        binding.inputBatch.setAdapter(batchAdapter)
-        binding.inputBatch.setOnClickListener { binding.inputBatch.showDropDown() }
-
-        binding.inputDegree.setAdapter(degreeAdapter)
-        binding.inputDegree.setOnClickListener { binding.inputDegree.showDropDown() }
+        binding.inputBatch.apply {
+            setAdapter(batchAdapter)
+            threshold = 0 // Akan menampilkan dropdown saat diklik tanpa perlu mengetik
+            setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    showDropDown()
+                }
+            }
+            setOnClickListener {
+                showDropDown()
+            }
+        }
     }
+
+    private fun setupDegreeDropdown() {
+        val degreeOptions = listOf("Sarjana (S1)", "Magister (S2)", "Doktor (S3)", "Ahli Madya (D3)", "Sarjana Terapan (D4)")
+        val degreeAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, degreeOptions)
+        binding.inputDegree.apply {
+            setAdapter(degreeAdapter)
+            threshold = 0 // Akan menampilkan dropdown saat diklik tanpa perlu mengetik
+            setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    showDropDown()
+                }
+            }
+            setOnClickListener {
+                showDropDown()
+            }
+        }
+    }
+
 
     private fun showDatePicker() {
         val calendar = Calendar.getInstance()
@@ -154,6 +189,7 @@ class ProfileEditFragment : Fragment() {
     }
 
     private fun saveChanges() {
+        showLoading(true)
         val nama = binding.inputName.text.toString()
         val birthDate = binding.inputDob.text.toString()
         val institution = binding.inputUniversity.text.toString()
@@ -191,11 +227,33 @@ class ProfileEditFragment : Fragment() {
         )
 
         viewModel.editProfileData.observe(viewLifecycleOwner) { response ->
-            if (response.isSuccessful) {
-                Toast.makeText(requireContext(), "Profile updated successfully!", Toast.LENGTH_SHORT).show()
-                findNavController().navigateUp()
+            if (response.isSuccessful)
+            {
+                showLoading(false)
+                requireContext().showCustomAlertDialog(
+                    "Akun Berhasil Diperbarui",
+                    "Informasi Anda telah berhasil diperbarui. Semua perubahan yang Anda buat kini sudah tersimpan",
+                    "Lanjutkan",
+                    "",
+                    {
+                    findNavController().popBackStack()
+                    },
+                    {
+                    },
+                    error = false
+                )
             } else {
-                Toast.makeText(requireContext(), "Failed to update profile.", Toast.LENGTH_SHORT).show()
+                showLoading(false)
+                requireContext().showCustomAlertDialog(
+                    "Akun Gagal Diperbarui",
+                    "Maaf, terjadi kesalahan saat mengubah kegiatan. Silakan coba lagi atau periksa koneksi Anda",
+                    "Coba lagi",
+                    "",
+                    {
+                    },
+                    {
+                    },
+                )
             }
         }
     }

@@ -43,17 +43,31 @@ class WebViewActivity : AppCompatActivity() {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 url?.let {
                     if (!it.contains(allowedDomain)) {
-                        // Block akses ke domain lain
                         return true
                     }
+                    view?.loadUrl(it)
                 }
-                return false
+                return true
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                // Halaman selesai dimuat
+            }
+
+            override fun onReceivedError(view: WebView?, errorCode: Int, description: String?, failingUrl: String?) {
+                super.onReceivedError(view, errorCode, description, failingUrl)
+                // Handle error
             }
         }
 
-        webView.settings.javaScriptCanOpenWindowsAutomatically = false
+
+        webView.settings.javaScriptCanOpenWindowsAutomatically = true
 
         webView.settings.javaScriptEnabled = true
+        webView.settings.domStorageEnabled = true
+        webView.settings.databaseEnabled = true
+        webView.settings.userAgentString = "Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Mobile Safari/537.36"
 
         webView.clearCache(true)
         webView.settings.cacheMode = WebSettings.LOAD_NO_CACHE

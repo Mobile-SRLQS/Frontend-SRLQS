@@ -68,6 +68,7 @@ class ProfileDetailFragment : Fragment() {
     private fun getDetailProfileInformation() {
         // Show progress bar and hide content during loading
         binding.progressBar.visibility = View.VISIBLE
+
         toggleContentVisibility(false)
 
         viewModel.getDetailProfile().observe(viewLifecycleOwner) { updatedUser ->

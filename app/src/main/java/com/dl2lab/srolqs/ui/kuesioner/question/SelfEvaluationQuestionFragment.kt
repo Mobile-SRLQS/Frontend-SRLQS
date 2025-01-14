@@ -48,17 +48,18 @@ class SelfEvaluationQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
         setupViewModel()
         setupRadioGroups()
         restoreAnswers()
+        observeError()
     }
 
-    fun observeError(){
-        viewModel.errorMessage.observe(viewLifecycleOwner) { error ->
+    fun observeError() {
+        viewModel.errorMessage.observe(viewLifecycleOwner) { error: String? ->
             error?.let {
                 requireContext().showCustomAlertDialog(
                     title = "Gagal Mengirim Kuesioner",
                     subtitle = "Terjadi kesalahan saat mengirim kuesioner. " + error,
                     positiveButtonText = "Coba Lagi",
                     negativeButtonText = "Keluar",
-                    onPositiveButtonClick = {showFeedbackDialog()},
+                    onPositiveButtonClick = { showFeedbackDialog() },
                     onNegativeButtonClick = {
                         val intent = Intent(requireContext(), MainActivity::class.java)
                         startActivity(intent)
@@ -68,7 +69,6 @@ class SelfEvaluationQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
             }
         }
     }
-
     fun setupViewModel() {
         viewModel = ViewModelProvider(
             requireActivity(), ViewModelFactory.getInstance(requireContext())
@@ -203,7 +203,7 @@ class SelfEvaluationQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
     }
 
     private fun restoreAnswers() {
-        viewModel.getAnswers().value?.let { answers ->
+        viewModel.getAnswers().value?.let { answers  ->
             answers["21"]?.let { setRadioButtonChecked(binding.radioGroup21, it) }
             answers["22"]?.let { setRadioButtonChecked(binding.radioGroup22, it) }
             answers["23"]?.let { setRadioButtonChecked(binding.radioGroup23, it) }

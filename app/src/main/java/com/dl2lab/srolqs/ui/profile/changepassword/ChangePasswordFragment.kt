@@ -23,102 +23,135 @@ import retrofit2.Response
 
 class ChangePasswordFragment : Fragment() {
 
-        private var _binding: FragmentChangePasswordBinding? = null
-        private val binding get() = _binding!!
-        private lateinit var viewModel: ProfileViewModel
+    private var _binding: FragmentChangePasswordBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var viewModel: ProfileViewModel
 
-        override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ): View {
-            _binding = FragmentChangePasswordBinding.inflate(inflater, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentChangePasswordBinding.inflate(inflater, container, false)
 
-            val root: View = binding.root
-            setupViewModel()
-            checkUserSession()
+        val root: View = binding.root
+        setupViewModel()
+        checkUserSession()
 
-            binding.btnBack.setOnClickListener {
-                findNavController().navigate(R.id.action_changePasswordFragment_to_navigation_profile)
+        binding.btnBack.setOnClickListener {
+            findNavController().navigate(R.id.action_changePasswordFragment_to_navigation_profile)
 
-            }
-            binding.btnSaveChanges.setOnClickListener {
-                changePassword()
-            }
-
-            return root
         }
-
-        private fun setupViewModel() {
-
-            viewModel = ViewModelProvider(
-                requireActivity(), ViewModelFactory.getInstance(requireContext())
-            ).get(ProfileViewModel::class.java)
+        binding.btnSaveChanges.setOnClickListener {
+            changePassword()
         }
-        private fun checkUserSession() {
-            viewModel.getSession().observe(viewLifecycleOwner, Observer { userModel ->
-                if(userModel.token != null) {
-                    if (isTokenExpired(userModel.token)) {
-                        viewModel.logout()
-                        startActivity(Intent(requireActivity(), WelcomeActivity::class.java))
-                        requireActivity().finish()
-                        requireContext().showCustomAlertDialog(
-                            "",
-                            "Session Expired. Please login again!",
-                            "Login",
-                            "",
-                            {},
-                            {},
-                        )
-                    }
-                } else{
+        configureButton()
+        return root
+    }
+
+    private fun showLoading(isLoading: Boolean){
+        binding.loadingView.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+    private fun setupViewModel() {
+
+        viewModel = ViewModelProvider(
+            requireActivity(), ViewModelFactory.getInstance(requireContext())
+        ).get(ProfileViewModel::class.java)
+    }
+
+    private fun checkUserSession() {
+        viewModel.getSession().observe(viewLifecycleOwner, Observer { userModel ->
+            if (userModel.token != null) {
+                if (isTokenExpired(userModel.token)) {
+                    viewModel.logout()
                     startActivity(Intent(requireActivity(), WelcomeActivity::class.java))
                     requireActivity().finish()
+                    requireContext().showCustomAlertDialog(
+                        "Sesi Anda Habis",
+                        "Tolong masuk lagi dengan menggunakan akun yang sama.",
+                        "Login",
+                        "",
+                        {},
+                        {},
+                    )
                 }
-            })
+            } else {
+                startActivity(Intent(requireActivity(), WelcomeActivity::class.java))
+                requireActivity().finish()
+            }
+        })
+    }
+
+    private fun configureButton() {
+        val textWatcher = object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: android.text.Editable?) {
+                val oldPassword = binding.inputOldPassword.text.toString()
+                val newPassword = binding.inputNewPassword.text.toString()
+                val confirmedPassword = binding.inputConfirmNewPassword.text.toString()
+                binding.btnSaveChanges.isEnabled =
+                    oldPassword.isNotEmpty() && newPassword.isNotEmpty() && confirmedPassword.isNotEmpty()
+            }
+        }
+        val oldPassword = binding.inputOldPassword.text.toString()
+        val newPassword = binding.inputNewPassword.text.toString()
+        val confirmedPassword = binding.inputConfirmNewPassword.text.toString()
+        binding.inputOldPassword.addTextChangedListener(textWatcher)
+        binding.inputNewPassword.addTextChangedListener(textWatcher)
+        binding.inputConfirmNewPassword.addTextChangedListener(textWatcher)
+        binding.btnSaveChanges.isEnabled =
+            oldPassword.isNotEmpty() && newPassword.isNotEmpty() && confirmedPassword.isNotEmpty()
+    }
+
+    private fun changePassword() {
+        val oldPassword = binding.inputOldPassword.text.toString()
+        val newPassword = binding.inputNewPassword.text.toString()
+        val confirmedPassword = binding.inputConfirmNewPassword.text.toString()
+        showLoading(true)
+        if (oldPassword.isEmpty() || newPassword.isEmpty() || confirmedPassword.isEmpty()) {
+            showLoading(false)
+            requireContext().showCustomAlertDialog(
+                "Password Gagal Diubah",
+                "Tolong masukkan password lama dan password baru Anda",
+                "Coba Lagi",
+                "",
+                {},
+                {
+                    binding.btnBack.performClick()
+                },
+            )
+            return
         }
 
-        private fun changePassword(){
-            val oldPassword = binding.inputOldPassword.text.toString()
-            val newPassword = binding.inputNewPassword.text.toString()
-            val confirmedPassword = binding.inputConfirmNewPassword.text.toString()
+        if (newPassword != confirmedPassword) {
+            showLoading(false)
 
-            if(oldPassword.isEmpty() || newPassword.isEmpty() || confirmedPassword.isEmpty()){
-                requireContext().showCustomAlertDialog(
-                    "",
-                    "Please input all fields",
-                    "OK",
-                    "Cancel",
-                    {},
-                    {
-                        binding.btnBack.performClick()
-                    },
-                )
-                return
-            }
+            requireContext().showCustomAlertDialog(
+                "Password Gagal Diubah",
+                "Kata sandi yang dimasukkan tidak sama. Tolong masukkan kata sandi yang sama pada kedua kolom.",
+                "Coba Lagi",
+                "",
+                {},
+                {
+                    binding.btnBack.performClick()
+                },
+            )
+            return
+        }
 
-            if(newPassword != confirmedPassword){
-                requireContext().showCustomAlertDialog(
-                    "",
-                    "New password and confirmed password must be the same",
-                    "OK",
-                    "Cancel",
-                    {},
-                    {
-                        binding.btnBack.performClick()
-                    },
-                )
-                return
-            }
-
-            viewModel.changePassword(oldPassword, newPassword, confirmedPassword).observe(viewLifecycleOwner) { response ->
+        viewModel.changePassword(oldPassword, newPassword, confirmedPassword)
+            .observe(viewLifecycleOwner) { response ->
                 if (response.isSuccessful) {
+                    showLoading(false)
+
                     val body = response.body()
                     if (body != null) {
+
                         requireContext().showCustomAlertDialog(
-                            "",
-                            body.message ?: "Change password success",
-                            "OK",
+                            "Password Berhasil Diubah",
+                            "Tetap perbaharui password secara berkala untuk mencegah pencurian data!",
+                            "Kembali ke Profil",
                             "",
                             {
                                 binding.btnBack.performClick()
@@ -126,11 +159,14 @@ class ChangePasswordFragment : Fragment() {
                             {
                                 binding.btnBack.performClick()
                             },
+                            error = false
                         )
                     }
                 } else {
+                    showLoading(false)
+
                     requireContext().showCustomAlertDialog(
-                        "",
+                        "Password Gagal Diubah",
                         extractErrorMessage(response),
                         "OK",
                         "",
@@ -144,8 +180,7 @@ class ChangePasswordFragment : Fragment() {
             }
 
 
-
-        }
+    }
 
     private fun extractErrorMessage(response: Response<BasicResponse>): String {
         return try {
@@ -153,12 +188,12 @@ class ChangePasswordFragment : Fragment() {
             val jsonObject = JSONObject(json)
             jsonObject.getString("message")
         } catch (e: Exception) {
-            "Unknown Error"
+            "Maaf, perubahan password Anda tidak berhasil. Silakan coba lagi atau hubungi dukungan jika masalah berlanjut"
         }
     }
 
-        override fun onDestroyView() {
-            super.onDestroyView()
-            _binding = null
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
+}

@@ -75,6 +75,7 @@
         android:visibility="invisible"
         android:text="Lihat Versi Barchart"
         android:textSize="12sp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toStartOf="@+id/btn_toggle_average_data"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chart_fragment_container" />
@@ -89,6 +90,7 @@
         android:visibility="invisible"
         android:text="Lihat Rata-Rata Kelas"
         android:textSize="12sp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_toggle_chart"
         app:layout_constraintTop_toBottomOf="@id/chart_fragment_container" />
@@ -270,6 +272,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chart_fragment_container"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/rounded_course_list_item"
         android:layout_height="wrap_content">
         <Spinner
