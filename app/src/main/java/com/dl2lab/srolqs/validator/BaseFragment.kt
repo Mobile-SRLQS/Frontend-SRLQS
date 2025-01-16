@@ -2,19 +2,18 @@ package com.dl2lab.srolqs.validator
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.dl2lab.srolqs.R
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.launch
 import com.dl2lab.srolqs.data.preference.user.UserPreference
 import com.dl2lab.srolqs.data.preference.user.dataStore
 import com.dl2lab.srolqs.ui.authentication.login.LoginActivity
 import com.dl2lab.srolqs.ui.authentication.register.RegisterActivity
 import com.dl2lab.srolqs.ui.home.welcome.WelcomeActivity
-import android.util.Log
-import android.view.View
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.launch
 
 abstract class BaseFragment : Fragment() {
     private lateinit var networkConnectivityObserver: NetworkConnectivityObserver
@@ -37,17 +36,13 @@ abstract class BaseFragment : Fragment() {
     private fun observeNetworkConnectivity() {
         viewLifecycleOwner.lifecycleScope.launch {
             networkConnectivityObserver.observe().collect { status ->
-                Log.d("NetworkStatus", "Current status: $status")
                 NetworkStateManager.updateNetworkState(status)
                 when (status) {
                     ConnectivityObserver.Status.Available -> {
-                        Log.d("NetworkStatus", "Connection Available")
                         hideNoInternetSnackbar()
                     }
-                    ConnectivityObserver.Status.Unavailable,
-                    ConnectivityObserver.Status.Lost,
-                    ConnectivityObserver.Status.Losing -> {
-                        Log.d("NetworkStatus", "Connection Lost/Unavailable")
+
+                    ConnectivityObserver.Status.Unavailable, ConnectivityObserver.Status.Lost, ConnectivityObserver.Status.Losing -> {
                         showNoInternetSnackbar()
                     }
                 }
@@ -71,9 +66,7 @@ abstract class BaseFragment : Fragment() {
 
     private fun shouldSkipTokenValidation(): Boolean {
         val currentActivity = requireActivity()::class.java
-        return currentActivity == LoginActivity::class.java ||
-                currentActivity == RegisterActivity::class.java ||
-                currentActivity == WelcomeActivity::class.java
+        return currentActivity == LoginActivity::class.java || currentActivity == RegisterActivity::class.java || currentActivity == WelcomeActivity::class.java
     }
 
     override fun onResume() {
@@ -81,10 +74,10 @@ abstract class BaseFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             NetworkStateManager.networkState.collect { status ->
                 when (status) {
-                    ConnectivityObserver.Status.Unavailable,
-                    ConnectivityObserver.Status.Lost -> {
+                    ConnectivityObserver.Status.Unavailable, ConnectivityObserver.Status.Lost -> {
                         showNoInternetSnackbar()
                     }
+
                     else -> {}
                 }
             }
@@ -94,9 +87,7 @@ abstract class BaseFragment : Fragment() {
     private fun showInvalidTokenSnackbar() {
         view?.let { rootView ->
             Snackbar.make(
-                rootView,
-                "Token tidak valid, silakan login kembali",
-                Snackbar.LENGTH_LONG
+                rootView, "Token tidak valid, silakan login kembali", Snackbar.LENGTH_LONG
             ).apply {
                 setBackgroundTint(requireContext().getColor(R.color.red))
                 setTextColor(requireContext().getColor(R.color.black))
@@ -119,11 +110,8 @@ abstract class BaseFragment : Fragment() {
         snackbar?.dismiss()
 
         view?.let { rootView ->
-            Log.d("Snackbar", "Showing no internet snackbar")
             snackbar = Snackbar.make(
-                rootView,
-                "Tidak ada koneksi internet",
-                Snackbar.LENGTH_INDEFINITE
+                rootView, "Tidak ada koneksi internet", Snackbar.LENGTH_INDEFINITE
             ).apply {
                 setBackgroundTint(requireContext().getColor(R.color.red))
                 setTextColor(requireContext().getColor(R.color.black))

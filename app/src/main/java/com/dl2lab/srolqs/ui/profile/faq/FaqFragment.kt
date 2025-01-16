@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.data.preference.FAQItem
 import com.dl2lab.srolqs.databinding.FragmentFaqBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
@@ -47,7 +46,6 @@ class FaqFragment : Fragment() {
         binding.faqRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.faqRecyclerView.adapter = faqAdapter
 
-        // Set up Back Button
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }

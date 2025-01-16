@@ -1,6 +1,5 @@
 package com.dl2lab.srolqs.data.room.dao
 
-// NotificationDao.kt
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.dl2lab.srolqs.data.room.entity.NotificationEntity

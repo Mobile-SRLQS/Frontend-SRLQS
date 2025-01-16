@@ -62,7 +62,6 @@ class JoinClassFragment : Fragment() {
     }
 
     private fun setupNotificationWorker() {
-        Log.d("JoinClassFragment", "setupNotificationWorker: ${classData}")
 
         if (::classData.isInitialized && classData.data?.periods != null) {
             val periods = classData.data?.periods
@@ -150,7 +149,6 @@ class JoinClassFragment : Fragment() {
                     if (body != null) {
                         classData = body
 
-                        Log.d("JoinClassFragment", "setupClassDetail: ${classData}")
                         binding.headingCourseTitle.text = body.data?.className
                         binding.courseSemesterInformation.text = body.data?.classSemester
                         binding.courseDescription.text = body.data?.classDescription

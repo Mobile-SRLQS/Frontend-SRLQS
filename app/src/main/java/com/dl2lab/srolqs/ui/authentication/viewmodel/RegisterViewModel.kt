@@ -15,7 +15,6 @@ import retrofit2.Response
 
 class RegisterViewModel(private val userRepository: UserRepository) : ViewModel() {
 
-    // LiveData for registration response
     private val _registerUser = MutableLiveData<RegisterResponse>()
     val registerUser: LiveData<RegisterResponse> = _registerUser
 
@@ -25,14 +24,12 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
     private val _errorMessageRegister = MutableLiveData<String>()
     val errorMessageRegister: LiveData<String> = _errorMessageRegister
 
-    // Temporary storage for form data
     private val _personalInfo = MutableLiveData<PersonalInfo>()
     val personalInfo: LiveData<PersonalInfo> = _personalInfo
 
     private val _academicInfo = MutableLiveData<AcademicInfo>()
     val academicInfo: LiveData<AcademicInfo> = _academicInfo
 
-    // Setters for fragments to update personal and academic info
     fun setPersonalInfo(
         name: String,
         email: String,
@@ -53,7 +50,6 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
         _academicInfo.value = AcademicInfo(university, batch, npm, degree)
     }
 
-    // Submission logic that merges data and sends a request
     fun submitRegistration() {
         val personal = personalInfo.value
         val academic = academicInfo.value

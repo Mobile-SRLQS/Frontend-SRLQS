@@ -72,13 +72,13 @@ class QuestionnaireViewModel(private val repository: SecuredRepository) : ViewMo
         val currentAnswers = answers.value ?: HashMap()
         currentAnswers[questionNumber] = answer
         answers.value = currentAnswers
+        answers.value = currentAnswers
     }
 
     fun getAnswers(): LiveData<HashMap<String, Int>> = answers
 
     fun logAnswers() {
         val currentAnswers = answers.value ?: HashMap()
-        Log.d("QuestionnaireViewModel", "Current answers: $currentAnswers")
     }
 
     fun getAnswersArray(): Array<Int> {
@@ -112,7 +112,6 @@ class QuestionnaireViewModel(private val repository: SecuredRepository) : ViewMo
             ) {
                 _isLoading.value = false
                 if (!response.isSuccessful) {
-                    // Handle error response
                     try {
                         val errorBody = response.errorBody()?.string()
                         val errorJson = JSONObject(errorBody)
@@ -152,7 +151,6 @@ class QuestionnaireViewModel(private val repository: SecuredRepository) : ViewMo
                     val reccomendation = response.body()?.data?.dimensionReccomendation
                     val reccomendationText = response.body()?.data?.reccomendation
                     if (data != null) {
-//                        Log.d("QuestionnaireViewModel", "Received score result: $data")
                         _scoreResult.postValue(data.mapNotNull { it })
 
                     } else {

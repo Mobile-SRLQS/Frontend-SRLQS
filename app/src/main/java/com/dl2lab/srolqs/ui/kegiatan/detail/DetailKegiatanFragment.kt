@@ -73,7 +73,7 @@ class DetailKegiatanFragment : Fragment() {
         }
     }
 
-    private fun fetchDetail(){
+    private fun fetchDetail() {
         arguments?.let {
             kegiatanId = it.getInt("kegiatanId")
         }
@@ -86,7 +86,6 @@ class DetailKegiatanFragment : Fragment() {
     }
 
     private fun getKegiatanDetail() {
-
 
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
@@ -134,16 +133,14 @@ class DetailKegiatanFragment : Fragment() {
 
             } else {
                 result?.message?.let {
-                    requireContext().showCustomAlertDialog(
-                        "Gagal Menyelesaikan Kegiatan",
+                    requireContext().showCustomAlertDialog("Gagal Menyelesaikan Kegiatan",
                         it,
                         "OK",
                         "",
                         {
 
                         },
-                        {}
-                    )
+                        {})
                 }
             }
         }
@@ -170,16 +167,14 @@ class DetailKegiatanFragment : Fragment() {
 
             } else {
                 result?.message?.let {
-                    requireContext().showCustomAlertDialog(
-                        "Gagal menghapus kegiatan",
+                    requireContext().showCustomAlertDialog("Gagal menghapus kegiatan",
                         it,
                         "OK",
                         "",
                         {
 
                         },
-                        {}
-                    )
+                        {})
                 }
             }
         }
@@ -198,7 +193,10 @@ class DetailKegiatanFragment : Fragment() {
                 binding.tvLink.text = item.link
                 binding.tvCatatan.text = item.catatan
                 binding.btnEdit.setOnClickListener {
-                    val action = DetailKegiatanFragmentDirections.actionNavigationDetailKegiatanToEditKegiatanFragment(item.id)
+                    val action =
+                        DetailKegiatanFragmentDirections.actionNavigationDetailKegiatanToEditKegiatanFragment(
+                            item.id
+                        )
                     findNavController().navigate(action)
                 }
                 binding.btnDelete.setOnClickListener {
@@ -208,12 +206,13 @@ class DetailKegiatanFragment : Fragment() {
                         "Ya",
                         "Batalkan",
                         {
-                            mainViewModel.getSession().observe(viewLifecycleOwner, Observer { user ->
-                                user.token?.let { token ->
-                                    isTokenLoaded = true
-                                    viewModel.deleteKegiatan(item.id, token)
-                                }
-                            })
+                            mainViewModel.getSession()
+                                .observe(viewLifecycleOwner, Observer { user ->
+                                    user.token?.let { token ->
+                                        isTokenLoaded = true
+                                        viewModel.deleteKegiatan(item.id, token)
+                                    }
+                                })
                         },
                         {},
                         showIcon = false
@@ -225,8 +224,8 @@ class DetailKegiatanFragment : Fragment() {
                 } else {
                     binding.btnMarkAsDone.setOnClickListener {
                         mainViewModel.getSession().observe(viewLifecycleOwner, Observer { user ->
-                                user.token?.let { token ->
-                                    isTokenLoaded = true
+                            user.token?.let { token ->
+                                isTokenLoaded = true
                                 viewModel.checklistKegiatan(item.id, token)
                             }
                         })

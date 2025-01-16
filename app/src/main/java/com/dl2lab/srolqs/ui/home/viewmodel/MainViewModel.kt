@@ -50,8 +50,7 @@ class MainViewModel(
         val client = repository.joinClass(request)
         client.enqueue(object : Callback<BasicResponse> {
             override fun onResponse(
-                call: Call<BasicResponse>,
-                response: Response<BasicResponse>
+                call: Call<BasicResponse>, response: Response<BasicResponse>
             ) {
                 _isLoading.value = false
                 responseLiveData.value = response
@@ -69,15 +68,13 @@ class MainViewModel(
     }
 
 
-
     fun getListClass(): LiveData<Response<ListClassResponse>> = liveData {
         val responseLiveData = MutableLiveData<Response<ListClassResponse>>()
         val token = _token.value ?: ""
         val client = repository.getListClass()
         client.enqueue(object : Callback<ListClassResponse> {
             override fun onResponse(
-                call: Call<ListClassResponse>,
-                response: Response<ListClassResponse>
+                call: Call<ListClassResponse>, response: Response<ListClassResponse>
             ) {
                 responseLiveData.value = response
             }
@@ -98,8 +95,7 @@ class MainViewModel(
         val client = repository.getListKegiatan()
         client.enqueue(object : Callback<GetKegiatanResponse> {
             override fun onResponse(
-                call: Call<GetKegiatanResponse>,
-                response: Response<GetKegiatanResponse>
+                call: Call<GetKegiatanResponse>, response: Response<GetKegiatanResponse>
             ) {
                 responseLiveData.value = response
             }
@@ -114,14 +110,13 @@ class MainViewModel(
         emitSource(responseLiveData)
     }
 
-    fun getListKegiatanByType(type:String): LiveData<Response<GetKegiatanResponse>> = liveData {
+    fun getListKegiatanByType(type: String): LiveData<Response<GetKegiatanResponse>> = liveData {
         val responseLiveData = MutableLiveData<Response<GetKegiatanResponse>>()
         val token = _token.value ?: ""
         val client = repository.getListKegiatanByType(type)
         client.enqueue(object : Callback<GetKegiatanResponse> {
             override fun onResponse(
-                call: Call<GetKegiatanResponse>,
-                response: Response<GetKegiatanResponse>
+                call: Call<GetKegiatanResponse>, response: Response<GetKegiatanResponse>
             ) {
                 responseLiveData.value = response
             }
@@ -142,8 +137,7 @@ class MainViewModel(
         val client = repository.checklistKegiatan(id)
         client.enqueue(object : Callback<BasicResponse> {
             override fun onResponse(
-                call: Call<BasicResponse>,
-                response: Response<BasicResponse>
+                call: Call<BasicResponse>, response: Response<BasicResponse>
             ) {
                 responseLiveData.value = response
             }
@@ -165,8 +159,7 @@ class MainViewModel(
         val client = repository.getDetailClass(class_id)
         client.enqueue(object : Callback<JoinDetailClassResponse> {
             override fun onResponse(
-                call: Call<JoinDetailClassResponse>,
-                response: Response<JoinDetailClassResponse>
+                call: Call<JoinDetailClassResponse>, response: Response<JoinDetailClassResponse>
             ) {
                 _loadingDetailClass.value = false
                 responseLiveData.value = response
@@ -184,7 +177,6 @@ class MainViewModel(
     }
 
 
-
     fun getClassInformation(class_id: String): LiveData<Response<DetailClassResponse>> = liveData {
         val responseLiveData = MutableLiveData<Response<DetailClassResponse>>()
         _isLoading.value = true
@@ -192,8 +184,7 @@ class MainViewModel(
         val client = repository.getClassInformation(class_id)
         client.enqueue(object : Callback<DetailClassResponse> {
             override fun onResponse(
-                call: Call<DetailClassResponse>,
-                response: Response<DetailClassResponse>
+                call: Call<DetailClassResponse>, response: Response<DetailClassResponse>
             ) {
                 _isLoading.value = false
                 responseLiveData.value = response
@@ -222,8 +213,6 @@ class MainViewModel(
             repository.saveSession(userModel)
         }
     }
-
-
 
 
 }

@@ -31,7 +31,6 @@ class WebViewActivity : AppCompatActivity() {
 
         val allowedDomain = "srolqs.me"
         if (!url.contains(allowedDomain)) {
-            // Handle unauthorized domain
             return
         }
 
@@ -52,12 +51,10 @@ class WebViewActivity : AppCompatActivity() {
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
-                // Halaman selesai dimuat
             }
 
             override fun onReceivedError(view: WebView?, errorCode: Int, description: String?, failingUrl: String?) {
                 super.onReceivedError(view, errorCode, description, failingUrl)
-                // Handle error
             }
         }
 

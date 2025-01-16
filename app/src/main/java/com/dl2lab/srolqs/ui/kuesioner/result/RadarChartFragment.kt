@@ -20,7 +20,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 class RadarChartFragment : Fragment() {
 
     private lateinit var radarChart: RadarChart
-    private val lightGreen = Color.parseColor("#1ABC9C")  // Define the custom teal color
+    private val lightGreen = Color.parseColor("#1ABC9C")
 
 
     override fun onCreateView(

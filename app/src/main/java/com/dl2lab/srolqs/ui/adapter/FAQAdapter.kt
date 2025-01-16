@@ -18,7 +18,6 @@ class FAQAdapter(private val faqList: List<FAQItem>) :
         val ivExpandIcon: ImageView = view.findViewById(R.id.ivExpandIcon)
 
         init {
-            // Set click listener for the entire item view
             view.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
@@ -42,13 +41,12 @@ class FAQAdapter(private val faqList: List<FAQItem>) :
         holder.tvQuestion.text = item.question
         holder.tvAnswer.text = item.answer
 
-        // Handle visibility and arrow icon rotation
         if (item.isExpanded) {
             holder.tvAnswer.visibility = View.VISIBLE
-            holder.ivExpandIcon.setImageResource(R.drawable.ic_chevron_up) // Icon for expanded state
+            holder.ivExpandIcon.setImageResource(R.drawable.ic_chevron_up)
         } else {
             holder.tvAnswer.visibility = View.GONE
-            holder.ivExpandIcon.setImageResource(R.drawable.ic_chevron_down) // Icon for collapsed state
+            holder.ivExpandIcon.setImageResource(R.drawable.ic_chevron_down)
         }
     }
 

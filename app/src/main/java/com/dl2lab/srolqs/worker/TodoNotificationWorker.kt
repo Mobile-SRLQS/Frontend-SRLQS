@@ -22,7 +22,6 @@ class TodoNotificationWorker(appContext: Context, workerParams: WorkerParameters
         val namaKegiatan = inputData.getString("nama_kegiatan")
         val tenggat = inputData.getString("tenggat")
 
-        // Tampilkan notifikasi
         sendNotification(
             "Ayo Selesaikan Kegiatanmu!",
             "Kegiatan '$namaKegiatan' mendekati tenggat waktu pada $tenggat. Silahkan selesaikan kegiatan tersebut untuk meningkatkan dimensi Time Management-mu."

@@ -89,7 +89,7 @@ class CreateNewPasswordActivity : AppCompatActivity() {
         view.apply {
             alpha = 0f
             visibility = View.VISIBLE
-            translationY = -20f // Mulai sedikit ke atas
+            translationY = -20f
             animate().alpha(1f).translationY(0f).setDuration(300)
                 .setInterpolator(DecelerateInterpolator()).start()
         }
@@ -212,14 +212,12 @@ class CreateNewPasswordActivity : AppCompatActivity() {
 
 
         loginViewModel.isLoading.observe(this) { isLoading ->
-            // Show loading indicator if needed
             if (isLoading) {
                 binding.loadingView.visibility = View.VISIBLE
                 binding.svChangePassword.visibility = View.GONE
             } else {
                 binding.loadingView.visibility = View.GONE
                 binding.svChangePassword.visibility = View.VISIBLE
-                // Hide loading spinner
             }
         }
 

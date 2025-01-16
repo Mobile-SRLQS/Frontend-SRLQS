@@ -52,7 +52,6 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.material)
 
-//    data binding
     implementation(libs.databinding)
 
     //View Pager

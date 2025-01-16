@@ -68,7 +68,7 @@ class ProfileFragment : Fragment() {
 
         viewModel.getDetailProfile().observe(viewLifecycleOwner) { updatedUser ->
             updatedUser?.let {
-                viewModel.saveSession(it) // Save updated user details to session
+                viewModel.saveSession(it)
             }
         }
     }

@@ -93,7 +93,6 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         private val PROFILE_PICTURE = stringPreferencesKey("profile_picture")
         private val IS_LOGIN_KEY = booleanPreferencesKey("is_login")
 
-        // Singleton instance retrieval
         fun getInstance(dataStore: DataStore<Preferences>): UserPreference {
             return INSTANCE ?: synchronized(this) {
                 val instance = UserPreference(dataStore)

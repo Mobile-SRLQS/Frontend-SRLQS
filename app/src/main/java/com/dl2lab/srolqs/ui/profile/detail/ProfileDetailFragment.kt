@@ -66,13 +66,11 @@ class ProfileDetailFragment : Fragment() {
 
 
     private fun getDetailProfileInformation() {
-        // Show progress bar and hide content during loading
         binding.progressBar.visibility = View.VISIBLE
 
         toggleContentVisibility(false)
 
         viewModel.getDetailProfile().observe(viewLifecycleOwner) { updatedUser ->
-            // Hide progress bar and show content once data is loaded
             binding.progressBar.visibility = View.GONE
 
             if (updatedUser != null) {
@@ -91,7 +89,6 @@ class ProfileDetailFragment : Fragment() {
                     .circleCrop()
                     .into(binding.icon)
             } else {
-                // Optionally, handle errors or empty state here
                 toggleContentVisibility(false)
             }
         }
@@ -108,7 +105,6 @@ class ProfileDetailFragment : Fragment() {
         binding.profileInstitution.visibility = visibility
         binding.profileBatch.visibility = visibility
         binding.profileDegree.visibility = visibility
-        // Add any other views you want to toggle
     }
 
     fun formatTanggal(tanggal: String): String {

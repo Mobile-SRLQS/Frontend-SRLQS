@@ -78,7 +78,7 @@ class BarChartFragment : Fragment() {
         horizontalBarChart.description.isEnabled = false
 
         horizontalBarChart.apply {
-            setExtraOffsets(30f, 30f, 30f, 30f) // left, top, right, bottom
+            setExtraOffsets(30f, 30f, 30f, 30f)
         }
 
         val labels = listOf(
@@ -92,8 +92,8 @@ class BarChartFragment : Fragment() {
         horizontalBarChart.xAxis.apply {
             labelCount = labels.size
             valueFormatter = IndexAxisValueFormatter(labels)
-            axisMinimum = -0.5f // Tambahkan space di awal
-            axisMaximum = labels.size - 0.5f // Tambahkan space di akhir
+            axisMinimum = -0.5f
+            axisMaximum = labels.size - 0.5f
             granularity = 1f
             setDrawGridLines(true)
             position = XAxis.XAxisPosition.BOTTOM
@@ -104,28 +104,25 @@ class BarChartFragment : Fragment() {
 
         horizontalBarChart.axisLeft.apply {
             textColor = Color.DKGRAY
-            textSize = 10f // Kurangi ukuran text
+            textSize = 10f
             typeface = android.graphics.Typeface.DEFAULT_BOLD
             granularity = 1f
             setDrawGridLines(false)
             axisMinimum = 0f
             axisMaximum = 6f
-            setDrawLabels(true) // Pastikan label ditampilkan
-            setLabelCount(6, true) // Sesuaikan jumlah label
+            setDrawLabels(true)
+            setLabelCount(6, true)
         }
 
 
-//        horizontalBarChart.legend.apply {
-//            yOffset = 15f
-//            xOffset = 15f
-//        }
+
 
         if (scores2 != null) {
-            barData.barWidth = 0.15f // Kurangi lebar bar
+            barData.barWidth = 0.15f
             horizontalBarChart.groupBars(
-                -0.45f, // fromX - sesuaikan nilai ini untuk mengatur posisi horizontal
-                0.65f,  // groupSpace
-                0.02f  // barSpace
+                -0.45f,
+                0.65f,
+                0.02f
             )
         }
 

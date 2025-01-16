@@ -1,10 +1,8 @@
 package com.dl2lab.srolqs.ui.profile.edit
 
 import android.app.DatePickerDialog
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,17 +18,15 @@ import com.dl2lab.srolqs.databinding.FragmentProfileEditBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
 import com.dl2lab.srolqs.ui.profile.viewmodel.ProfileViewModel
+import com.dl2lab.srolqs.utils.reduceFileImage
+import com.dl2lab.srolqs.utils.uriToFile
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.*
-import com.dl2lab.srolqs.utils.uriToFile
-import com.dl2lab.srolqs.utils.reduceFileImage
 
 class ProfileEditFragment : Fragment() {
 
@@ -47,14 +43,12 @@ class ProfileEditFragment : Fragment() {
             selectedImageUri = uri
             displaySelectedImage(uri)
         } else {
-            Log.d("Photo Picker", "No media selected")
             Toast.makeText(requireContext(), "No media selected", Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfileEditBinding.inflate(inflater, container, false)
 
@@ -63,25 +57,23 @@ class ProfileEditFragment : Fragment() {
         setupBatchDropdown()
         setupDegreeDropdown()
 
-        // DatePicker setup
         binding.inputDob.setOnClickListener { showDatePicker() }
         binding.inputDobLayout.setEndIconOnClickListener { showDatePicker() }
 
-        // Image picker setup
         binding.icon.setOnClickListener { startGallery() }
 
-        // Save changes button
         binding.btnEdit.setOnClickListener { saveChanges() }
-        binding.btnBack.setOnClickListener {     try {
-            findNavController().popBackStack()
-        } catch (e: IllegalStateException) {
-            // Handle navigation failure
-            activity?.onBackPressed()
-        }}
+        binding.btnBack.setOnClickListener {
+            try {
+                findNavController().popBackStack()
+            } catch (e: IllegalStateException) {
+                activity?.onBackPressed()
+            }
+        }
         return binding.root
     }
 
-    private fun showLoading(isLoading : Boolean){
+    private fun showLoading(isLoading: Boolean) {
         binding.loadingView.visibility = if (isLoading) View.VISIBLE else View.GONE
         binding.btnEdit.isEnabled = !isLoading
     }
@@ -97,10 +89,7 @@ class ProfileEditFragment : Fragment() {
     }
 
     private fun displaySelectedImage(uri: Uri) {
-        Glide.with(this)
-            .load(uri)
-            .circleCrop()
-            .into(binding.icon)
+        Glide.with(this).load(uri).circleCrop().into(binding.icon)
     }
 
     private fun populateProfileFields() {
@@ -109,27 +98,27 @@ class ProfileEditFragment : Fragment() {
             binding.inputDob.setText(formatTanggal(userModel.birthDate))
             binding.inputUniversity.setText(userModel.institution ?: "")
             binding.inputNpm.setText(userModel.identityNumber ?: "")
-            // Menambahkan post delayed untuk memastikan adapter sudah siap
             binding.root.post {
                 binding.inputBatch.setText(userModel.batch ?: "", false)
                 binding.inputDegree.setText(userModel.degree ?: "", false)
             }
 
-            // Load existing profile picture
-            Glide.with(this)
-                .load(userModel.profilePicture)
-                .placeholder(com.dl2lab.srolqs.R.drawable.ic_launcher_background)
-                .circleCrop()
+            Glide.with(this).load(userModel.profilePicture)
+                .placeholder(com.dl2lab.srolqs.R.drawable.ic_launcher_background).circleCrop()
                 .into(binding.icon)
         }
     }
 
     private fun setupBatchDropdown() {
         val batchOptions = listOf("2024", "2023", "2022", "2021", "2020")
-        val batchAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, batchOptions)
+        val batchAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            batchOptions
+        )
         binding.inputBatch.apply {
             setAdapter(batchAdapter)
-            threshold = 0 // Akan menampilkan dropdown saat diklik tanpa perlu mengetik
+            threshold = 0
             setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
                     showDropDown()
@@ -142,11 +131,21 @@ class ProfileEditFragment : Fragment() {
     }
 
     private fun setupDegreeDropdown() {
-        val degreeOptions = listOf("Sarjana (S1)", "Magister (S2)", "Doktor (S3)", "Ahli Madya (D3)", "Sarjana Terapan (D4)")
-        val degreeAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, degreeOptions)
+        val degreeOptions = listOf(
+            "Sarjana (S1)",
+            "Magister (S2)",
+            "Doktor (S3)",
+            "Ahli Madya (D3)",
+            "Sarjana Terapan (D4)"
+        )
+        val degreeAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            degreeOptions
+        )
         binding.inputDegree.apply {
             setAdapter(degreeAdapter)
-            threshold = 0 // Akan menampilkan dropdown saat diklik tanpa perlu mengetik
+            threshold = 0
             setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
                     showDropDown()
@@ -178,12 +177,11 @@ class ProfileEditFragment : Fragment() {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         val datePickerDialog = DatePickerDialog(
-            requireContext(),
-            { _, selectedYear, selectedMonth, selectedDay ->
-                val formattedDate = String.format("%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
+            requireContext(), { _, selectedYear, selectedMonth, selectedDay ->
+                val formattedDate =
+                    String.format("%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
                 binding.inputDob.setText(formattedDate)
-            },
-            year, month, day
+            }, year, month, day
         )
         datePickerDialog.show()
     }
@@ -205,13 +203,10 @@ class ProfileEditFragment : Fragment() {
         val batchBody = batch.toRequestBody("text/plain".toMediaTypeOrNull())
 
         val profilePicturePart = selectedImageUri?.let { uri ->
-            val imageFile = uriToFile(uri, requireContext())?.reduceFileImage()
-            Log.d("Image File", "showImage: ${imageFile?.path}")
+            val imageFile = uriToFile(uri, requireContext()).reduceFileImage()
             imageFile?.let {
                 MultipartBody.Part.createFormData(
-                    "profile_picture",
-                    it.name,
-                    it.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                    "profile_picture", it.name, it.asRequestBody("image/jpeg".toMediaTypeOrNull())
                 )
             }
         }
@@ -227,8 +222,7 @@ class ProfileEditFragment : Fragment() {
         )
 
         viewModel.editProfileData.observe(viewLifecycleOwner) { response ->
-            if (response.isSuccessful)
-            {
+            if (response.isSuccessful) {
                 showLoading(false)
                 requireContext().showCustomAlertDialog(
                     "Akun Berhasil Diperbarui",
@@ -236,10 +230,9 @@ class ProfileEditFragment : Fragment() {
                     "Lanjutkan",
                     "",
                     {
-                    findNavController().popBackStack()
+                        findNavController().popBackStack()
                     },
-                    {
-                    },
+                    {},
                     error = false
                 )
             } else {
@@ -249,10 +242,8 @@ class ProfileEditFragment : Fragment() {
                     "Maaf, terjadi kesalahan saat mengubah kegiatan. Silakan coba lagi atau periksa koneksi Anda",
                     "Coba lagi",
                     "",
-                    {
-                    },
-                    {
-                    },
+                    {},
+                    {},
                 )
             }
         }

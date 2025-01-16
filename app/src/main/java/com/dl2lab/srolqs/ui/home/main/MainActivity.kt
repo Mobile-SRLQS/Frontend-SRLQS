@@ -125,7 +125,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun testTodoNotification() {
-        // Create work request directly
         val workRequest = OneTimeWorkRequestBuilder<TodoNotificationWorker>()
             .setInputData(
                 workDataOf(
@@ -136,10 +135,8 @@ class MainActivity : AppCompatActivity() {
             .setInitialDelay(10, TimeUnit.SECONDS) // 10 seconds delay
             .build()
 
-        // Enqueue the work
         WorkManager.getInstance(this).enqueue(workRequest)
 
-        // Optional: Observe the work status
         WorkManager.getInstance(this)
             .getWorkInfoByIdLiveData(workRequest.id)
             .observe(this) { workInfo ->

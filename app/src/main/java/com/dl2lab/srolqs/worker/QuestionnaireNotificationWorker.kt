@@ -57,7 +57,7 @@ class QuestionnaireNotificationWorker(appContext: Context, workerParams: WorkerP
     }
 
     fun scheduleQuestionnaireNotification(context: Context, periodName: String, endDate: String) {
-        val delay = calculateDelay(endDate, 3 * 24 * 60) // H-3
+        val delay = calculateDelay(endDate, 3 * 24 * 60)
 
         val workRequest = OneTimeWorkRequestBuilder<QuestionnaireNotificationWorker>()
             .setInputData(

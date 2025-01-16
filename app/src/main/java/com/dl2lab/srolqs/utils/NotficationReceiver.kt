@@ -15,7 +15,6 @@ class NotificationReceiver : BroadcastReceiver() {
         val message = intent.getStringExtra("message") ?: "It's time!"
         val channelId = intent.getStringExtra("channel_id") ?: "reminder_channel"
 
-        Log.d("NotificationReceiver", "Received notification: $title - $message")
 
         val notification = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.ic_calendar)
@@ -31,7 +30,6 @@ class NotificationReceiver : BroadcastReceiver() {
                 notification
             )
         } catch (e: SecurityException) {
-            Log.e("NotificationReceiver", "Permission denied: ${e.message}")
         }
     }
 }

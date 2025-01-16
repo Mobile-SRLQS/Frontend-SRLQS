@@ -9,14 +9,18 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class KegiatanAdapter(private var listKegiatan: List<KegiatanItem?>, private val itemClickListener: OnKegiatanItemClickListener) : RecyclerView.Adapter<KegiatanAdapter.KegiatanViewHolder>() {
+class KegiatanAdapter(
+    private var listKegiatan: List<KegiatanItem?>,
+    private val itemClickListener: OnKegiatanItemClickListener
+) : RecyclerView.Adapter<KegiatanAdapter.KegiatanViewHolder>() {
 
     interface OnKegiatanItemClickListener {
         fun onItemClick(kegiatanItem: KegiatanItem)
         fun onMarkAsDoneClick(idKegiatan: Int)
     }
 
-    inner class KegiatanViewHolder(private val binding: ItemKegiatanBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class KegiatanViewHolder(private val binding: ItemKegiatanBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(item: KegiatanItem) {
             binding.tvNamaKegiatan.text = item.namaKegiatan
             val tenggat = formatTanggal(item.tenggat)
@@ -46,7 +50,8 @@ class KegiatanAdapter(private var listKegiatan: List<KegiatanItem?>, private val
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KegiatanViewHolder {
-        val binding = ItemKegiatanBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemKegiatanBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return KegiatanViewHolder(binding)
     }
 
@@ -68,6 +73,7 @@ class KegiatanAdapter(private var listKegiatan: List<KegiatanItem?>, private val
             tanggal
         }
     }
+
     fun updateData(newList: List<KegiatanItem?>) {
         listKegiatan = newList
         notifyDataSetChanged()

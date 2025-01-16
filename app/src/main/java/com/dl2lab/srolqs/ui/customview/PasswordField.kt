@@ -37,7 +37,6 @@ class PasswordField @JvmOverloads constructor(
                 else if (!upperCasePattern.matcher(password).find()) {
                     setError("Password harus mengandung setidaknya 1 angka dan 1 huruf kapital", null)
                 }
-                // Clear error if all conditions are satisfied
                 else {
                     error = null
                 }

@@ -87,17 +87,6 @@ class AddKegiatanFragment : Fragment() {
             }
         })
 
-//        // AddKegiatanFragment.kt
-//        binding.btnTest.setOnClickListener {
-//            val title = "Gabing"
-//            val message = "This is a test notification"
-//            notificationHelper.scheduleTestNotification(title, message)
-//            Toast.makeText(
-//                context,
-//                "Test notification will appear in 10 seconds",
-//                Toast.LENGTH_SHORT
-//            ).show()
-//        }
 
         kegiatanViewModel.addKegiatanResult.observe(viewLifecycleOwner, Observer { result ->
             result.fold(
@@ -152,7 +141,6 @@ class AddKegiatanFragment : Fragment() {
             }
         }
 
-        // Add TextWatcher to all EditText fields
         binding.inputName.addTextChangedListener(textWatcher)
         binding.inputTipeKegiatan.addTextChangedListener(textWatcher)
         binding.inputTanggalKegiatan.addTextChangedListener(textWatcher)
@@ -187,7 +175,6 @@ class AddKegiatanFragment : Fragment() {
 
         binding.btnTambahKegiatan.isEnabled = isValid
 
-        // Optional: Change button appearance when disabled
         binding.btnTambahKegiatan.alpha = if (isValid) 1.0f else 0.5f
     }
 

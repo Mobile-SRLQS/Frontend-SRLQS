@@ -56,7 +56,6 @@ class ChartActivity : AppCompatActivity() {
         addReccomendation()
         setupPeriodSpinner()
         setupDimensionSpinner()
-        // Fetch data for the specified class ID and period
         classId = intent.getStringExtra("CLASSID")
         period = intent.getStringExtra("PERIOD")
         if (classId != null && period != null) {
@@ -71,17 +70,14 @@ class ChartActivity : AppCompatActivity() {
             }
         }
 
-        // Observe scoreResult data and set initial fragment when data is available
         viewModel.scoreResult.observe(this) { scores ->
             if (scores != null && scores.isNotEmpty()) {
                 displayFragment(RadarChartFragment().apply {
                     arguments = Bundle().apply { putFloatArray("SCORES", scores.toFloatArray()) }
                 })
-            } else {
-                Log.e("ChartActivity", "No scores available to display.")
             }
         }
-        binding.btnBack.setOnClickListener{
+        binding.btnBack.setOnClickListener {
             finish()
         }
     }
@@ -105,7 +101,6 @@ class ChartActivity : AppCompatActivity() {
 
     private fun setupPeriodSpinner() {
         classId = intent.getStringExtra("CLASSID")
-        // Ambil period dari intent
         val intentPeriod = intent.getStringExtra("PERIOD")?.toIntOrNull() ?: 1
 
         var periodString = arrayOf("")
@@ -116,8 +111,6 @@ class ChartActivity : AppCompatActivity() {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             periodSpinner.adapter = adapter
 
-            // Set selection berdasarkan period dari intent
-            // Karena array dimulai dari 0, kurangi intentPeriod dengan 1
             val selectionIndex = intentPeriod - 1
             if (selectionIndex in periodString.indices) {
                 periodSpinner.setSelection(selectionIndex)
@@ -126,16 +119,12 @@ class ChartActivity : AppCompatActivity() {
 
         periodSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View?,
-                position: Int,
-                id: Long
+                parent: AdapterView<*>, view: View?, position: Int, id: Long
             ) {
                 val selectedPeriod = periodString[position]
                 if (selectedPeriod != period) {
                     period = selectedPeriod
                     if (selectedPeriod != "Progress Anda") {
-                        // Gunakan position + 1 untuk mendapatkan nomor period yang benar
                         fetchDataForPeriod((position + 1).toString())
                     } else {
                         fetchDataForPeriod("Progress Anda")
@@ -144,7 +133,6 @@ class ChartActivity : AppCompatActivity() {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
-                // Do nothing
             }
         }
     }
@@ -165,13 +153,11 @@ class ChartActivity : AppCompatActivity() {
 
         dimensionSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View?,
-                position: Int,
-                id: Long
+                parent: AdapterView<*>, view: View?, position: Int, id: Long
             ) {
                 val selectedPeriod = dimensions[position]
-                val selectedDimension = selectedPeriod.lowercase(Locale.getDefault()).replace(" ", "_")
+                val selectedDimension =
+                    selectedPeriod.lowercase(Locale.getDefault()).replace(" ", "_")
                 fetchDataForDimension(selectedDimension)
             }
 
@@ -180,7 +166,6 @@ class ChartActivity : AppCompatActivity() {
             }
         }
 
-        // Set initial selection
         val initialPeriodIndex = dimensions.indexOf("Goal Setting")
         if (initialPeriodIndex != -1) {
             dimensionSpinner.setSelection(initialPeriodIndex)
@@ -192,12 +177,11 @@ class ChartActivity : AppCompatActivity() {
             viewModel.fetchStudentProgress(it, selectedDimension)
         }
         viewModel.studentProgress.observe(this) { progress ->
-            Log.d("ChartActivity", "Progress data received: $progress") // Log the fetched progress
+            Log.d("ChartActivity", "Progress data received: $progress")
 
             if (progress != null) {
-                binding.tvDimension.text = progress.description // Ensure this is updating the UI
+                binding.tvDimension.text = progress.description
                 val scores = progress.scores ?: emptyList()
-                Log.d("ChartActivity", "Scores for $selectedDimension: $scores") // Log scores
 
                 if (scores.isNotEmpty()) {
                     val floatScores = scores.map { score -> score?.toFloat() ?: 0f }.toFloatArray()
@@ -206,11 +190,7 @@ class ChartActivity : AppCompatActivity() {
                             putFloatArray("SCORES", floatScores)
                         }
                     })
-                } else {
-                    Log.e("ChartActivity", "No scores available for the selected dimension.")
                 }
-            } else {
-                Log.e("ChartActivity", "Progress data is null, ensure data is fetched correctly.")
             }
         }
     }
@@ -237,7 +217,6 @@ class ChartActivity : AppCompatActivity() {
                 val reccomendationTextView = findViewById<TextView>(R.id.chart_description)
                 reccomendationTextView.text = reccomendationText
             } else {
-                Log.e("ChartActivity", "No reccomendation available to display.")
             }
         }
         viewModel.reccomendation.observe(this) { reccomendation ->
@@ -255,12 +234,10 @@ class ChartActivity : AppCompatActivity() {
                 binding.TMSubtitle.text = reccomendation.tmReccomendation
                 binding.TSSubtitle.text = reccomendation.tsReccomendation
             } else {
-                Log.e("ChartActivity", "No reccomendation available to display.")
             }
         }
     }
 
-    // Helper function to display the given fragment
     private fun displayFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().replace(R.id.chart_fragment_container, fragment)
             .commit()

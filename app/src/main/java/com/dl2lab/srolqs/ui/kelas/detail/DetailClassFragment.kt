@@ -88,7 +88,6 @@ class DetailClassFragment : Fragment(), OnPeriodItemClickListener {
                         )
                     }
                 } catch (e: Exception) {
-                    // Handle any unexpected errors
                     requireContext().showCustomAlertDialog(
                         "Error",
                         "An unexpected error occurred.",
@@ -101,7 +100,7 @@ class DetailClassFragment : Fragment(), OnPeriodItemClickListener {
                     showLoading(false)
                 }
             })
-        } ?: showLoading(false) // Ensure loading is stopped if classId is null
+        } ?: showLoading(false)
     }
 
     private fun setupViewModel() {
@@ -148,6 +147,5 @@ class DetailClassFragment : Fragment(), OnPeriodItemClickListener {
     }
 
     override fun onItemClick(periodItem: PeriodDataItem) {
-        // Handle item click
     }
 }

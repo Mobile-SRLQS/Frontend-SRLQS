@@ -84,12 +84,12 @@ class EditKegiatanFragment : Fragment() {
     fun String.formatDateFromApi(): String {
         return try {
             val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'z'", Locale.getDefault())
-            val outputFormat = SimpleDateFormat("dd MMMM yyyy", Locale("id")) // Format Indonesia
+            val outputFormat = SimpleDateFormat("dd MMMM yyyy", Locale("id"))
 
             val date = inputFormat.parse(this)
             date?.let { outputFormat.format(it) } ?: this
         } catch (e: Exception) {
-            this // Return original string if parsing fails
+            this
         }
     }
 

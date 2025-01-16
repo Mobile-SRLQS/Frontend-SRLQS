@@ -66,7 +66,7 @@ class HelpSeekingQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment(
 
         }
         binding.prevButton.setOnClickListener {
-            viewModel.logAnswers() // Log answers before navigating
+            viewModel.logAnswers()
             parentFragmentManager.commit {
                 addToBackStack(null)
                 replace(

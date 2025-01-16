@@ -74,7 +74,7 @@ class LineChartFragment : Fragment() {
         }
 
         lineChart.apply {
-            setExtraOffsets(20f, 10f, 30f, 20f) // left, top, right, bottom margins
+            setExtraOffsets(20f, 10f, 30f, 20f)
         }
 
 

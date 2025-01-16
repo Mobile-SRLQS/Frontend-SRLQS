@@ -146,7 +146,7 @@ class ProfileViewModel(
                             nama = it.nama.orEmpty(),
                             birthDate = it.birthDate.orEmpty(),
                             email = it.email.orEmpty(),
-                            password = "", // No password in response
+                            password = "",
                             identityNumber = it.identityNumber.orEmpty(),
                             batch = it.batch.orEmpty(),
                             institution = it.institution.orEmpty(),

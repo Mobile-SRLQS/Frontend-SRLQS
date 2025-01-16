@@ -29,6 +29,7 @@ import com.dl2lab.srolqs.utils.JwtUtils
 import com.facebook.shimmer.ShimmerFrameLayout
 import android.provider.Settings
 import android.net.Uri
+import java.util.Locale
 
 class HomeFragment : Fragment(), OnClassItemClickListener,
     KegiatanAdapter.OnKegiatanItemClickListener {
@@ -108,7 +109,7 @@ class HomeFragment : Fragment(), OnClassItemClickListener,
 
     fun setupJoinClass() {
         binding.btnJoinClass.setOnClickListener {
-            val classId = binding.etCourseCode.text.toString().toUpperCase()
+            val classId = binding.etCourseCode.text.toString().uppercase(Locale.getDefault())
             if (classId.isEmpty()) {
                 requireContext().showCustomAlertDialog(
                     "",
@@ -124,7 +125,6 @@ class HomeFragment : Fragment(), OnClassItemClickListener,
                         val body = response.body()
 
                         if (body != null) {
-                            // Dismiss any showing dialogs
                             val currentDialog =
                                 requireActivity().supportFragmentManager.findFragmentByTag("CustomDialog")
                             if (currentDialog != null) {
@@ -204,7 +204,7 @@ class HomeFragment : Fragment(), OnClassItemClickListener,
                 if (classList.isEmpty()) {
                     showEmptyClassList(true)
                 } else {
-                    val limitedClassList = classList.take(3) // Ini akan mengambil tiga item pertama
+                    val limitedClassList = classList.take(3)
                     val adapter = ClassAdapter(limitedClassList, this)
                     binding.rvCourseList.layoutManager = LinearLayoutManager(requireContext())
                     binding.rvCourseList.adapter = adapter
@@ -268,7 +268,7 @@ class HomeFragment : Fragment(), OnClassItemClickListener,
                 } else {
                     showEmptyActivityList(false)
                     val limitedListKegiatan =
-                        listKegiatan.take(3) // Ini akan mengambil tiga item pertama
+                        listKegiatan.take(3)
                     val adapter = KegiatanAdapter(limitedListKegiatan, this)
                     binding.rvActivityList.layoutManager = LinearLayoutManager(requireContext())
                     binding.rvActivityList.adapter = adapter
@@ -307,7 +307,7 @@ class HomeFragment : Fragment(), OnClassItemClickListener,
                     response.message(),
                     "Ulang",
                     "",
-                    {this.onMarkAsDoneClick(idKegiatan)},
+                    { this.onMarkAsDoneClick(idKegiatan) },
                     {},
                 )
             }
@@ -346,7 +346,6 @@ class HomeFragment : Fragment(), OnClassItemClickListener,
                         }
                         startActivity(intent)
                     } else {
-                        // For Android 7 and below
                         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             data = Uri.fromParts("package", activity.packageName, null)
@@ -354,13 +353,11 @@ class HomeFragment : Fragment(), OnClassItemClickListener,
                         startActivity(intent)
                     }
                 } catch (e: Exception) {
-                    // Fallback if the above methods fail
                     val intent = Intent(Settings.ACTION_SETTINGS).apply {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     }
 
                 } catch (e: Exception) {
-                    // Fallback if the above methods fail
                     val intent = Intent(Settings.ACTION_SETTINGS).apply {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     }

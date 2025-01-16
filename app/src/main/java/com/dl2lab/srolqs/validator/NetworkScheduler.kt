@@ -29,14 +29,10 @@ class NetworkScheduler(private val context: Context, private val db: SQLiteDatab
 
             db.insertWithOnConflict("pending_ops", null, values, SQLiteDatabase.CONFLICT_REPLACE)
         } catch (e: SQLiteException) {
-            Log.e("NetworkScheduler", "Error scheduling network task", e)
         }
     }
 
-    fun executeNetworkTask(task: NetworkTask) {
-        // Implement the logic to execute the network task
-        // This could involve making network requests, processing data, etc.
-    }
+
 }
 
 data class NetworkTask(

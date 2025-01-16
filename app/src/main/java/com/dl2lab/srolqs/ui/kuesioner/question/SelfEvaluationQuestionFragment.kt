@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import android.view.Window
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import com.dl2lab.srolqs.R
@@ -22,12 +22,8 @@ import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
 import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
 import com.dl2lab.srolqs.ui.customview.showCustomInformation
 import com.dl2lab.srolqs.ui.home.main.MainActivity
-import com.dl2lab.srolqs.ui.home.viewmodel.MainViewModel
-import com.dl2lab.srolqs.ui.home.welcome.WelcomeActivity
 import com.dl2lab.srolqs.ui.kuesioner.result.ChartActivity
 import com.dl2lab.srolqs.ui.kuesioner.viewmodel.QuestionnaireViewModel
-import com.dl2lab.srolqs.utils.ExtractErrorMessage
-import com.dl2lab.srolqs.utils.ExtractErrorMessage.extractErrorMessage
 
 class SelfEvaluationQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment() {
     private lateinit var binding: FragmentSelfEvaluationQuestionBinding
@@ -54,8 +50,7 @@ class SelfEvaluationQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
     fun observeError() {
         viewModel.errorMessage.observe(viewLifecycleOwner) { error: String? ->
             error?.let {
-                requireContext().showCustomAlertDialog(
-                    title = "Gagal Mengirim Kuesioner",
+                requireContext().showCustomAlertDialog(title = "Gagal Mengirim Kuesioner",
                     subtitle = "Terjadi kesalahan saat mengirim kuesioner. " + error,
                     positiveButtonText = "Coba Lagi",
                     negativeButtonText = "Keluar",
@@ -64,11 +59,11 @@ class SelfEvaluationQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
                         val intent = Intent(requireContext(), MainActivity::class.java)
                         startActivity(intent)
                         requireActivity().finish()
-                    }
-                )
+                    })
             }
         }
     }
+
     fun setupViewModel() {
         viewModel = ViewModelProvider(
             requireActivity(), ViewModelFactory.getInstance(requireContext())
@@ -79,7 +74,7 @@ class SelfEvaluationQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
         return binding.radioGroup21.checkedRadioButtonId != -1 && binding.radioGroup22.checkedRadioButtonId != -1 && binding.radioGroup23.checkedRadioButtonId != -1 && binding.radioGroup24.checkedRadioButtonId != -1
     }
 
-    private fun submitQS(feedback: String = ""){
+    private fun submitQS(feedback: String = "") {
         viewModel.logAnswers()
         val sortedAnswersArray = viewModel.getAnswersArray()
         Log.d(
@@ -89,15 +84,17 @@ class SelfEvaluationQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
         val answer = viewModel.getAnswerList()
         var period = viewModel.getPeriod().value ?: "1"
         var classId = viewModel.getClassId().value ?: ""
-        viewModel.submitQuestionnaire(period, classId, answer, feedback) // Add feedback parameter to your API call
+        viewModel.submitQuestionnaire(
+            period, classId, answer, feedback
+        ) // Add feedback parameter to your API call
             .observe(viewLifecycleOwner) { response ->
                 if (response.isSuccessful) {
 
-                    requireContext().showCustomAlertDialog(title ="Berhasil mengisi kuesioner",
-                       subtitle =  "Selamat, jawaban Anda berhasil disimpan. Terima kasih telah mengisi kuesioner. Anda dapat melihat hasil kuesioner Anda dengan menekan tombol dibawah ini",
-                      positiveButtonText =   "Lihat Hasil Kuesioner",
-                       negativeButtonText =  "",
-                        error=false,
+                    requireContext().showCustomAlertDialog(title = "Berhasil mengisi kuesioner",
+                        subtitle = "Selamat, jawaban Anda berhasil disimpan. Terima kasih telah mengisi kuesioner. Anda dapat melihat hasil kuesioner Anda dengan menekan tombol dibawah ini",
+                        positiveButtonText = "Lihat Hasil Kuesioner",
+                        negativeButtonText = "",
+                        error = false,
                         onPositiveButtonClick = {
 
                             val intent = Intent(requireContext(), ChartActivity::class.java)
@@ -116,9 +113,9 @@ class SelfEvaluationQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
 
     private fun setupAction() {
         binding.submitButton.setOnClickListener {
-            if(isAllAnswered()){
+            if (isAllAnswered()) {
                 showFeedbackDialog()
-            } else{
+            } else {
                 requireContext().showCustomAlertDialog("Peringatan",
                     "Mohon jawab semua pertanyaan sebelum melanjutkan",
                     "OK",
@@ -203,7 +200,7 @@ class SelfEvaluationQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
     }
 
     private fun restoreAnswers() {
-        viewModel.getAnswers().value?.let { answers  ->
+        viewModel.getAnswers().value?.let { answers ->
             answers["21"]?.let { setRadioButtonChecked(binding.radioGroup21, it) }
             answers["22"]?.let { setRadioButtonChecked(binding.radioGroup22, it) }
             answers["23"]?.let { setRadioButtonChecked(binding.radioGroup23, it) }
@@ -233,8 +230,7 @@ class SelfEvaluationQuestionFragment(viewModel: QuestionnaireViewModel) : Fragme
 
         dialog.window?.apply {
             setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
             )
             setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }

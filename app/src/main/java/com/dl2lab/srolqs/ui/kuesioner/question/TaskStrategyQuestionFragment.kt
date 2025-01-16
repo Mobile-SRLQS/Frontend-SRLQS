@@ -1,19 +1,19 @@
 package com.dl2lab.srolqs.ui.kuesioner.question
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import com.dl2lab.srolqs.R
 import com.dl2lab.srolqs.databinding.FragmentTaskStrategyQuestionBinding
 import com.dl2lab.srolqs.ui.ViewModelFactory.ViewModelFactory
-import com.dl2lab.srolqs.ui.kuesioner.viewmodel.QuestionnaireViewModel
 import com.dl2lab.srolqs.ui.customview.showCustomAlertDialog
 import com.dl2lab.srolqs.ui.customview.showCustomInformation
+import com.dl2lab.srolqs.ui.kuesioner.viewmodel.QuestionnaireViewModel
 
 class TaskStrategyQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment() {
     private lateinit var binding: FragmentTaskStrategyQuestionBinding
@@ -51,7 +51,7 @@ class TaskStrategyQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment
     private fun setupAction() {
         binding.nextButton.setOnClickListener {
             if (isAllQuestionsAnswered()) {
-                viewModel.logAnswers() // Log answers before navigating
+                viewModel.logAnswers()
                 parentFragmentManager.commit {
                     addToBackStack(null)
                     replace(
@@ -72,7 +72,7 @@ class TaskStrategyQuestionFragment(viewModel: QuestionnaireViewModel) : Fragment
         }
 
         binding.prevButton.setOnClickListener {
-            viewModel.logAnswers() // Log answers before navigating
+            viewModel.logAnswers()
             parentFragmentManager.commit {
                 addToBackStack(null)
                 replace(
